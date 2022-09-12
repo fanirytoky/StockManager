@@ -1,0 +1,13 @@
+SELECT dbo.fiche.id_Fiche, dbo.fiche.date_controle, dbo.details_Fiche.AR_Ref, dbo.F_ARTICLE.AR_Design, dbo.F_COMPTET.CT_Intitule, dbo.presentations.P_Intitule, 
+                  CASE WHEN [details_Fiche].etat = 0 THEN 'Au niveau du service Approvisionnement' WHEN [details_Fiche].etat = 1 THEN 'Au niveau du Pharmacien Responsable' WHEN [details_Fiche].etat = 2 THEN 'Au niveau du service Stock' WHEN [details_Fiche].etat
+                   = 3 THEN 'Fiche validée' END AS Etat, dbo.formes.FO_designation, dbo.Type_Stockage.Type_Stockage, dbo.details_Fiche.dosage, dbo.details_Fiche.fabricant, dbo.details_Fiche.quantite, dbo.details_Fiche.date_fab, 
+                  dbo.details_Fiche.date_peremp, dbo.details_Fiche.volume, dbo.details_Fiche.poids
+FROM     dbo.fiche INNER JOIN
+                  dbo.details_Fiche ON dbo.fiche.id_Fiche = dbo.details_Fiche.id_Fiche INNER JOIN
+                  dbo.F_ARTICLE ON dbo.details_Fiche.AR_Ref = dbo.F_ARTICLE.AR_Ref INNER JOIN
+                  dbo.presentations ON dbo.details_Fiche.P_ref = dbo.presentations.P_ref INNER JOIN
+                  dbo.F_COMPTET ON dbo.details_Fiche.CT_Num = dbo.F_COMPTET.CT_Num INNER JOIN
+                  dbo.formes ON dbo.details_Fiche.FO_ref = dbo.formes.FO_ref INNER JOIN
+                  dbo.Type_Stockage ON dbo.details_Fiche.T_Stockage_ref = dbo.Type_Stockage.T_Stockage_ref
+GROUP BY dbo.fiche.id_Fiche, dbo.fiche.date_controle, dbo.details_Fiche.AR_Ref, dbo.details_Fiche.etat, dbo.F_ARTICLE.AR_Design, dbo.F_COMPTET.CT_Intitule, dbo.presentations.P_Intitule, dbo.formes.FO_designation, 
+                  dbo.Type_Stockage.Type_Stockage, dbo.details_Fiche.dosage, dbo.details_Fiche.fabricant, dbo.details_Fiche.quantite, dbo.details_Fiche.date_fab, dbo.details_Fiche.date_peremp, dbo.details_Fiche.volume, dbo.details_Fiche.poids
