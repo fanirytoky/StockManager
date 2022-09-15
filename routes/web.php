@@ -80,6 +80,8 @@ Route::get('/Pharmacien/fiches-attente',[PharmacienController::class,'listeFiche
 Route::get('/Pharmacien/AjaxListeFiche.attente',[PharmacienController::class,'AjaxListeFicheAttente'])->name('Pharma/AjaxListeFiche.attente')->middleware(['Pharmacien']);
 Route::get('/Pharmacien/fiches-rebut',[PharmacienController::class,'listeFicheRebut'])->name('Pharma/fiche.rebut')->middleware(['Pharmacien']);
 Route::get('/Pharmacien/AjaxListeFiche.rebut',[PharmacienController::class,'AjaxListeFicheRebut'])->name('Pharma/AjaxListeFiche.rebut')->middleware(['Pharmacien']);
+Route::get('/Pharmacien/Chart/Vue',[PharmacienController::class,'scoreQualiteFrnsPage'])->name('Pharmacien.chart.vue')->middleware(['Pharmacien']);
+Route::get('/Pharmacien/Chart',[PharmacienController::class,'scoreQualiteFrns'])->name('Pharmacien.chart')->middleware(['Pharmacien']);
 
 // 
 
@@ -113,6 +115,7 @@ Route::get('/setSessionFrnsClient/{CT_Num}/{id_fiche_stock}',[ChefRayonControlle
 Route::post('/Mouvement-Stock-ajout',[ChefRayonController::class,'storeMvtStock'])->name('mvtFicheStock.Store')->middleware(['ChefRayon']);
 Route::get('/stock-report',[ChefRayonController::class,'ajaxReport'])->name('ajax-report')->middleware(['ChefRayon']);
 Route::post('/fiche-stock-pdf',[ChefRayonController::class,'genererPDF'])->name('fiche_stock.PDF')->middleware(['ChefRayon']);
+Route::get('/stock/ajuster/{inventaire}/{stock}/{id_stock_empl}',[ChefRayonController::class,'ajusterStockInventaire'])->name('stock/ajuster')->middleware(['ChefRayon']);
 
 // 
 

@@ -15,6 +15,15 @@
                 </div>
             </div>
             @endif
+            @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
             <div class="inbox-head">
                 <div class="input-append">
                     <input type="text" name="searchBar" id="searchBar" class="sr-input" placeholder="Recherche" oninput="listeNewFiche()">

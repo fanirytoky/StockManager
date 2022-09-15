@@ -3,7 +3,7 @@
 <html>
 <form id="selectform" method="POST" action="{{ route('fiche.Store') }}">
     @csrf
-    <div class="col-md-12">
+    <div class="card">
         <div class="white_shd full margin_bottom_30">
             <div class="full graph_head" id="entete">
                 <div class="heading1 margin_0">
@@ -39,6 +39,18 @@
                             @endif
                             @if($designation == null)
                             <input type="" placeholder="Désignation" autocomplete="off" value="" id="popup" class="form-control" data-toggle="modal" data-target="#modalForm" />
+                            @endif
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Fournisseur</label>
+                            @if($fournisseur != null)
+                            @foreach($fournisseur as $frns)
+                            <input type="" value="{{$frns->CT_Intitule}}" autocomplete="off" id="popupFrns" class="form-control" data-toggle="modal" data-target="#modalFormFrns" />
+                            <input type="hidden" value="{{$frns->CT_Num}}" autocomplete="off" id="CT_Num" name="CT_Num" class="form-control" />
+                            @endforeach
+                            @endif
+                            @if($fournisseur == null)
+                            <input type="" placeholder="Fournisseur" autocomplete="off" value="" id="popupFrns" class="form-control" data-toggle="modal" data-target="#modalFormFrns" />
                             @endif
                         </div>
                         <div class="form-group">
@@ -85,10 +97,6 @@
                             <input type="text" class="form-control input-solid" id="lot" name="lot" placeholder="N° Lot">
                         </div>
                         <div class="form-group">
-                            <label for="solidInput">Date de fabrication</label>
-                            <input type="date" class="form-control input-solid" id="date_fab" name="date_fab">
-                        </div>
-                        <div class="form-group">
                             <label for="solidInput">Date de Peremption</label>
                             <input type="date" class="form-control input-solid" id="date_peremp" name="date_peremp">
                         </div>
@@ -99,20 +107,12 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="email">Fournisseur</label>
-                            @if($fournisseur != null)
-                            @foreach($fournisseur as $frns)
-                            <input type="" value="{{$frns->CT_Intitule}}" autocomplete="off" id="popupFrns" class="form-control" data-toggle="modal" data-target="#modalFormFrns" />
-                            <input type="hidden" value="{{$frns->CT_Num}}" autocomplete="off" id="CT_Num" name="CT_Num" class="form-control" />
-                            @endforeach
-                            @endif
-                            @if($fournisseur == null)
-                            <input type="" placeholder="Fournisseur" autocomplete="off" value="" id="popupFrns" class="form-control" data-toggle="modal" data-target="#modalFormFrns" />
-                            @endif
-                        </div>
-                        <div class="form-group">
                             <label for="solidInput">Fabricant</label>
                             <input type="text" class="form-control input-solid" id="fabricant" name="fabricant" placeholder="Fabricant">
+                        </div>
+                        <div class="form-group">
+                            <label for="solidInput">Date de fabrication</label>
+                            <input type="date" class="form-control input-solid" id="date_fab" name="date_fab">
                         </div>
                         <div class="form-group">
                             <label for="solidInput">Quantite</label>
@@ -150,10 +150,16 @@
                                 </div>
                             </div>
                         </div>
-                        <br>
                         <div class="form-group">
                             <label for="solidInput">Observations</label>
-                            <textarea type="text" rows="3" class="form-control input-solid" id="observation" name="observation"></textarea>
+                            <textarea type="text" rows="1" class="form-control input-solid" id="observation" name="observation"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <h5 style="color: #00bcd2;"><i class="fa fa-envelope-square"> Notification</i></h5>
+                            <div>
+                                <input type="checkbox" id="email" name="email" value="email" checked>
+                                <strong for="email">Envoyer un email</strong>
+                            </div>
                         </div>
                     </div>
                 </div>

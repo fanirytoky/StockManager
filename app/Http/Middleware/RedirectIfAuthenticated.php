@@ -38,10 +38,10 @@ class RedirectIfAuthenticated
             return '/fiches';
         }
         if(auth()->user()->post_id == 3){
-            return '/fiches-nouveau';
+            return '/Appro/Chart/Vue';
         }
         if(auth()->user()->post_id == 4){
-            return '/';
+            return '/Pharmacien/Chart/Vue';
         }
         if(auth()->user()->post_id == 5){
             return '/reception/calendrier';

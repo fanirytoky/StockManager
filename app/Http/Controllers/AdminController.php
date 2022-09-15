@@ -54,23 +54,14 @@ class AdminController extends Controller
 
     public function ajaxListeUser(Request $request){
         $des = $request->filtre;
-        $post = DB::table('users')
-                    ->join('posts','users.post_id','=','posts.id')
-                    ->orWhere('name', 'like', '%' . $des . '%')
-                    ->orWhere('email', 'like', '%' . $des . '%')
-                    ->select('users.*','posts.titre_post');
-        $val = $post->paginate(4);
-        return view('ajaxlisteUser', ['val' => $val]);
+        $liste = User::getUtilisateurs($des);
+        return view('ajaxlisteUser', ['val' => $liste]);
     }
 
     public function updateUser($id){
-        $user = DB::table('users')
-                 ->join('posts','users.post_id','=','posts.id')
-                 ->where('users.id','=',$id)
-                 ->select('users.*','posts.titre_post')
-                 ->get();
+        $val = User::getUtilisateur($id);
         $post = Post::all();
-        return view('update-user', ['post' =>$post , 'user_post' => $user]);
+        return view('update-user', ['post' =>$post , 'user_post' => $val]);
     }
 
     public function deleteUser($id){

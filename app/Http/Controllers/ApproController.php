@@ -9,9 +9,12 @@ use App\Mail\mailNotification;
 use App\Models\Fiche_reference;
 use Illuminate\Support\Facades\DB;
 use App\Mail\pharmacienNotification;
+use App\Models\Fiche_Details_Fiche;
+use App\Models\Fournisseur;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Details_Fiche;
 
 
 class ApproController extends Controller
@@ -30,44 +33,21 @@ class ApproController extends Controller
     {
         session::forget('fournisseur');
         $des = $request->filtre;
-        $list = null;
-        $list = DB::table('fiche_details_fiche')
-            ->Where('AR_Design', 'like', '%' . $des . '%')
-            ->Where('etat', '=', 1)
-            ->groupBy('id_Fiche', 'AR_Ref', 'AR_Design', 'CT_Intitule', 'date_controle', 'position', 'etat')
-            ->select("id_Fiche", "AR_Ref", "AR_Design", "CT_Intitule", DB::raw("sum(quantite) as total"), "date_controle", "Etat", "position");
-        $val = $list->paginate(10);
-
-        return view('respAppro.ajaxliste-Fiches', ['val' => $val]);
+        $etat = 1;
+        $list = Fiche_Details_Fiche::getListeDetailsFiche($des, $etat);
+        return view('respAppro.ajaxliste-Fiches', ['val' => $list]);
     }
 
     public function referenceFiche($id_Fiche)
     {
         $erreur = null;
-        $details_Fiche = DB::table('fiche_details_fiche')
-            ->where('id_Fiche', '=', $id_Fiche)
-            ->orderBy('num_Lot')
-            ->select('fiche_details_fiche.*')
-            ->get();
-        $qteTotal = DB::table('fiche_details_fiche')
-            ->where('id_Fiche', '=', $id_Fiche)
-            ->groupBy('id_Fiche')
-            ->select(DB::raw("sum(quantite) as total"))
-            ->get();
+        $details_Fiche = Fiche_Details_Fiche::getInfoDetailsFiche($id_Fiche);
+        $qteTotal = Fiche_Details_Fiche::getQteTotal($id_Fiche);
         $frns = null;
         $CT_Num = Session::get('fournisseur');
         if ($CT_Num != null) {
-            $frns = DB::table('F_COMPTET')
-                ->Where("CT_Num", "=", $CT_Num)
-                ->select('F_COMPTET.*')
-                ->get();
-
-            $fourni = DB::table('fiche_details_fiche')
-                ->where('id_Fiche', '=', $id_Fiche)
-                ->select('CT_Num')
-                ->distinct()
-                ->get();
-
+            $frns = Fournisseur::getFrns($CT_Num);
+            $fourni = Fiche_Details_Fiche::getDetailsFiche($id_Fiche);
             if ($fourni[0]->CT_Num != $CT_Num) {
                 $erreur = 'Fournisseurs non identiques';
             }
@@ -81,11 +61,8 @@ class ApproController extends Controller
         session::forget('fournisseur');
         $filtre = $request->fournisseur;
         $id_fiche = $request->id_Fiche;
-        $fournisseur = DB::table('F_COMPTET')
-            ->orWhere('CT_Intitule', 'like', '%' . $filtre . '%')
-            ->select('F_COMPTET.*');
-        $val = $fournisseur->paginate(10);
-        return view('respAppro.ajaxliste-Frns', ['val' => $val, 'id_Fiche' => $id_fiche]);
+        $fournisseur = Fournisseur::getListeFrns($filtre,1);
+        return view('respAppro.ajaxliste-Frns', ['val' => $fournisseur, 'id_Fiche' => $id_fiche]);
     }
 
     public function setSessionFrns($CT_Num, $id_Fiche)
@@ -126,8 +103,7 @@ class ApproController extends Controller
             'id_Fiche' => $id_Fiche,
             'id_User' => auth()->user()->id
         ]);
-
-        DB::update("update details_Fiche set etat = 2 where id_Fiche = " . $id_Fiche);
+        Details_Fiche::validerFiche($id_Fiche, 2);
 
         if ($email != null) {
             $details = [
@@ -145,7 +121,8 @@ class ApproController extends Controller
     }
 
 
-    public function tauxActiviteFrnsPage(){
+    public function tauxActiviteFrnsPage()
+    {
         return view('respAppro.Acceuil');
     }
 
@@ -154,64 +131,7 @@ class ApproController extends Controller
         $debut = $request->debut;
         $fin = $request->fin;
         $typeChart = $request->type;
-
-
-        if ($debut == null && $fin == null) {
-            $data = DB::table('fiche_reference')
-                ->select(
-                    DB::raw('((count(date_livraison)*100)/(select count(ref_marche) from fiche_reference)) as taux'),
-                    'fournisseur_ref',
-                    'CT_Intitule',
-                    DB::raw('(select count(ref_marche) from fiche_reference) as total')
-                )
-                ->leftJoin('F_COMPTET', 'F_COMPTET.CT_Num', '=', 'fiche_reference.fournisseur_ref')
-                ->groupBy('fournisseur_ref', 'CT_Intitule')
-                ->get();
-        }
-        if ($debut != null && $fin == null) {
-            $data = DB::table('fiche_reference')
-                ->select(
-                    DB::raw("((count(date_livraison)*100)/(select count(ref_marche) from fiche_reference 
-                    where date_livraison >= '" . $debut . "')) as taux"),
-                    'fournisseur_ref',
-                    'CT_Intitule',
-                    DB::raw("(select count(ref_marche) from fiche_reference where date_livraison >= '" . $debut . "') as total")
-                )
-                ->leftJoin('F_COMPTET', 'F_COMPTET.CT_Num', '=', 'fiche_reference.fournisseur_ref')
-                ->where('date_livraison', '>=', $debut)
-                ->groupBy('fournisseur_ref', 'CT_Intitule')
-                ->get();
-        }
-        if ($fin != null && $debut == null) {
-            $data = DB::table('fiche_reference')
-                ->select(
-                    DB::raw("((count(date_livraison)*100)/(select count(ref_marche) from fiche_reference 
-                    where date_livraison <= '" . $fin . "')) as taux"),
-                    'fournisseur_ref',
-                    'CT_Intitule',
-                    DB::raw("(select count(ref_marche) from fiche_reference where date_livraison <= '" . $fin . "') as total")
-                )
-                ->leftJoin('F_COMPTET', 'F_COMPTET.CT_Num', '=', 'fiche_reference.fournisseur_ref')
-                ->where('date_livraison', '<=', $fin)
-                ->groupBy('fournisseur_ref', 'CT_Intitule')
-                ->get();
-        }
-        if ($fin != null && $debut != null) {
-            $data = DB::table('fiche_reference')
-                ->select(
-                    DB::raw("((count(date_livraison)*100)/(select count(ref_marche) from fiche_reference 
-                where date_livraison >= '" . $debut . "' and date_livraison <= '" . $fin . "')) as taux"),
-                    'fournisseur_ref',
-                    'CT_Intitule',
-                    DB::raw("(select count(ref_marche) from fiche_reference where date_livraison >= '" . $debut . "' and date_livraison <= '" . $fin . "') as total")
-                )
-                ->leftJoin('F_COMPTET', 'F_COMPTET.CT_Num', '=', 'fiche_reference.fournisseur_ref')
-                ->where('date_livraison', '>=', $debut)
-                ->where('date_livraison', '<=', $fin)
-                ->groupBy('fournisseur_ref', 'CT_Intitule')
-                ->get();
-        }
-
+        $data = Fiche_reference::getTauxActivite($debut, $fin);
         $taux = [];
         $frns = [];
         $total = 0;
@@ -227,7 +147,5 @@ class ApproController extends Controller
             'total' => $total,
             'type' => $typeChart
         ]);
-
-        // return view('respAppro.Acceuil', ['taux' => $taux, 'frns' => $frns, 'typeChart' => $typeChart]);
     }
 }

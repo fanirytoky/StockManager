@@ -11,6 +11,7 @@
                             <th>ENTREE</th>
                             <th>SORTIE</th>
                             <th>STOCK</th>
+                            <th>INVENTAIRE</th>
                         </b></tr>
                 </thead>
                 <tbody>
@@ -28,6 +29,16 @@
                         <td>{{$val->entree}}</td>
                         <td>{{$val->sortie}}</td>
                         <td>{{$val->stock}}</td>
+                        @if($val->date_inventaire != null)
+                        <td><h6 style="color: red;">{{$val->observations}},QTE= {{$val->quantite}}</h6></td>
+                        @if($val->stock == $val->quantite)
+                        <td><div class="button_block"><a class="fw_icon" href="{{ route('stock/ajuster', ['inventaire' => $val->quantite , 'stock' => $val->stock, 'id_stock_empl' => $val->id_stock_empl]) }}"><button type="button" class="btn cur-p btn-outline-danger fa fa-warning" disabled>  Ajuster</button></a></div></td>
+                        @else
+                        <td><div class="button_block"><a class="fw_icon" href="{{ route('stock/ajuster', ['inventaire' => $val->quantite , 'stock' => $val->stock, 'id_stock_empl' => $val->id_stock_empl]) }}"><button type="button" class="btn cur-p btn-outline-danger fa fa-warning">  Ajuster</button></a></div></td>
+                        @endif
+                        @else
+                        <td></td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>

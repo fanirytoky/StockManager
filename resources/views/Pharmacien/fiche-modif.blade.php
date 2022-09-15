@@ -4,9 +4,27 @@
 <form id="selectform" method="POST" action="{{ route('Pharma/fiche.update') }}">
     @csrf
     <div class="card">
-        <div class="card-header">
-            <div class="card-title">Modification données non conformes</div>
+        <div class="white_shd full margin_bottom_30">
+            <div class="full graph_head" id="entete">
+                <div class="heading1 margin_0">
+                    <h2 style="color: white;"><i class="fa fa-file-text-o"></i> Modification données non conformes</h2>
+                </div>
+            </div>
         </div>
+        @if ($errors->any())
+        <div class="alert alert-danger">
+            <ul>
+                @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+        @endif
+        @if(session('success'))
+        <div class="alert alert-success">
+            <p>{{session('success')}}</p>
+        </div>
+        @endif
         <div class="row">
             <div class="col-md-6">
                 <div class="card">
@@ -38,7 +56,7 @@
                         <div class="form-group">
                             <label for="pillInput">Dosage</label>
                             @foreach($details as $dosage)
-                            <input type="number" name="dosage" id="dosage" value="{{$dosage->dosage}}" class="form-control input-pill">
+                            <input type="text" name="dosage" id="dosage" value="{{$dosage->dosage}}" class="form-control input-pill">
                             @endforeach
                         </div>
                         <div class="form-group">

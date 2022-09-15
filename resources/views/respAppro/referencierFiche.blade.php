@@ -88,7 +88,7 @@
                                         <input type="date" class="form-control input-solid" id="dt_livraison" name="dt_livraison" value="{{$details[0]->date_controle}}">
                                     </div>
                                     <fieldset>
-                                        <label>Notification :</label>
+                                        <label><i class="fa fa-envelope-square">  Notification</i></label>
                                         <div>
                                             <input type="checkbox" id="email" name="email" value="email" checked>
                                             <label for="email">Envoyer un email</label>

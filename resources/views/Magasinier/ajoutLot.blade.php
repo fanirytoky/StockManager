@@ -4,7 +4,7 @@
 <form id="selectform" method="POST" action="{{ route('fiche.Store') }}">
     @csrf
     <div class="card">
-       <div class="white_shd full margin_bottom_30">
+        <div class="white_shd full margin_bottom_30">
             <div class="full graph_head" id="entete">
                 <div class="heading1 margin_0">
                     <h2 style="color: white;"><i class="fa fa-file-text-o"></i> NOUVELLE FICHE DE CONTROLE PHYSIQUE ET CONTROLE CONDITIONNEMENT</h2>

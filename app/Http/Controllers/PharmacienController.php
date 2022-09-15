@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Controle_Condition;
+use App\Models\Details_FCPCC;
+use App\Models\Details_Fiche;
 use App\Models\Forme;
 use App\Models\Type_Stockage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\Details_Fiche_Score;
+use App\Models\Fiche_Details_Fiche;
 
 class PharmacienController extends Controller
 {
@@ -32,54 +36,16 @@ class PharmacienController extends Controller
     public function AjaxListeFiche(Request $request)
     {
         $des = $request->filtre;
-        $list = null;
-        $list = DB::table('fiche_details_fiche')
-            ->Where('AR_Design', 'like', '%' . $des . '%')
-            ->Where('etat', '=', 2)
-            ->groupBy('id_Fiche', 'dt_Fiche_ref', 'num_Lot', 'date_peremp',  'AR_Design', 'FO_designation', "P_Intitule", 'date_controle', 'Type_Stockage', 'position', 'etat')
-            ->select("id_Fiche", 'dt_Fiche_ref', 'num_Lot', 'date_peremp', "AR_Design", "FO_designation", "P_Intitule", "date_controle", 'Type_Stockage', "Etat", "position");
-        $val = $list->paginate(3);
-
-        return view('Pharmacien.ajaxliste-Fiches', ['val' => $val]);
+        $list = Fiche_Details_Fiche::getDtFicheAControler($des,2);
+        return view('Pharmacien.ajaxliste-Fiches', ['val' => $list]);
     }
 
     public function detailsFiche($id_dt_Fiche)
     {
-        $details_Fiche = DB::table('fiche_details_fiche')
-            ->where('dt_Fiche_ref', '=', $id_dt_Fiche)
-            ->select('fiche_details_fiche.*')
-            ->get();
-        $condition = DB::table('controle_condition')
-            ->join('Type_Condition', 'controle_condition.id_libelle', '=', 'Type_Condition.id')
-            ->groupBy(
-                'controle_condition.cond_controle_ref',
-                'controle_condition.id_libelle',
-                'controle_condition.normes',
-                'Type_Condition.Libelle',
-                'Type_Condition.Notation'
-            )
-            ->select(
-                'controle_condition.cond_controle_ref',
-                'controle_condition.id_libelle',
-                'controle_condition.normes',
-                'Type_Condition.Libelle',
-                'Type_Condition.Notation'
-            )
-            ->distinct()
-            ->get();
-        $details_score = DB::table('dt_fiche_scores')
-            ->Where('dt_Fiche_ref', '=', $id_dt_Fiche)
-            ->select(
-                'dt_fiche_scores.*'
-            )
-            ->get();
-        $total_score = DB::table('dt_fiche_scores')
-            ->Where('dt_Fiche_ref', '=', $id_dt_Fiche)
-            ->select(
-                DB::raw("sum(score) as total"),
-                DB::raw("CASE WHEN " . DB::raw('sum(score)') . ">3 THEN 'Conditionnement Complet' ELSE 'Conditionnement non conforme' END AS etat_score")
-            )
-            ->get();
+        $details_Fiche = Fiche_Details_Fiche::getDetailFicheById($id_dt_Fiche);
+        $condition = Controle_Condition::getConditionnement();
+        $details_score = Details_Fiche_Score::getDtScoreById($id_dt_Fiche);
+        $total_score = Details_Fiche_Score::getTotalScore($id_dt_Fiche);
         return view('Pharmacien.detailsFiche', [
             'details' => $details_Fiche, 'conditionnements' => $condition, 'details_score' => $details_score, 'total_score' => $total_score
         ]);
@@ -135,34 +101,26 @@ class PharmacienController extends Controller
     {
         // acceptée
         if ($etat == 0) {
-            DB::update("update details_Fiche set etat = 3 where dt_Fiche_ref = " . $dt_Fiche_ref);
+            Details_Fiche::validerDtFiche($dt_Fiche_ref,3);
             return redirect('/Pharmacien/fiches-nouveau')->withSuccess('Fiche validée');
         }
         //quarantaine
         elseif ($etat == 1) {
-            DB::update("update details_Fiche set etat = -2 where dt_Fiche_ref = " . $dt_Fiche_ref);
+            Details_Fiche::validerDtFiche($dt_Fiche_ref,-2);
             return redirect('/Pharmacien/fiches-nouveau')->withSuccess('Fiche mis en Quarantaine');
         }
         // Rebut
         elseif ($etat == 2) {
-            DB::update("update details_Fiche set etat = -3 where dt_Fiche_ref = " . $dt_Fiche_ref);
+            Details_Fiche::validerDtFiche($dt_Fiche_ref,-3);
             return redirect('/Pharmacien/fiches-nouveau')->withSuccess('Fiche mis en REBUT');
         }
     }
 
     public function editFiche($id_Fiche)
     {
-        $forme = DB::table('formes')
-            ->select('formes.*')
-            ->get();
-        $stockage = DB::table('Type_Stockage')
-            ->select('Type_Stockage.*')
-            ->get();
-        $details = DB::table('fiche_details_fiche')
-            ->orWhere('id_Fiche', '=', $id_Fiche)
-            ->limit(1)
-            ->select('fiche_details_fiche.*')
-            ->get();
+        $forme = Forme::getForme();
+        $stockage = Type_Stockage::getTypeStockage();
+        $details = Fiche_Details_Fiche::getDetailsFiche($id_Fiche);
         return view('Pharmacien.fiche-modif', [
             'details' => $details,
             'forme' => $forme,
@@ -176,36 +134,59 @@ class PharmacienController extends Controller
         $dosage = $request->dosage;
         $t_stockage = $request->t_stockage;
         $idF = $request->idF;
-        DB::update("update details_Fiche set FO_ref = '" . $forme . "' , 
-        dosage = " . $dosage . " , T_Stockage_ref = " . $t_stockage . " where id_Fiche = " . $idF);
-        return view('Pharmacien.listeFicheAvalider');
+        Details_Fiche::updateFiche($forme,$dosage,$t_stockage,$idF);
+        return redirect('/Pharmacien/fiches-nouveau')->withSuccess('Fiche modifiée');
     }
 
     public function AjaxListeFicheAttente(Request $request)
     {
         $des = $request->filtre;
-        $list = null;
-        $list = DB::table('fiche_details_fiche')
-            ->Where('AR_Design', 'like', '%' . $des . '%')
-            ->Where('etat', '=', -2)
-            ->groupBy('id_Fiche', 'dt_Fiche_ref', 'num_Lot', 'date_peremp',  'AR_Design', 'FO_designation', "P_Intitule", 'date_controle', 'Type_Stockage', 'position', 'etat')
-            ->select("id_Fiche", 'dt_Fiche_ref', 'num_Lot', 'date_peremp', "AR_Design", "FO_designation", "P_Intitule", "date_controle", 'Type_Stockage', "Etat", "position");
-        $val = $list->paginate(3);
+        $list = Fiche_Details_Fiche::getDtFicheAControler($des,2);
 
-        return view('Pharmacien.ajaxliste-Fiches', ['val' => $val]);
+        return view('Pharmacien.ajaxliste-Fiches', ['val' => $list]);
     }
 
     public function AjaxListeFicheRebut(Request $request)
     {
         $des = $request->filtre;
-        $list = null;
-        $list = DB::table('fiche_details_fiche')
-            ->Where('AR_Design', 'like', '%' . $des . '%')
-            ->Where('etat', '=', -3)
-            ->groupBy('id_Fiche', 'dt_Fiche_ref', 'num_Lot', 'date_peremp',  'AR_Design', 'FO_designation', "P_Intitule", 'date_controle', 'Type_Stockage', 'position', 'etat')
-            ->select("id_Fiche", 'dt_Fiche_ref', 'num_Lot', 'date_peremp', "AR_Design", "FO_designation", "P_Intitule", "date_controle", 'Type_Stockage', "Etat", "position");
-        $val = $list->paginate(3);
+        $list = Fiche_Details_Fiche::getDtFicheAControler($des,-3);
 
-        return view('Pharmacien.ajaxliste-Fiches', ['val' => $val]);
+        return view('Pharmacien.ajaxliste-Fiches', ['val' => $list]);
+    }
+
+    public function scoreQualiteFrnsPage()
+    {
+        return view('Pharmacien.chartEtat');
+    }
+
+    public function scoreQualiteFrns(Request $request)
+    {
+        $filtre = $request->filtre;
+        $debut = $request->debut;
+        $fin = $request->fin;
+        $typeChart = $request->type;
+        $unite = $request->unite;
+        $typeObject = $request->typeObject;
+        if($typeObject == null){
+            $typeObject = 0;
+        }
+        $data = Details_FCPCC::getScoreQualiteParArtParFrns($filtre, $debut, $fin, $typeObject);
+        $labels = [];
+        $dt = [];
+        foreach ($data as $data) {
+            $labels[] = $data->labels;
+            if($unite == 0){
+                $dt[] = $data->total_score;
+            }
+            else{
+                $dt[] = $data->pourc;
+            }
+        }
+
+        return response()->json([
+            'data' => $dt,
+            'labels' => $labels,
+            'type' => $typeChart
+        ]);
     }
 }

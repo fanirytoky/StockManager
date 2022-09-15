@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Depot;
 use App\Models\Fiche;
-use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\mvt_Stock;
 use App\Models\stock_Empl;
 use App\Models\fiche_stock;
-use App\Models\details_Fiche_Stock;
-use App\Models\inventaire_stock;
+use App\Models\Fournisseur;
 use Illuminate\Http\Request;
+use App\Models\Details_FCPCC;
+use App\Models\Details_Fiche;
+use App\Models\Article_Adresse;
+use Barryvdh\DomPDF\Facade\Pdf;
+use App\Models\inventaire_stock;
 use Illuminate\Support\Facades\DB;
+use App\Models\details_Fiche_Stock;
+use App\Models\dt_Fiche_Stock_Empl;
+use App\Models\Fiche_Details_Fiche;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
-
 
 class ChefRayonController extends Controller
 {
@@ -30,14 +38,9 @@ class ChefRayonController extends Controller
     public function AjaxListeFiche(Request $request)
     {
         $des = $request->filtre;
-        $list = DB::table('fiche_details_fiche')
-            ->Where('etat', '=', 4)
-            ->Where('AR_Design', 'like', '%' . $des . '%')
-            ->groupBy('id_Fiche', 'AR_Ref', 'AR_Design', 'num_Lot', 'P_Intitule', 'date_controle', "quantite", 'position', 'etat', 'dt_Fiche_ref')
-            ->select("id_Fiche", "AR_Ref", "AR_Design", "num_Lot", 'P_Intitule', "quantite", "date_controle", "Etat", "position", "dt_Fiche_ref");
-        $val = $list->paginate(10);
+        $list = Fiche_Details_Fiche::getFicheAPlacer($des, 4);
 
-        return view('chefRayon.ajaxliste-Fiches', ['val' => $val]);
+        return view('chefRayon.ajaxliste-Fiches', ['val' => $list]);
     }
 
     public function ArtStockEmpl($id_dt_Fiche)
@@ -45,77 +48,29 @@ class ChefRayonController extends Controller
         $DP_code = null;
         $reste = 0;
         $adresse = null;
-        $details_Fiche = DB::table('details_FCPCC')
-            ->Where('dt_Fiche_ref', '=', $id_dt_Fiche)
-            ->groupBy(
-                'AR_Ref',
-                'AR_Design',
-                'position',
-                'quantite',
-                'P_ref',
-                'T_Stockage_ref',
-                'volume',
-                'poids',
-                'P_Intitule',
-                'date_peremp',
-                'Type_Stockage',
-                'etat',
-                'num_Lot',
-                'dt_Fiche_ref',
-                'ANS',
-                'MOIS',
-
-            )
-            ->select(
-                'AR_Ref',
-                'AR_Design',
-                'position',
-                'quantite',
-                'P_ref',
-                'T_Stockage_ref',
-                'volume',
-                'poids',
-                'P_Intitule',
-                'date_peremp',
-                'Type_Stockage',
-                'etat',
-                'num_Lot',
-                'dt_Fiche_ref',
-                'ANS',
-                'MOIS',
-
-            )
-            ->get();
+        $details_Fiche = Details_FCPCC::getStockDetails($id_dt_Fiche);
 
         $ad = Session::get('DP_Code');
         if ($ad != null) {
             $DP_code = $ad;
         }
 
-        $adr = DB::table('articles_Adresses')
-            ->where('AR_Ref', '=', $details_Fiche[0]->AR_Ref)
-            ->select('articles_Adresses.*')
-            ->get();
+        $adr = Article_Adresse::getAdresseByRef($details_Fiche[0]->AR_Ref);
 
-        if(count($adr) > 0){
+        if (count($adr) > 0) {
             $adresse = $adr;
         }
 
-        $depot = DB::table('F_DEPOT')
-            ->select('F_DEPOT.*')
-            ->get();
+        $depot = Depot::all();
 
-        $dt_fiche_empl = DB::table('dt_fiche_stock')
-            ->where('dt_Fiche_ref', '=', $id_dt_Fiche)
-            ->select(DB::raw('sum(qte_sur_rack) as totalEnPlace'))
-            ->get();
+        $dt_fiche_empl = dt_Fiche_Stock_Empl::getTotalEnPlace($id_dt_Fiche);
         if ($dt_fiche_empl == null) {
             $reste = $details_Fiche[0]->quantite;
         } elseif ($dt_fiche_empl != null) {
             $reste = $details_Fiche[0]->quantite - $dt_fiche_empl[0]->totalEnPlace;
         }
         if ($reste <= 0) {
-            DB::update("update details_Fiche set etat = 5 where dt_Fiche_ref = " . $id_dt_Fiche);
+            Details_Fiche::validerDtFiche($id_dt_Fiche, 5);
             return redirect('/ChefRayon/fiches-nouveau')->withSuccess('Article mise en place');
         }
 
@@ -126,13 +81,8 @@ class ChefRayonController extends Controller
     {
         $des = $request->filtre;
         $dt_Fiche_ref = $request->dt_Fiche_ref;
-        $adresse = DB::table('articles_Adresses')
-            ->orWhere('DP_Code', 'like', '%' . $des . '%')
-            ->orWhere('DP_Intitule', 'like', '%' . $des . '%')
-            ->orWhere('AR_Ref', 'like', '%' . $des . '%')
-            ->select('articles_Adresses.*');
-        $val = $adresse->paginate(10);
-        return view('chefRayon.ajaxliste-Adresses', ['val' => $val, 'dt_Fiche_ref' => $dt_Fiche_ref]);
+        $adresse = Article_Adresse::getListArtAdresse($des);
+        return view('chefRayon.ajaxliste-Adresses', ['val' => $adresse, 'dt_Fiche_ref' => $dt_Fiche_ref]);
     }
 
     public function setSession($DP_Code, $dt_Fiche_ref)
@@ -168,14 +118,8 @@ class ChefRayonController extends Controller
         $DE_No = $request->DE_No;
         $idF = null;
         $fiche_Stock = null;
-        $idFS = null;
 
-
-        $id_Fiche_Stock = DB::table('fiche_stock')
-            ->where('dt_Fiche_ref', '=', $dt_Fiche_ref)
-            ->select('fiche_stock.*')
-            ->get();
-
+        $id_Fiche_Stock = fiche_stock::getFicheStockById($dt_Fiche_ref);
 
         if (count($id_Fiche_Stock) == 0) {
             $fiche_Stock = fiche_stock::create([
@@ -216,36 +160,9 @@ class ChefRayonController extends Controller
     public function AjaxListeFicheStock(Request $request)
     {
         $des = $request->filtre;
-        $list = DB::table('dt_fiche_stock')
-            ->orWhere('AR_Design', 'like', '%' . $des . '%')
-            ->orWhere('AR_Ref', 'like', '%' . $des . '%')
-            ->orWhere('num_Lot', 'like', '%' . $des . '%')
-            ->groupBy(
-                'id_fiche_stock',
-                'AR_Ref',
-                'AR_Design',
-                'quantite',
-                'P_Intitule',
-                'date_peremp',
-                'num_Lot',
-                'dt_Fiche_ref',
-                'DE_Intitule'
-            )
-            ->select(
-                'id_fiche_stock',
-                'AR_Ref',
-                'AR_Design',
-                'quantite',
-                'P_Intitule',
-                'date_peremp',
-                'num_Lot',
-                'dt_Fiche_ref',
-                DB::raw('sum(qte_sur_rack) as total'),
-                'DE_Intitule'
-            );
-        $val = $list->paginate(10);
+        $list = dt_Fiche_Stock_Empl::getFicheStock($des);
 
-        return view('chefRayon.ajaxliste-Fiches-Stock', ['val' => $val]);
+        return view('chefRayon.ajaxliste-Fiches-Stock', ['val' => $list]);
     }
 
     public function dtFicheStock($id_fiche_stock)
@@ -254,10 +171,7 @@ class ChefRayonController extends Controller
         $num_rack = null;
         $id_empl = null;
         $CT_Num = null;
-        $details = DB::table('dt_fiche_stock')
-            ->where('id_fiche_stock', "=", $id_fiche_stock)
-            ->select('dt_fiche_stock.*')
-            ->get();
+        $details = dt_Fiche_Stock_Empl::getDtFichStockById($id_fiche_stock);
 
         $num = Session::get('num_Rack');
         if ($num != null) {
@@ -269,10 +183,7 @@ class ChefRayonController extends Controller
         }
         $frns_clt = Session::get('CT_Num');
         if ($frns_clt != null) {
-            $CT_Num = DB::table('F_COMPTET')
-                ->Where("CT_Num", "=", $frns_clt)
-                ->select('F_COMPTET.*')
-                ->get();
+            $CT_Num = Fournisseur::getFrns($frns_clt);
         }
 
         return view('chefRayon.details-Fiche-Stock', ['details' => $details, 'num_rack' => $num_rack, 'CT_Num' => $CT_Num, 'id_empl' => $id_empl]);
@@ -282,13 +193,8 @@ class ChefRayonController extends Controller
     {
         $des = $request->designation;
         $id_fiche_stock = $request->idFiche_Stock;
-        $stock_empl = DB::table('dt_fiche_stock')
-            ->Where('num_Rack', 'like', '%' . $des . '%')
-            ->Where('id_fiche_stock', 'like', '%' . $id_fiche_stock . '%')
-            ->select('dt_fiche_stock.*', DB::raw('(SELECT (sum([entree]))-(sum([sortie]))
-  FROM [reception_salama].[dbo].[details_Fiche_Stock] q  where [id_stock_empl] = dt_fiche_stock.id_stock_Empl GROUP BY [id_stock_empl]) as Reste'));
-        $val = $stock_empl->paginate(10);
-        return view('chefRayon.ajaxliste-stock-empl', ['val' => $val]);
+        $stock_empl = dt_Fiche_Stock_Empl::getStockEmplacement($des, $id_fiche_stock);
+        return view('chefRayon.ajaxliste-stock-empl', ['val' => $stock_empl]);
     }
 
     public function setSessionNumRack($num_Rack, $id_fiche_stock, $id_stock_Empl)
@@ -306,12 +212,8 @@ class ChefRayonController extends Controller
         $name = $request->CT_Intitule;
         $type = $request->CT_Type;
         $idF = $request->idFiche_Stock;
-        $F_COMPTET = DB::table('F_COMPTET')
-            ->Where('CT_Intitule', 'like', '%' . $name . '%')
-            ->Where('CT_Type', '=', $type)
-            ->select('F_COMPTET.*');
-        $val = $F_COMPTET->paginate(10);
-        return view('chefRayon.ajaxliste-frns-client', ['val' => $val, 'id_fiche_stock' => $idF]);
+        $F_COMPTET = Fournisseur::getListeFrns($name, $type);
+        return view('chefRayon.ajaxliste-frns-client', ['val' => $F_COMPTET, 'id_fiche_stock' => $idF]);
     }
 
     public function setSessionFrnsClient($CT_Num, $id_fiche_stock)
@@ -419,20 +321,12 @@ class ChefRayonController extends Controller
         $idFicheStock = $request->idFicheStock;
 
         if ($debut != null && $fin != null) {
-            $mvt_stock = DB::table('mvt_stock')
-                ->orderByRaw('date_mvt ASC')
-                ->where('id_fiche_stock', '=', $idFicheStock)
-                ->where('date_mvt', '>=', $debut)
-                ->where('date_mvt', '<=', $fin)
-                ->select('mvt_stock.*', DB::raw('sum(entree-sortie) OVER (ORDER BY date_mvt,id_stock_empl asc) as stock'));
+            $mvt_stock = mvt_Stock::getMvtStockEntreDeuxDates($debut, $fin, $idFicheStock);
+            $list_mvt_stock = mvt_Stock::paginate($mvt_stock);
         } else {
-            $mvt_stock = DB::table('mvt_stock')
-                ->orderByRaw('date_mvt ASC')
-                ->where('id_fiche_stock', '=', $idFicheStock)
-                ->select('mvt_stock.*', DB::raw('sum(entree-sortie) OVER (ORDER BY date_mvt,id_stock_empl asc) as stock'));
+            $mvt_stock = mvt_Stock::getMvtStock($idFicheStock);
+            $list_mvt_stock = mvt_Stock::paginate($mvt_stock);
         }
-
-        $list_mvt_stock = $mvt_stock->paginate(10);
 
         return view('chefRayon.ajax-report', ['mvt_stock' => $list_mvt_stock]);
     }
@@ -443,31 +337,40 @@ class ChefRayonController extends Controller
         $debut = $request->searchBarDateDebut;
         $fin = $request->searchBarDateFin;
         if ($debut != null && $fin != null) {
-            $list = DB::table('mvt_stock')
-                ->orderByRaw('date_mvt ASC')
-                ->where('id_fiche_stock', '=', $id_fiche_stock)
-                ->where('date_mvt', '>=', $debut)
-                ->where('date_mvt', '<=', $fin)
-                ->select('mvt_stock.*', DB::raw('sum(entree-sortie) OVER (ORDER BY date_mvt,id_stock_empl asc) as stock'))
-                ->get();
+            $list = mvt_Stock::getMvtStockEntreDeuxDates($debut, $fin, $id_fiche_stock);
         } else {
-            $list = DB::table('mvt_stock')
-                ->orderByRaw('date_mvt ASC')
-                ->where('id_fiche_stock', '=', $id_fiche_stock)
-                ->select('mvt_stock.*', DB::raw('sum(entree-sortie) OVER (ORDER BY date_mvt,id_stock_empl asc) as stock'))
-                ->get();
+            $list = mvt_Stock::getMvtStock($id_fiche_stock);
         }
-        $details = DB::table('dt_fiche_stock')
-            ->where('id_fiche_stock', "=", $id_fiche_stock)
-            ->select('dt_fiche_stock.*')
-            ->get();
+        $details = dt_Fiche_Stock_Empl::getDtFichStockById($id_fiche_stock);
 
         $pdf = PDF::setOptions([
             'isHtml5ParserEnabled' => true,
             'isRemoteEnabled' => true,
             'defaultFont' => 'sans-serif'
         ])->loadView('chefRayon.fiche_Stock_PDF', ['val' => $list, 'details' => $details]);
-        return $pdf->download('fiche_de_stock_n°' . $list[0]->id_fiche_stock . '.pdf');
+        return $pdf->download('fiche_de_stock_n°' . $id_fiche_stock . '.pdf');
+    }
+
+    public function ajusterStockInventaire($inventaire,$stock,$id_stock_empl){
+        $entree = 0;
+        $sortie = 0;
+        if($inventaire < $stock){
+            $sortie = ($stock-$inventaire);
+            $observations = "Stock en plus";
+        }
+        if($stock < $inventaire){
+            $entree = ($inventaire-$stock);
+            $observations = "Stock en manque";
+        }
+
+        details_Fiche_Stock::create([
+            'id_stock_empl' => $id_stock_empl,
+            'entree' => $entree,
+            'sortie' => $sortie,
+            'observation' => $observations,
+            'date' => now(),
+            'id_user' => auth()->user()->id,
+        ]);
+        return Redirect::back()->withErrors(['msg' => 'Ajustement stock enregistrer']);
     }
 }
-    

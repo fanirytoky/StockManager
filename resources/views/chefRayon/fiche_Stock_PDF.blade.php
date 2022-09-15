@@ -8357,10 +8357,11 @@
                                 <th>SORTIE</th>
                                 <th>STOCK</th>
                                 <th>OBSERVATION</th>
+                                <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($mvt_stock as $val)
+                    @foreach($val as $val)
                     <tr>
                         <td>{{$val->num_Rack}}</td>
                         <td>{{$val->date_mvt}}</td>
@@ -8374,6 +8375,12 @@
                         <td>{{$val->entree}}</td>
                         <td>{{$val->sortie}}</td>
                         <td>{{$val->stock}}</td>
+                        <td>{{$val->observation}}</td>
+                        @if($val->date_inventaire != null)
+                        <td><b>{{$val->observations}}: {{$val->quantite}}</b></td>
+                        @else
+                        <td></td>
+                        @endif
                     </tr>
                     @endforeach
                 </tbody>
