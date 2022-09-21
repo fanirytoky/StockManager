@@ -77,6 +77,7 @@
 
                 // console.log('typeeeeeeee', JSON.parse(response.type));
                 var chartType = JSON.parse(response.type)
+                var typeChart = 0
 
                 if (chartType == null || chartType == 0) {
                     chartType = "bar";
@@ -86,6 +87,7 @@
                 }
                 if (chartType == 2) {
                     chartType = "doughnut";
+                    typeChart = 1;
                 }
                 for (var i in labels) {
                     ict_unit.push("ICT Unit " + labels[i].ict_unit);
@@ -94,25 +96,51 @@
                 }
                 console.log(chartType);
                 var ctx = $('#myChart');
-                var config = {
-                    type: chartType,
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Taux d\'activité',
-                            data: taux,
-                            backgroundColor: coloR,
+                if (typeChart == 0) {
+                    var config = {
+                        type: chartType,
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Taux d\'activité',
+                                data: taux,
+                                backgroundColor: coloR,
 
-                        }]
-                    },
-                    options: {
-                        scales: {
-                            y: {
-                                beginAtZero: true
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            },
+                            legend: {
+                                display: false
                             }
                         }
-                    }
-                };
+                    };
+                } else {
+                    var config = {
+                        type: chartType,
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Taux d\'activité',
+                                data: taux,
+                                backgroundColor: coloR,
+
+                            }]
+                        },
+                        options: {
+                            scales: {
+                                y: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    };
+
+                }
                 var chart = new Chart(ctx, config);
             },
             error: function(xhr) {

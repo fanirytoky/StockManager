@@ -52,7 +52,7 @@ class AuthenticatedSessionController extends Controller
             return '/reception/calendrier';
         }
         if(auth()->user()->post_id == 6){
-            return '/ChefRayon/fiches-nouveau';
+            return '/Mouvement-Stock/Chart/Vue';
         }
     
         return '/';

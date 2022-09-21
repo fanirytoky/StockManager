@@ -158,7 +158,8 @@ class MagasinierController extends Controller
                 $details = [
                     'id_Fiche' => $id_Fiche,
                     'AR_Design' =>  $request->design,
-                    'date' => now()
+                    'date' => now(),
+                    'nom' => auth()->user()->name
                 ];
                 $users = User::where('post_id', 3)
                     ->get();

@@ -106,13 +106,45 @@ class Fiche_Details_Fiche extends Model
         return $val;
     }
 
-    public function getFicheAPlacer($des,$etat){
+    public function getFicheAPlacer($des, $etat)
+    {
         $list = DB::table('fiche_details_fiche')
             ->Where('etat', '=', $etat)
             ->Where('AR_Design', 'like', '%' . $des . '%')
             ->groupBy('id_Fiche', 'AR_Ref', 'AR_Design', 'num_Lot', 'P_Intitule', 'date_controle', "quantite", 'position', 'etat', 'dt_Fiche_ref')
             ->select("id_Fiche", "AR_Ref", "AR_Design", "num_Lot", 'P_Intitule', "quantite", "date_controle", "Etat", "position", "dt_Fiche_ref");
         $val = $list->paginate(10);
+        return $val;
+    }
+
+    public function getDetailsTriArticle($data)
+    {
+        if ($data == 6) {
+            $list = DB::table('fiche_details_fiche')
+                ->where(DB::raw("(ANS*12)+MOIS"), '<=', 6)
+                ->select('fiche_details_fiche.*');
+            $val = $list->paginate(6);
+        }
+        if ($data == 12) {
+            $list = DB::table('fiche_details_fiche')
+                ->where(DB::raw("(ANS*12)+MOIS"), '>', 6)
+                ->where(DB::raw(" (ANS*12)+MOIS"), '<=', 12)
+                ->select('fiche_details_fiche.*');
+            $val = $list->paginate(6);
+        }
+        if ($data == 24) {
+            $list = DB::table('fiche_details_fiche')
+                ->where(DB::raw("(ANS*12)+MOIS"), '>', 12)
+                ->where(DB::raw(" (ANS*12)+MOIS"), '<=', 24)
+                ->select('fiche_details_fiche.*');
+            $val = $list->paginate(6);
+        }
+        if ($data == 48) {
+            $list = DB::table('fiche_details_fiche')
+                ->where(DB::raw("(ANS*12)+MOIS"), '>', 24)
+                ->select('fiche_details_fiche.*');
+            $val = $list->paginate(6);
+        }
         return $val;
     }
 }

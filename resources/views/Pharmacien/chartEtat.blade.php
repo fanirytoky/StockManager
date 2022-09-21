@@ -1,5 +1,20 @@
 @extends('Template.template')
 @section('vue')
+
+<head>
+    <style>
+        /* table {
+            border-collapse: collapse;
+            border-spacing: 0;
+        } */
+
+        th,
+        td {
+            padding: 10px 20px;
+            border: 1px solid #000;
+        }
+    </style>
+</head>
 <div class="row column2 graph margin_bottom_30">
     <div class="col-md-l2 col-lg-12">
         <div class="white_shd full">
@@ -10,10 +25,11 @@
                         <input type="text" name="filtre" id="filtre" class="sr-input green_color" placeholder="Recherche" oninput="myChart()">
                     </div>
                     &nbsp;&nbsp;<div class="input-append">
-                        <label style="color: black;">&nbsp;Frns/Article</label><br>
+                        <label style="color: black;">&nbsp;Trier par</label><br>
                         <select class="sr-input green_color" id="typeObject" name="typeObject" onchange="myChart()">
                             <option value="0">ARTICLE</option>
                             <option value="1">FOURNISSEUR</option>
+                            <option value="2">DUREE DE VIE</option>
                         </select>
                     </div>
                     &nbsp;&nbsp;<div class="input-append">
@@ -45,7 +61,7 @@
                 <div class="full graph_head">
                     <br>
                     <div class="heading1 margin_0">
-                        <h2><i class="fa fa-bar-chart-o"></i> Score qualité des produits par fournisseurs</h2>
+                        <h2><i class="fa fa-bar-chart-o"></i> Stastisque regroupée avec recherche avancée</h2>
                     </div>
                 </div>
                 <div class="full graph_revenue">
@@ -57,11 +73,14 @@
                 </div>
             </div>
         </div>
+        <div class="table_section padding_infor_info">
+            <div style="color:black" id="detailsStat"></div>
+        </div>
     </div>
 </div>
 
 <script>
-    function myChart() {
+    function myChart(page) {
         var debut = document.getElementById('debut').value
         var fin = document.getElementById('fin').value
         var typeChart = document.getElementById('type').value
@@ -95,15 +114,16 @@
                 var labels = response.labels.map(function(e) {
                     return e
                 })
-                console.log('labels', labels);
+                // console.log('labels', labels);
 
                 var data = response.data.map(function(e) {
                     return e
                 })
-                console.log('data', data);
+                // console.log('data', data);
 
-                // console.log('typeeeeeeee', JSON.parse(response.type));
+                // console.log( JSON.parse(response.type));
                 var chartType = JSON.parse(response.type)
+                var typeChart = 0
 
                 if (chartType == null || chartType == 0) {
                     chartType = "bar";
@@ -112,6 +132,7 @@
                         chartType = "line";
                     }
                     if (chartType == 2) {
+                        typeChart = 1;
                         chartType = "doughnut";
                     }
                 }
@@ -121,26 +142,136 @@
                     coloR.push(dynamicColors());
                 }
                 console.log(chartType);
-                var ctx = $('#myChart');
-                var config = {
-                    type: chartType,
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Scores qualité par fournisseurs',
-                            data: data,
-                            backgroundColor: coloR,
+                // var ctx = $('#myChart');
+                var ctx = document.getElementById("myChart");
+                var ctxP = ctx.getContext('2d');
+                if (typeChart != 1) {
+                    var config = {
+                        type: chartType,
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Quantité',
+                                data: data,
+                                backgroundColor: coloR,
 
-                        }]
+                            }]
+                        },
+                        options: {
+                            legend: {
+                                display: false
+                            },
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    };
+                } else {
+                    var config = {
+                        type: chartType,
+                        data: {
+                            labels: labels,
+                            datasets: [{
+                                label: 'Scores qualité par fournisseurs',
+                                data: data,
+                                backgroundColor: coloR,
+
+                            }]
+                        },
+                        options: {
+                            y: {
+                                beginAtZero: true
+                            }
+                        }
+                    };
+                }
+                var chart = new Chart(ctxP, config);
+                
+
+                ctx.onclick = function(e) {
+
+                    var slice = chart.getElementAtEvent(e);
+                    if (!slice.length) return;
+                    var label = slice[0]._model.label;
+                    switch (label) {
+                        case "Moins de 6 Mois":
+
+                            createList(page, 6);
+                            $(document).ready(function() {
+                                $(document).on('click', ".pagination a", function(event) {
+                                    event.preventDefault();
+                                    var page = $(this).attr('href').split('page=')[1];
+                                    var data = 6;
+                                    createList(page, data);
+                                });
+                            });
+
+                            break;
+                        case "12 Mois":
+
+                            createList(page, 12);
+                            $(document).ready(function() {
+                                $(document).on('click', ".pagination a", function(event) {
+                                    event.preventDefault();
+                                    var page = $(this).attr('href').split('page=')[1];
+                                    var data = 12;
+                                    createList(page, data);
+                                });
+                            });
+
+                            break;
+                        case "24 Mois":
+
+                            createList(page, 24);
+                            $(document).ready(function() {
+                                $(document).on('click', ".pagination a", function(event) {
+                                    event.preventDefault();
+                                    var page = $(this).attr('href').split('page=')[1];
+                                    var data = 24;
+                                    createList(page, data);
+                                });
+                            });
+
+                            break;
+                        case "Plus de 24 Mois":
+
+                            createList(page, 48);
+                            $(document).ready(function() {
+                                $(document).on('click', ".pagination a", function(event) {
+                                    event.preventDefault();
+                                    var page = $(this).attr('href').split('page=')[1];
+                                    var data = 48;
+                                    createList(page, data);
+                                });
+                            });
+
+                            break;
                     }
-                };
-                var chart = new Chart(ctx, config);
+                }
             },
             error: function(xhr) {
                 console.log(xhr.responseJSON);
             }
         });
     }
+
+    function createList(page, data) {
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = (e) => {
+            e.preventDefault()
+            if (xhr.readyState === 4) {
+                document.getElementById("detailsStat").innerHTML = xhr.responseText
+                console.log(xhr.responseText)
+            }
+        }
+        if (page <= 1) var url = '/Article-expiration/Chart?data=' + data;
+        else {
+            var url = '/Article-expiration/Chart?data=' + data + '&&page=' + page;
+        }
+        xhr.open('GET', url, true)
+        xhr.send();
+    }
+
     var recBarDebut = document.getElementById('debut')
     var recBarFin = document.getElementById('fin')
     var recBarType = document.getElementById('type')
@@ -162,6 +293,5 @@
             myChart(1);
         });
     });
-    
 </script>
 @endsection

@@ -76,7 +76,9 @@
                                         @endforeach
                                         @endif
                                         @if($frns == null)
-                                        <input type="" placeholder="Fournisseur" autocomplete="off" value="" id="popupFrns" class="form-control" data-toggle="modal" data-target="#modalFormFrns" />
+                                        <input type="" placeholder="{{$details[0]->CT_Intitule}}" autocomplete="off" value="" id="popupFrns" class="form-control" data-toggle="modal" data-target="#modalFormFrns" />
+                                        <input type="hidden" value="{{$details[0]->CT_Num}}" autocomplete="off" id="CT_Num" name="CT_Num" class="form-control" />
+                                        <input type="hidden" value="{{$details[0]->id_Fiche}}" autocomplete="off" id="id_Fiche" name="id_Fiche" class="form-control" />
                                         @endif
                                     </div>
                                     <div class="form-group">

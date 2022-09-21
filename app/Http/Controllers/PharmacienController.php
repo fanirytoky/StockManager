@@ -36,7 +36,7 @@ class PharmacienController extends Controller
     public function AjaxListeFiche(Request $request)
     {
         $des = $request->filtre;
-        $list = Fiche_Details_Fiche::getDtFicheAControler($des,2);
+        $list = Fiche_Details_Fiche::getDtFicheAControler($des, 2);
         return view('Pharmacien.ajaxliste-Fiches', ['val' => $list]);
     }
 
@@ -97,22 +97,28 @@ class PharmacienController extends Controller
         return redirect('/fiche-details-score/' . $dt_fiche_ref);
     }
 
-    public function decisionFiche($dt_Fiche_ref, $etat)
+    public function decisionFiche(Request $request)
     {
+        $dt_Fiche_ref = $request->dt_Fiche_ref;
+        $etat = $request->etat;
+        $observation = $request->observation;
         // acceptée
         if ($etat == 0) {
-            Details_Fiche::validerDtFiche($dt_Fiche_ref,3);
+            Details_Fiche::validerDtFiche($dt_Fiche_ref, 3);
+            Details_Fiche::DecisionFicheRemarque($observation, $dt_Fiche_ref);
             return redirect('/Pharmacien/fiches-nouveau')->withSuccess('Fiche validée');
         }
         //quarantaine
         elseif ($etat == 1) {
-            Details_Fiche::validerDtFiche($dt_Fiche_ref,-2);
-            return redirect('/Pharmacien/fiches-nouveau')->withSuccess('Fiche mis en Quarantaine');
+            Details_Fiche::validerDtFiche($dt_Fiche_ref, -2);
+            Details_Fiche::DecisionFicheRemarque($observation, $dt_Fiche_ref);
+            return redirect('/Pharmacien/fiches-nouveau')->withSuccess('Fiche mise en Quarantaine');
         }
         // Rebut
         elseif ($etat == 2) {
-            Details_Fiche::validerDtFiche($dt_Fiche_ref,-3);
-            return redirect('/Pharmacien/fiches-nouveau')->withSuccess('Fiche mis en REBUT');
+            Details_Fiche::validerDtFiche($dt_Fiche_ref, -3);
+            Details_Fiche::DecisionFicheRemarque($observation, $dt_Fiche_ref);
+            return redirect('/Pharmacien/fiches-nouveau')->withSuccess('Fiche mise en REBUT');
         }
     }
 
@@ -134,14 +140,14 @@ class PharmacienController extends Controller
         $dosage = $request->dosage;
         $t_stockage = $request->t_stockage;
         $idF = $request->idF;
-        Details_Fiche::updateFiche($forme,$dosage,$t_stockage,$idF);
+        Details_Fiche::updateFiche($forme, $dosage, $t_stockage, $idF);
         return redirect('/Pharmacien/fiches-nouveau')->withSuccess('Fiche modifiée');
     }
 
     public function AjaxListeFicheAttente(Request $request)
     {
         $des = $request->filtre;
-        $list = Fiche_Details_Fiche::getDtFicheAControler($des,2);
+        $list = Fiche_Details_Fiche::getDtFicheAControler($des, -2);
 
         return view('Pharmacien.ajaxliste-Fiches', ['val' => $list]);
     }
@@ -149,7 +155,7 @@ class PharmacienController extends Controller
     public function AjaxListeFicheRebut(Request $request)
     {
         $des = $request->filtre;
-        $list = Fiche_Details_Fiche::getDtFicheAControler($des,-3);
+        $list = Fiche_Details_Fiche::getDtFicheAControler($des, -3);
 
         return view('Pharmacien.ajaxliste-Fiches', ['val' => $list]);
     }
@@ -167,7 +173,7 @@ class PharmacienController extends Controller
         $typeChart = $request->type;
         $unite = $request->unite;
         $typeObject = $request->typeObject;
-        if($typeObject == null){
+        if ($typeObject == null) {
             $typeObject = 0;
         }
         $data = Details_FCPCC::getScoreQualiteParArtParFrns($filtre, $debut, $fin, $typeObject);
@@ -175,11 +181,14 @@ class PharmacienController extends Controller
         $dt = [];
         foreach ($data as $data) {
             $labels[] = $data->labels;
-            if($unite == 0){
-                $dt[] = $data->total_score;
-            }
-            else{
-                $dt[] = $data->pourc;
+            if ($typeObject != 2) {
+                if ($unite == 0) {
+                    $dt[] = $data->total_score;
+                } else {
+                    $dt[] = $data->pourc;
+                }
+            }else{
+                $dt[] = $data->data;
             }
         }
 
@@ -188,5 +197,11 @@ class PharmacienController extends Controller
             'labels' => $labels,
             'type' => $typeChart
         ]);
+    }
+
+    public function detailsChartTri(Request $request){
+        $data = $request->data;
+        $val = Fiche_Details_Fiche::getDetailsTriArticle($data);
+        return view('Pharmacien.ajaxliste-detailsStat', ['val' => $val]);
     }
 }

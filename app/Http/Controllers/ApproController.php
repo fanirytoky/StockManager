@@ -50,6 +50,8 @@ class ApproController extends Controller
             $fourni = Fiche_Details_Fiche::getDetailsFiche($id_Fiche);
             if ($fourni[0]->CT_Num != $CT_Num) {
                 $erreur = 'Fournisseurs non identiques';
+                $CT_Num = Session::forget('fournisseur');
+                $frns = null;
             }
         }
 

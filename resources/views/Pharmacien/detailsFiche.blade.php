@@ -221,7 +221,7 @@
                                             @foreach($details as $dt)
                                             @if($dt->etat == 2)
                                             <div class="col-lg-4">
-                                                <a onclick="return confirm('Êtes-vous sûr de votre decision?');" href="{{route('Pharma/fiche.decision',['dt_Fiche_ref' => $details[0]->dt_Fiche_ref,'etat' => 0])}}">
+                                                <a data-toggle="modal" data-target="#accepteModal">
                                                     <div class="full socile_icons google_p margin_bottom_30">
                                                         <div class="social_icon bg-success">
                                                             <i class="fa fa-check"></i>
@@ -235,7 +235,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-lg-4">
-                                                <a onclick="return confirm('Êtes-vous sûr de votre decision?');" href="{{route('Pharma/fiche.decision',['dt_Fiche_ref' => $details[0]->dt_Fiche_ref,'etat' => 1])}}">
+                                                <a data-toggle="modal" data-target="#quarantaineModal">
                                                     <div class="full socile_icons google_p margin_bottom_30">
                                                         <div class="social_icon bg-warning">
                                                             <i class="fa fa-close"></i>
@@ -249,7 +249,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-lg-4">
-                                                <a onclick="return confirm('Êtes-vous sûr de votre decision?');" href="{{route('Pharma/fiche.decision',['dt_Fiche_ref' => $details[0]->dt_Fiche_ref,'etat' => 2])}}">
+                                                <a data-toggle="modal" data-target="#rebutModal">
                                                     <div class="full socile_icons google_p margin_bottom_30">
                                                         <div class="social_icon bg-danger">
                                                             <i class="fa fa-trash"></i>
@@ -265,7 +265,7 @@
                                             @endif
                                             @if($dt->etat != 2)
                                             <div class="col-lg-4">
-                                                <a onclick="return confirm('Êtes-vous sûr de votre decision?');" href="{{route('Pharma/fiche.decision',['dt_Fiche_ref' => $details[0]->dt_Fiche_ref,'etat' => 0])}}">
+                                                <a data-toggle="modal" data-target="#accepteModal">
                                                     <div class="full socile_icons google_p margin_bottom_30">
                                                         <div class="social_icon bg-success">
                                                             <i class="fa fa-check"></i>
@@ -279,7 +279,7 @@
                                                 </a>
                                             </div>
                                             <div class="col-lg-4">
-                                                <a onclick="return confirm('Êtes-vous sûr de votre decision?');" href="{{route('Pharma/fiche.decision',['dt_Fiche_ref' => $details[0]->dt_Fiche_ref,'etat' => 2])}}">
+                                                <a data-toggle="modal" data-target="#rebutModal">
                                                     <div class="full socile_icons google_p margin_bottom_30">
                                                         <div class="social_icon bg-danger">
                                                             <i class="fa fa-trash"></i>
@@ -309,5 +309,95 @@
 </div>
 </div>
 @endif
+</div>
+<div class="modal fade" id="accepteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color: green;">Validation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('Pharma/fiche.decision') }}" method="POST">
+                <div class="modal-body">
+                    @csrf
+                    <div class="form-group">
+                        <input type="hidden" value="{{ $details[0]->dt_Fiche_ref }}" class="form-control" id="dt_Fiche_ref" name="dt_Fiche_ref">
+                        <input type="hidden" value="0" class="form-control" id="etat" name="etat">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Observations</label>
+                        <textarea class="form-control" id="observation" name="observation"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-success">Valider</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="quarantaineModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color: #ffc107;">Mise en quarantaine</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('Pharma/fiche.decision') }}" method="POST">
+                <div class="modal-body">
+                    @csrf
+                    <div class="form-group">
+                        <input type="hidden" value="{{ $details[0]->dt_Fiche_ref }}" class="form-control" id="dt_Fiche_ref" name="dt_Fiche_ref">
+                        <input type="hidden" value="1" class="form-control" id="etat" name="etat">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Observations</label>
+                        <textarea class="form-control" id="observation" name="observation"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-warning">Valider</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="rebutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel" style="color: red;">Mise en Rebut</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="{{ route('Pharma/fiche.decision') }}" method="POST">
+                <div class="modal-body">
+                    @csrf
+                    <div class="form-group">
+                        <input type="hidden" value="{{ $details[0]->dt_Fiche_ref }}" class="form-control" id="dt_Fiche_ref" name="dt_Fiche_ref">
+                        <input type="hidden" value="2" class="form-control" id="etat" name="etat">
+                    </div>
+                    <div class="form-group">
+                        <label for="message-text" class="col-form-label">Observations</label>
+                        <textarea class="form-control" id="observation" name="observation"></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
+                    <button type="submit" class="btn btn-danger">Valider</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
 </div>
 @endsection

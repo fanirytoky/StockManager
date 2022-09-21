@@ -79,7 +79,7 @@
 
             <!-- Chef de Rayon -->
             @if(auth()->user() != null && auth()->user()->post_id == 6)
-            <li><a href="{{route('home')}}"><i class="fa fa-calendar red_color"></i> <span>Acceuil</span></a></li>
+            <li><a href="{{route('ChefRayon.chart.vue')}}"><i class="fa fa-bar-chart-o red_color"></i> <span>Dashboard</span></a></li>
             <li>
                 <a href="#FCPCC" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-cubes blue2_color"></i> <span>Gestion stock</span></a>
                 <ul class="collapse list-unstyled" id="FCPCC">

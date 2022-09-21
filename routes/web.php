@@ -73,7 +73,7 @@ Route::get('/Pharmacien/AjaxListeFiche.new',[PharmacienController::class,'AjaxLi
 Route::get('/fiche-details-score/{id_dt_Fiche}',[PharmacienController::class,'detailsFiche'])->name('Pharma/fiche-details')->middleware(['Pharmacien']);
 Route::post('/fiche-ajout-score',[PharmacienController::class,'storeScore'])->name('score.Store')->middleware(['Pharmacien']);
 Route::post('/fiche-ajout-scores',[PharmacienController::class,'storeScores'])->name('score2.Store')->middleware(['Pharmacien']);
-Route::get('/fiche-decision/{dt_Fiche_ref}/{etat}',[PharmacienController::class,'decisionFiche'])->name('Pharma/fiche.decision')->middleware(['Pharmacien']);
+Route::post('/fiche-decision',[PharmacienController::class,'decisionFiche'])->name('Pharma/fiche.decision')->middleware(['Pharmacien']);
 Route::get('/fiche-modifier/{id_Fiche}',[PharmacienController::class,'editFiche'])->name('Pharma/fiche-edit')->middleware(['Pharmacien']);
 Route::post('/fiche-modifier',[PharmacienController::class,'updateFiche'])->name('Pharma/fiche.update')->middleware(['Pharmacien']);
 Route::get('/Pharmacien/fiches-attente',[PharmacienController::class,'listeFicheAttente'])->name('Pharma/fiche.attente')->middleware(['Pharmacien']);
@@ -82,6 +82,7 @@ Route::get('/Pharmacien/fiches-rebut',[PharmacienController::class,'listeFicheRe
 Route::get('/Pharmacien/AjaxListeFiche.rebut',[PharmacienController::class,'AjaxListeFicheRebut'])->name('Pharma/AjaxListeFiche.rebut')->middleware(['Pharmacien']);
 Route::get('/Pharmacien/Chart/Vue',[PharmacienController::class,'scoreQualiteFrnsPage'])->name('Pharmacien.chart.vue')->middleware(['Pharmacien']);
 Route::get('/Pharmacien/Chart',[PharmacienController::class,'scoreQualiteFrns'])->name('Pharmacien.chart')->middleware(['Pharmacien']);
+Route::get('/Article-expiration/Chart',[PharmacienController::class,'detailsChartTri'])->name('Pharmacien.chart.details')->middleware(['Pharmacien']);
 
 // 
 
@@ -116,7 +117,9 @@ Route::post('/Mouvement-Stock-ajout',[ChefRayonController::class,'storeMvtStock'
 Route::get('/stock-report',[ChefRayonController::class,'ajaxReport'])->name('ajax-report')->middleware(['ChefRayon']);
 Route::post('/fiche-stock-pdf',[ChefRayonController::class,'genererPDF'])->name('fiche_stock.PDF')->middleware(['ChefRayon']);
 Route::get('/stock/ajuster/{inventaire}/{stock}/{id_stock_empl}',[ChefRayonController::class,'ajusterStockInventaire'])->name('stock/ajuster')->middleware(['ChefRayon']);
-
+Route::get('/Mouvement-Stock/Chart/Vue',[ChefRayonController::class,'mvtStockStatPage'])->name('ChefRayon.chart.vue')->middleware(['ChefRayon']);
+Route::get('/Mouvement-Stock/Chart',[ChefRayonController::class,'mvtStockStat'])->name('ChefRayon.chart')->middleware(['ChefRayon']);
+Route::get('/fiche-filtre/Chart',[ChefRayonController::class,'ficheFiltre'])->name('ChefRayon.chart.filtre')->middleware(['ChefRayon']);
 // 
 
 

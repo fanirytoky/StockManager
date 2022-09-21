@@ -34,6 +34,10 @@ class Details_Fiche extends Model
         DB::update("update details_Fiche set FO_ref = '" . $forme . "' , 
         dosage = '" . $dosage . "' , T_Stockage_ref = " . $t_stockage . " where id_Fiche = " . $idF);
     }
+    public function DecisionFicheRemarque($observation,$dt_Fiche_ref)
+    {
+        DB::update("update details_Fiche set Observation = '" . $observation . "' where dt_Fiche_ref = " . $dt_Fiche_ref);
+    }
 
     public function getEtat($dt_Fiche)
     {
