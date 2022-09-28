@@ -23,7 +23,6 @@ class Details_FCPCC extends Model
                     'AR_Ref',
                     'AR_Design',
                     'CT_Intitule',
-                    'position',
                     'quantite',
                     'FO_ref',
                     'P_ref',
@@ -52,7 +51,8 @@ class Details_FCPCC extends Model
                     'ref_marche',
                     'date_livraison',
                     'fournisseur',
-                    'position'
+                    'position',
+                    'ObsDecision'
                 )
                 ->select(
                     'id_Fiche',
@@ -60,7 +60,6 @@ class Details_FCPCC extends Model
                     'AR_Ref',
                     'AR_Design',
                     'CT_Intitule',
-                    'position',
                     'quantite',
                     'FO_ref',
                     'P_ref',
@@ -89,7 +88,8 @@ class Details_FCPCC extends Model
                     'ref_marche',
                     'date_livraison',
                     'fournisseur',
-                    'position'
+                    'position',
+                    'ObsDecision'
                 )
                 ->get();
         } else {
@@ -129,7 +129,8 @@ class Details_FCPCC extends Model
                     'ref_marche',
                     'date_livraison',
                     'fournisseur',
-                    'position'
+                    'position',
+                    'ObsDecision'
                 )
                 ->select(
                     'id_Fiche',
@@ -166,6 +167,7 @@ class Details_FCPCC extends Model
                     'date_livraison',
                     'fournisseur',
                     'position',
+                    'ObsDecision'
                 )
                 ->get();
         }

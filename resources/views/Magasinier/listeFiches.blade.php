@@ -4,7 +4,7 @@
     <div class="white_shd full margin_bottom_30">
         <div class="full graph_head" id="entete">
             <div class="heading1 margin_0">
-                <h2 style="color: white;">Liste des fiches</h2>
+                <h2 style="color: white;">Liste des fiches non envoyées</h2>
             </div>
         </div>
         <div class="table_section padding_infor_info">

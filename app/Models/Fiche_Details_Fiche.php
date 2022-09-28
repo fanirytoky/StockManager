@@ -147,4 +147,38 @@ class Fiche_Details_Fiche extends Model
         }
         return $val;
     }
+
+    public function getListeFiches($des, $etat)
+    {
+        if ($etat == -1) {
+            if ($des != null) {
+                $list = DB::table('fiche_details_fiche')
+                    ->Where('AR_Design', 'like', '%' . $des . '%')
+                    ->orderBy('date_controle', 'ASC')
+                    ->select('fiche_details_fiche.*');
+                $val = $list->paginate(15);
+            } else {
+                $list = DB::table('fiche_details_fiche')
+                    ->orderBy('date_controle', 'ASC')
+                    ->select('fiche_details_fiche.*');
+                $val = $list->paginate(15);
+            }
+        } else {
+            if ($des != null) {
+                $list = DB::table('fiche_details_fiche')
+                    ->Where('AR_Design', 'like', '%' . $des . '%')
+                    ->where('etat', '=', $etat)
+                    ->orderBy('date_controle', 'ASC')
+                    ->select('fiche_details_fiche.*');
+                $val = $list->paginate(15);
+            } else {
+                $list = DB::table('fiche_details_fiche')
+                    ->where('etat', '=', $etat)
+                    ->orderBy('date_controle', 'ASC')
+                    ->select('fiche_details_fiche.*');
+                $val = $list->paginate(15);
+            }
+        }
+        return $val;
+    }
 }

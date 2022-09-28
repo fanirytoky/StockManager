@@ -110,7 +110,8 @@ class ApproController extends Controller
         if ($email != null) {
             $details = [
                 'id_Fiche' => $id_Fiche,
-                'date' => $dt_livraison
+                'date' => $dt_livraison,
+                'nom' => auth()->user()->name
             ];
             $users = User::where('post_id', 4)
                 ->get();
@@ -133,7 +134,8 @@ class ApproController extends Controller
         $debut = $request->debut;
         $fin = $request->fin;
         $typeChart = $request->type;
-        $data = Fiche_reference::getTauxActivite($debut, $fin);
+        $filtre = $request->filtre;
+        $data = Fiche_reference::getTauxActivite($filtre,$debut, $fin);
         $taux = [];
         $frns = [];
         $total = 0;

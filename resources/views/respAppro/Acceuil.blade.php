@@ -6,6 +6,10 @@
             <div class="inbox-head">
                 <div class="input-group">
                     <div class="input-append">
+                        <label style="color: black;">Recherche </label><br>
+                        <input type="text" placeholder="Fournisseur" name="filtre" id="filtre" class="sr-input" onchange="myChart()">
+                    </div>
+                    &nbsp;&nbsp;<div class="input-append">
                         <label style="color: black;">Date debut </label><br>
                         <input type="date" name="debut" id="debut" class="sr-input" onchange="myChart()">
                     </div>
@@ -45,6 +49,7 @@
         var debut = document.getElementById('debut').value
         var fin = document.getElementById('fin').value
         var typeChart = document.getElementById('type').value
+        var filtre = document.getElementById('filtre').value
         var ict_unit = [];
         var efficiency = [];
         var coloR = [];
@@ -62,7 +67,8 @@
             data: {
                 debut: debut,
                 fin: fin,
-                type: typeChart
+                type: typeChart,
+                filtre: filtre
 
             },
             success: function(response) {
@@ -151,17 +157,22 @@
     var recBarDebut = document.getElementById('debut')
     var recBarFin = document.getElementById('fin')
     var recBarType = document.getElementById('type')
+    var recBarFiltre = document.getElementById('filtre')
     recBarDebut.addEventListener("onchange", myChart)
     recBarFin.addEventListener("onchange", myChart)
     recBarType.addEventListener("onchange", myChart)
+    recBarFiltre.addEventListener("onchange", myChart)
     myChart()
     $(document).ready(function() {
-        $(document).on('click', ".type,.debut,.fin", function(event) {
+        $(document).on('click', ".type,.debut,.fin,.filtre", function(event) {
             event.preventDefault();
             myChart();
         });
 
-
+        // $('#filtre').on('oninput', function() {
+        //     $value = $(this).val();
+        //     myChart(1);
+        // });
         $('#debut').on('onchange', function() {
             $value = $(this).val();
             myChart(1);

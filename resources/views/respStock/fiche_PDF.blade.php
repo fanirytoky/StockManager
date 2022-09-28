@@ -8497,6 +8497,10 @@
             </div>
         </div>
         @endif
+        <strong>Observation: </strong>
+        @if(isset($val->ObsDecision))
+        <a>{{$val->ObsDecision}}</a>
+        @endif
 
         @if($val->etat == -3)
         <div class="row">

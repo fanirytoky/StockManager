@@ -1,10 +1,10 @@
 CREATE  TABLE reception_salama.dbo.F_COMPTET ( 
-	cbMarq               int    IDENTITY  NOT NULL,
 	CT_Num               varchar(17)      NOT NULL,
 	CT_Intitule          varchar(69)      NULL,
 	CT_Type              smallint      NULL,
-	CONSTRAINT PK_CBMARQ_F_COMPTET PRIMARY KEY  ( cbMarq ) ,
-	CONSTRAINT UKA_F_COMPTET_CT_Num UNIQUE ( CT_Num ) 
+	cbMarq               int    IDENTITY (1, 1)  NOT NULL,
+	CONSTRAINT PK_CBMARQ_F_COMPTET PRIMARY KEY  CLUSTERED ( cbMarq  asc ) ,
+	CONSTRAINT UKA_F_COMPTET_CT_Num UNIQUE ( CT_Num  asc ) 
  );
 GO
 
@@ -17,8 +17,8 @@ CREATE  TABLE reception_salama.dbo.F_DEPOT (
 	DE_Pays              varchar(35)      NULL,
 	DE_EMail             varchar(69)      NULL,
 	DE_Telephone         varchar(21)      NULL,
-	cbMarq               int    IDENTITY  NOT NULL,
-	CONSTRAINT unq_F_DEPOT_DE_No UNIQUE ( DE_No ) 
+	cbMarq               int    IDENTITY (1, 1)  NOT NULL,
+	CONSTRAINT unq_F_DEPOT_DE_No UNIQUE ( DE_No  asc ) 
  );
 GO
 
@@ -27,63 +27,55 @@ CREATE  TABLE reception_salama.dbo.F_DEPOTEMPL (
 	DP_No                int      NULL,
 	DP_Code              varchar(13)      NULL,
 	DP_Intitule          varchar(35)      NULL,
-	cbMarq               int    IDENTITY  NOT NULL,
-	CONSTRAINT unq_F_DEPOTEMPL_DP_No UNIQUE ( DP_No ) 
+	cbMarq               int    IDENTITY (1, 1)  NOT NULL,
+	CONSTRAINT unq_F_DEPOTEMPL_DP_No UNIQUE ( DP_No  asc ) 
  );
 GO
 
 CREATE  TABLE reception_salama.dbo.F_FAMILLE ( 
-	cbMarq               int    IDENTITY  NOT NULL,
 	FA_CodeFamille       varchar(11)      NOT NULL,
 	FA_Type              smallint      NULL,
 	FA_Intitule          varchar(69)      NULL,
-	CONSTRAINT PK_CBMARQ_F_FAMILLE PRIMARY KEY  ( cbMarq ) ,
-	CONSTRAINT unq_F_FAMILLE_FA_CodeFamille UNIQUE ( FA_CodeFamille ) 
+	cbMarq               int    IDENTITY (1, 1)  NOT NULL,
+	CONSTRAINT PK_CBMARQ_F_FAMILLE PRIMARY KEY  CLUSTERED ( cbMarq  asc ) ,
+	CONSTRAINT unq_F_FAMILLE_FA_CodeFamille UNIQUE ( FA_CodeFamille  asc ) 
  );
 GO
 
 CREATE  TABLE reception_salama.dbo.Type_Condition ( 
-	id                   int    IDENTITY  NOT NULL,
+	id                   int    IDENTITY (1, 1)  NOT NULL,
 	Libelle              varchar(60)      NULL,
 	Notation             float      NULL,
-	CONSTRAINT pk_Type_Condition PRIMARY KEY  ( id ) 
+	CONSTRAINT pk_Type_Condition PRIMARY KEY  CLUSTERED ( id  asc ) 
  );
 GO
 
 CREATE  TABLE reception_salama.dbo.Type_Stockage ( 
-	T_Stockage_ref       int    IDENTITY  NOT NULL,
+	T_Stockage_ref       int    IDENTITY (1, 1)  NOT NULL,
 	Type_Stockage        varchar(16)      NULL,
-	CONSTRAINT pk_Type_Stockage PRIMARY KEY  ( T_Stockage_ref ) 
+	CONSTRAINT pk_Type_Stockage PRIMARY KEY  CLUSTERED ( T_Stockage_ref  asc ) 
  );
 GO
 
 CREATE  TABLE reception_salama.dbo.controle_condition ( 
-	cond_controle_ref    int    IDENTITY  NOT NULL,
+	cond_controle_ref    int    IDENTITY (1, 1)  NOT NULL,
 	normes               varchar(150)      NULL,
 	id_libelle           int      NULL,
-	CONSTRAINT pk_cond_primaire PRIMARY KEY  ( cond_controle_ref ) 
+	CONSTRAINT pk_cond_primaire PRIMARY KEY  CLUSTERED ( cond_controle_ref  asc ) 
  );
 GO
 
 CREATE  TABLE reception_salama.dbo.fiche ( 
-	id_Fiche             bigint    IDENTITY  NOT NULL,
+	id_Fiche             bigint    IDENTITY (1, 1)  NOT NULL,
 	date_controle        date  DEFAULT getdate()    NOT NULL,
-	CONSTRAINT pk_fiche PRIMARY KEY  ( id_Fiche ) 
- );
-GO
-
-CREATE  TABLE reception_salama.dbo.fiche_stock ( 
-	id_fiche_stock       bigint    IDENTITY  NOT NULL,
-	date                 date  DEFAULT getdate()    NULL,
-	id_stock             bigint      NULL,
-	CONSTRAINT pk_fiche_stock PRIMARY KEY  ( id_fiche_stock ) 
+	CONSTRAINT pk_fiche PRIMARY KEY  CLUSTERED ( id_Fiche  asc ) 
  );
 GO
 
 CREATE  TABLE reception_salama.dbo.forme_categories ( 
-	FO_Categ_ref         int    IDENTITY  NOT NULL,
+	FO_Categ_ref         int    IDENTITY (1, 1)  NOT NULL,
 	FO_Categorie         varchar(15)      NULL,
-	CONSTRAINT pk_forme_categories PRIMARY KEY  ( FO_Categ_ref ) 
+	CONSTRAINT pk_forme_categories PRIMARY KEY  CLUSTERED ( FO_Categ_ref  asc ) 
  );
 GO
 
@@ -91,56 +83,43 @@ CREATE  TABLE reception_salama.dbo.formes (
 	FO_ref               varchar(2)      NOT NULL,
 	FO_Categ_ref         int      NULL,
 	FO_designation       varchar(40)      NULL,
-	CONSTRAINT pk_formes PRIMARY KEY  ( FO_ref ) 
+	CONSTRAINT pk_formes PRIMARY KEY  CLUSTERED ( FO_ref  asc ) 
  );
 GO
 
 CREATE  TABLE reception_salama.dbo.posts ( 
-	id                   bigint    IDENTITY  NOT NULL,
+	id                   bigint    IDENTITY (1, 1)  NOT NULL,
 	titre_post           nvarchar(255)      NOT NULL,
-	CONSTRAINT PK__post__3213E83FEB6E1FB9 PRIMARY KEY  ( id ) 
+	CONSTRAINT PK__post__3213E83FEB6E1FB9 PRIMARY KEY  CLUSTERED ( id  asc ) 
  );
 GO
 
 CREATE  TABLE reception_salama.dbo.presentations ( 
-	P_ref                int    IDENTITY  NOT NULL,
+	P_ref                int    IDENTITY (1, 1)  NOT NULL,
 	P_Intitule           varchar(10)      NULL,
-	CONSTRAINT pk_presentations PRIMARY KEY  ( P_ref ) 
- );
-GO
-
-CREATE  TABLE reception_salama.dbo.stock_Empl ( 
-	id_stock_Empl        bigint    IDENTITY  NOT NULL,
-	id_fiche_stock       bigint      NULL,
-	num_Rack             varchar(13)      NULL,
-	quantite             bigint  DEFAULT 0    NULL,
-	Date                 date  DEFAULT getdate()    NULL,
-	observation          varchar(50)      NULL,
-	CONSTRAINT pk_stock_Empl PRIMARY KEY  ( id_stock_Empl ) 
+	CONSTRAINT pk_presentations PRIMARY KEY  CLUSTERED ( P_ref  asc ) 
  );
 GO
 
 CREATE  TABLE reception_salama.dbo.users ( 
-	id                   bigint    IDENTITY  NOT NULL,
+	id                   bigint    IDENTITY (1, 1)  NOT NULL,
 	name                 nvarchar(255)      NOT NULL,
 	email                nvarchar(255)      NOT NULL,
 	password             nvarchar(255)      NOT NULL,
 	post_id              bigint      NOT NULL,
 	id_user              bigint      NULL,
-	CONSTRAINT PK__users__3213E83FA605D8A1 PRIMARY KEY  ( id ) 
+	CONSTRAINT PK__users__3213E83FA605D8A1 PRIMARY KEY  CLUSTERED ( id  asc ) ,
+	CONSTRAINT users_email_unique UNIQUE ( email  asc ) 
  );
 GO
 
-CREATE UNIQUE  INDEX users_email_unique ON reception_salama.dbo.users ( email );
-GO
-
 CREATE  TABLE reception_salama.dbo.F_ARTICLE ( 
-	cbMarq               int    IDENTITY  NOT NULL,
 	AR_Ref               varchar(19)      NOT NULL,
 	AR_Design            varchar(69)      NULL,
 	FA_CodeFamille       varchar(11)      NOT NULL,
-	CONSTRAINT PK_CBMARQ_F_ARTICLE PRIMARY KEY  ( cbMarq ) ,
-	CONSTRAINT UKA_F_ARTICLE_AR_Ref UNIQUE ( AR_Ref ) 
+	cbMarq               int    IDENTITY (1, 1)  NOT NULL,
+	CONSTRAINT PK_CBMARQ_F_ARTICLE PRIMARY KEY  CLUSTERED ( cbMarq  asc ) ,
+	CONSTRAINT UKA_F_ARTICLE_AR_Ref UNIQUE ( AR_Ref  asc ) 
  );
 GO
 
@@ -148,12 +127,12 @@ CREATE  TABLE reception_salama.dbo.F_ARTSTOCKEMPL (
 	AR_Ref               varchar(19)      NOT NULL,
 	DE_No                int      NOT NULL,
 	DP_No                int      NOT NULL,
-	cbMarq               int    IDENTITY  NOT NULL
+	cbMarq               int    IDENTITY (1, 1)  NOT NULL
  );
 GO
 
 CREATE  TABLE reception_salama.dbo.details_Fiche ( 
-	dt_Fiche_ref         bigint    IDENTITY  NOT NULL,
+	dt_Fiche_ref         bigint    IDENTITY (1, 1)  NOT NULL,
 	id_Fiche             bigint      NOT NULL,
 	AR_Ref               varchar(19)      NOT NULL,
 	FO_ref               varchar(2)      NULL,
@@ -163,7 +142,7 @@ CREATE  TABLE reception_salama.dbo.details_Fiche (
 	quantite             bigint  DEFAULT 0    NOT NULL,
 	T_Stockage_ref       int      NULL,
 	num_Lot              varchar(255)      NULL,
-	date_fab             date      NOT NULL,
+	date_fab             date      NULL,
 	date_peremp          date      NOT NULL,
 	volume               float  DEFAULT 0    NULL,
 	poids                float  DEFAULT 0    NULL,
@@ -172,19 +151,7 @@ CREATE  TABLE reception_salama.dbo.details_Fiche (
 	CT_Num               varchar(17)      NULL,
 	Observation          varchar(max)      NULL,
 	P_quantite           int  DEFAULT 0    NULL,
-	CONSTRAINT pk_DT_Fiche PRIMARY KEY  ( dt_Fiche_ref ) 
- );
-GO
-
-CREATE  TABLE reception_salama.dbo.details_Fiche_Stock ( 
-	id_stock_empl        bigint      NULL,
-	CT_Num               varchar(17)      NULL,
-	num_Doc              varchar(50)      NULL,
-	entree               int  DEFAULT 0    NULL,
-	sortie               int  DEFAULT 0    NULL,
-	observation          varchar(50)      NULL,
-	date                 date  DEFAULT getdate()    NULL,
-	id_user              bigint      NULL
+	CONSTRAINT pk_DT_Fiche PRIMARY KEY  CLUSTERED ( dt_Fiche_ref  asc ) 
  );
 GO
 
@@ -206,13 +173,45 @@ CREATE  TABLE reception_salama.dbo.fiche_reference (
  );
 GO
 
+CREATE  TABLE reception_salama.dbo.fiche_stock ( 
+	id_fiche_stock       bigint    IDENTITY (1, 1)  NOT NULL,
+	date                 date  DEFAULT getdate()    NULL,
+	dt_Fiche_ref         bigint      NULL,
+	DE_No                int      NULL,
+	CONSTRAINT pk_fiche_stock PRIMARY KEY  CLUSTERED ( id_fiche_stock  asc ) 
+ );
+GO
+
 CREATE  TABLE reception_salama.dbo.inventaire_stock ( 
-	id_inventaire        bigint    IDENTITY  NOT NULL,
-	id_stock_Empl        bigint      NULL,
+	id_inventaire        bigint    IDENTITY (1, 1)  NOT NULL,
+	id_fiche_stock       bigint      NULL,
 	quantite             int      NULL,
 	date_inventaire      date  DEFAULT getdate()    NULL,
 	observations         text      NULL,
-	CONSTRAINT pk_inventaire_stock PRIMARY KEY  ( id_inventaire ) 
+	CONSTRAINT pk_inventaire_stock PRIMARY KEY  CLUSTERED ( id_inventaire  asc ) 
+ );
+GO
+
+CREATE  TABLE reception_salama.dbo.stock_Empl ( 
+	id_stock_Empl        bigint    IDENTITY (1, 1)  NOT NULL,
+	id_fiche_stock       bigint      NULL,
+	num_Rack             varchar(13)      NULL,
+	quantite             bigint  DEFAULT 0    NULL,
+	Date                 date  DEFAULT getdate()    NULL,
+	observation          varchar(50)      NULL,
+	CONSTRAINT pk_stock_Empl PRIMARY KEY  CLUSTERED ( id_stock_Empl  asc ) 
+ );
+GO
+
+CREATE  TABLE reception_salama.dbo.details_Fiche_Stock ( 
+	id_stock_empl        bigint      NULL,
+	CT_Num               varchar(17)      NULL,
+	num_Doc              varchar(50)      NULL,
+	entree               int  DEFAULT 0    NULL,
+	sortie               int  DEFAULT 0    NULL,
+	observation          varchar(50)      NULL,
+	date                 date  DEFAULT getdate()    NULL,
+	id_user              bigint      NULL
  );
 GO
 
@@ -231,13 +230,13 @@ GO
 ALTER TABLE reception_salama.dbo.controle_condition ADD CONSTRAINT fk_controle_condition_Type_Condition FOREIGN KEY ( id_libelle ) REFERENCES reception_salama.dbo.Type_Condition( id ) ON DELETE CASCADE ON UPDATE CASCADE;
 GO
 
+ALTER TABLE reception_salama.dbo.details_Fiche ADD CONSTRAINT fk_details_fiche FOREIGN KEY ( P_ref ) REFERENCES reception_salama.dbo.presentations( P_ref ) ON DELETE CASCADE ON UPDATE CASCADE;
+GO
+
 ALTER TABLE reception_salama.dbo.details_Fiche ADD CONSTRAINT fk_details_Fiche_F_ARTICLE FOREIGN KEY ( AR_Ref ) REFERENCES reception_salama.dbo.F_ARTICLE( AR_Ref );
 GO
 
 ALTER TABLE reception_salama.dbo.details_Fiche ADD CONSTRAINT fk_details_Fiche_F_COMPTET FOREIGN KEY ( CT_Num ) REFERENCES reception_salama.dbo.F_COMPTET( CT_Num ) ON DELETE CASCADE ON UPDATE CASCADE;
-GO
-
-ALTER TABLE reception_salama.dbo.details_Fiche ADD CONSTRAINT fk_details_Fiche_Type_Stockage FOREIGN KEY ( T_Stockage_ref ) REFERENCES reception_salama.dbo.Type_Stockage( T_Stockage_ref ) ON DELETE CASCADE ON UPDATE CASCADE;
 GO
 
 ALTER TABLE reception_salama.dbo.details_Fiche ADD CONSTRAINT fk_details_fiche_fiche FOREIGN KEY ( id_Fiche ) REFERENCES reception_salama.dbo.fiche( id_Fiche );
@@ -246,7 +245,7 @@ GO
 ALTER TABLE reception_salama.dbo.details_Fiche ADD CONSTRAINT fk_details_Fiche_formes FOREIGN KEY ( FO_ref ) REFERENCES reception_salama.dbo.formes( FO_ref ) ON DELETE CASCADE ON UPDATE CASCADE;
 GO
 
-ALTER TABLE reception_salama.dbo.details_Fiche ADD CONSTRAINT fk_details_fiche FOREIGN KEY ( P_ref ) REFERENCES reception_salama.dbo.presentations( P_ref ) ON DELETE CASCADE ON UPDATE CASCADE;
+ALTER TABLE reception_salama.dbo.details_Fiche ADD CONSTRAINT fk_details_Fiche_Type_Stockage FOREIGN KEY ( T_Stockage_ref ) REFERENCES reception_salama.dbo.Type_Stockage( T_Stockage_ref ) ON DELETE CASCADE ON UPDATE CASCADE;
 GO
 
 ALTER TABLE reception_salama.dbo.details_Fiche ADD CONSTRAINT fk_details_fiche_users FOREIGN KEY ( id_User ) REFERENCES reception_salama.dbo.users( id );
@@ -273,10 +272,16 @@ GO
 ALTER TABLE reception_salama.dbo.fiche_reference ADD CONSTRAINT fk_fiche_reference_users FOREIGN KEY ( id_user ) REFERENCES reception_salama.dbo.users( id ) ON DELETE CASCADE ON UPDATE CASCADE;
 GO
 
+ALTER TABLE reception_salama.dbo.fiche_stock ADD CONSTRAINT fk_fiche_stock_details_Fiche FOREIGN KEY ( dt_Fiche_ref ) REFERENCES reception_salama.dbo.details_Fiche( dt_Fiche_ref );
+GO
+
+ALTER TABLE reception_salama.dbo.fiche_stock ADD CONSTRAINT fk_fiche_stock_F_DEPOT FOREIGN KEY ( DE_No ) REFERENCES reception_salama.dbo.F_DEPOT( DE_No ) ON DELETE CASCADE ON UPDATE CASCADE;
+GO
+
 ALTER TABLE reception_salama.dbo.formes ADD CONSTRAINT fk_formes_forme_categories FOREIGN KEY ( FO_Categ_ref ) REFERENCES reception_salama.dbo.forme_categories( FO_Categ_ref ) ON DELETE CASCADE ON UPDATE CASCADE;
 GO
 
-ALTER TABLE reception_salama.dbo.inventaire_stock ADD CONSTRAINT fk_inventaire_stock_stock_Empl FOREIGN KEY ( id_stock_Empl ) REFERENCES reception_salama.dbo.stock_Empl( id_stock_Empl );
+ALTER TABLE reception_salama.dbo.inventaire_stock ADD CONSTRAINT fk_inventaire_stock_fiche_stock FOREIGN KEY ( id_fiche_stock ) REFERENCES reception_salama.dbo.fiche_stock( id_fiche_stock );
 GO
 
 ALTER TABLE reception_salama.dbo.stock_Empl ADD CONSTRAINT fk_stock_Empl_fiche_stock FOREIGN KEY ( id_fiche_stock ) REFERENCES reception_salama.dbo.fiche_stock( id_fiche_stock ) ON DELETE CASCADE ON UPDATE CASCADE;
@@ -300,7 +305,7 @@ SELECT dbo.fiche_details_Fiche.id_Fiche, dbo.fiche_details_Fiche.date_controle, 
                   dbo.fiche_details_Fiche.CT_Num, dbo.fiche_details_Fiche.FO_designation, dbo.fiche_details_Fiche.P_Intitule, dbo.fiche_details_Fiche.date_fab, dbo.fiche_details_Fiche.date_peremp, dbo.fiche_details_Fiche.Type_Stockage, 
                   dbo.fiche_details_Fiche.etat, dbo.fiche_details_Fiche.num_Lot, dbo.fiche_details_Fiche.dt_Fiche_ref, dbo.fiche_details_Fiche.ANS, dbo.fiche_details_Fiche.MOIS, dbo.dt_fiche_scores.normes, dbo.dt_fiche_scores.Libelle, 
                   dbo.dt_fiche_scores.score, dbo.dt_fiche_scores.Notation, dbo.dt_fiche_scores.observation, dbo.dt_fiche_scores.id_libelle, dbo.fiche_reference.ref_marche, dbo.fiche_reference.date_livraison, dbo.F_COMPTET.CT_Intitule AS fournisseur, 
-                  dbo.fiche_details_Fiche.position
+                  dbo.fiche_details_Fiche.position, dbo.fiche_details_Fiche.Observation AS ObsDecision
 FROM     dbo.fiche_details_Fiche INNER JOIN
                   dbo.dt_fiche_scores ON dbo.fiche_details_Fiche.dt_Fiche_ref = dbo.dt_fiche_scores.dt_fiche_ref INNER JOIN
                   dbo.fiche_reference ON dbo.fiche_details_Fiche.id_Fiche = dbo.fiche_reference.id_Fiche INNER JOIN
@@ -316,6 +321,17 @@ FROM     dbo.details_fiche_score INNER JOIN
                   dbo.Type_Condition ON dbo.controle_condition.id_libelle = dbo.Type_Condition.id
 GROUP BY dbo.details_fiche_score.dt_fiche_ref, dbo.controle_condition.cond_controle_ref, dbo.controle_condition.id_libelle, dbo.controle_condition.normes, dbo.Type_Condition.Libelle, dbo.Type_Condition.Notation, 
                   dbo.details_fiche_score.score, dbo.details_fiche_score.observation, dbo.details_fiche_score.Condition_ref;
+GO
+
+CREATE VIEW dbo.dt_fiche_stock
+AS
+SELECT dbo.fiche_stock.id_fiche_stock, dbo.fiche_details_Fiche.AR_Ref, dbo.fiche_details_Fiche.AR_Design, dbo.fiche_details_Fiche.quantite, dbo.fiche_details_Fiche.P_Intitule, dbo.fiche_details_Fiche.date_peremp, 
+                  dbo.fiche_details_Fiche.num_Lot, dbo.fiche_details_Fiche.dt_Fiche_ref, dbo.stock_Empl.num_Rack, dbo.stock_Empl.quantite AS qte_sur_rack, dbo.stock_Empl.observation, dbo.stock_Empl.Date, dbo.fiche_stock.DE_No, 
+                  dbo.F_DEPOT.DE_Intitule, dbo.stock_Empl.id_stock_Empl
+FROM     dbo.fiche_details_Fiche INNER JOIN
+                  dbo.fiche_stock ON dbo.fiche_details_Fiche.dt_Fiche_ref = dbo.fiche_stock.dt_Fiche_ref INNER JOIN
+                  dbo.stock_Empl ON dbo.fiche_stock.id_fiche_stock = dbo.stock_Empl.id_fiche_stock INNER JOIN
+                  dbo.F_DEPOT ON dbo.fiche_stock.DE_No = dbo.F_DEPOT.DE_No;
 GO
 
 CREATE VIEW dbo.fiche_details_Fiche
@@ -343,3 +359,17 @@ GROUP BY dbo.fiche.id_Fiche, dbo.fiche.date_controle, dbo.details_Fiche.AR_Ref, 
                   dbo.presentations.P_Intitule, dbo.details_Fiche.date_fab, dbo.details_Fiche.date_peremp, dbo.Type_Stockage.Type_Stockage, dbo.details_Fiche.num_Lot, dbo.details_Fiche.dt_Fiche_ref, dbo.details_Fiche.P_quantite, 
                   dbo.details_Fiche.Observation;
 GO
+
+CREATE VIEW dbo.mvt_stock
+AS
+SELECT dfs.id_stock_empl, dt.id_fiche_stock, se.num_Rack, dfs.date AS date_mvt, dfs.num_Doc, dfs.CT_Num, cpt.CT_Intitule, dfs.entree, dfs.sortie, dfs.observation, dt.AR_Design, dt.AR_Ref, dt.num_Lot, dbo.details_Fiche.id_Fiche
+FROM     dbo.dt_fiche_stock AS dt INNER JOIN
+                  dbo.details_Fiche_Stock AS dfs ON dfs.id_stock_empl = dt.id_stock_Empl INNER JOIN
+                  dbo.fiche_stock AS f ON f.id_fiche_stock = dt.id_fiche_stock INNER JOIN
+                  dbo.details_Fiche ON f.dt_Fiche_ref = dbo.details_Fiche.dt_Fiche_ref INNER JOIN
+                  dbo.fiche ON dbo.details_Fiche.id_Fiche = dbo.fiche.id_Fiche LEFT OUTER JOIN
+                  dbo.F_COMPTET AS cpt ON cpt.CT_Num = dfs.CT_Num LEFT OUTER JOIN
+                  dbo.stock_Empl AS se ON se.id_stock_Empl = dt.id_stock_Empl
+GROUP BY dfs.id_stock_empl, dt.id_fiche_stock, dfs.entree, dfs.sortie, dt.id_stock_Empl, dfs.date, dfs.date, dfs.num_Doc, dfs.CT_Num, cpt.CT_Intitule, se.num_Rack, dfs.observation, dt.AR_Design, dt.AR_Ref, dt.num_Lot, dbo.details_Fiche.id_Fiche;
+GO
+

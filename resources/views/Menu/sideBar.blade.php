@@ -19,9 +19,10 @@
     <div class="sidebar_blog_2">
         <h4>General</h4>
         <ul class="list-unstyled components">
+            <li><a href="{{route('fiches')}}"><i class="fa fa-home red_color"></i> <span>Liste fiche</span></a></li>
+
             <!-- Administrateur -->
             @if(auth()->user() != null && auth()->user()->post_id == 1)
-            <li><a href="{{route('home')}}"><i class="fa fa-home red_color"></i> <span>Acceuil</span></a></li>
             <li>
                 <a href="#admin" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-database blue2_color"></i> <span>Gestion Utilisateur</span></a>
                 <ul class="collapse list-unstyled" id="admin">
@@ -32,7 +33,6 @@
             @endif
             <!-- Magasinier -->
             @if(auth()->user() != null && auth()->user()->post_id == 2)
-            <li><a href="{{route('home')}}"><i class="fa fa-home red_color"></i> <span>Acceuil</span></a></li>
             <li>
                 <a href="#magasinier" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-file-text-o blue2_color"></i> <span>Gestion FCPCC</span></a>
                 <ul class="collapse list-unstyled" id="magasinier">

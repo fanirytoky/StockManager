@@ -198,7 +198,7 @@ class MagasinierController extends Controller
     public function validerFiche($id_Fiche)
     {
         Details_Fiche::validerFiche($id_Fiche, 1);
-        return redirect('/fiches')->withSuccess('Nouvelle fiche enregistrer');
+        return redirect('/fiches')->withSuccess('Nouvelle fiche envoyée');
     }
 
     public function listAdresse()

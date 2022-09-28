@@ -25,6 +25,8 @@ Route::get('/', function () {
     return view('auth.login');
 });
 Route::get('/home',[Controller::class,'index'])->name('home');
+Route::get('/Fiches',[Controller::class,'listeFichesPage'])->name('fiches');
+Route::get('/AjaxListeFiche/All',[Controller::class,'listeFiches'])->name('fiches.liste.all');
 
 
 // Admin

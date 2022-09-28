@@ -13,6 +13,9 @@
     <p>Nouvelle reception d'intrants de santé le {{ $details['date'] }}</p>
     <p>Pour plus de détails,cliquez <a href="{{ url('/') }}">ici</a></p>
     <p>Cordialement</p>
+
+    <br>
+    <b>{{ $details['nom'] }}</b>
     
     <p>Ceci est un mail automatique, Merci de ne pas y répondre,</p>
 </body>

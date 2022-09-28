@@ -196,6 +196,11 @@
 
                                         <div class="tab-pane fade" id="decision" role="tabpanel" aria-labelledby="first">
                                             <div class="row">
+                                                <div class="col-lg-12">
+                                                    @foreach($total_score as $total)
+                                                    <h5>Total score : {{$total->total}}</h5><br>
+                                                    @endforeach
+                                                </div>
 
                                                 <div class="col-lg-12">
                                                     @if($total_score != null)
