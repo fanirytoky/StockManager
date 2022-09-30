@@ -2116,7 +2116,7 @@ SELECT dbo.fiche_details_Fiche.id_Fiche, dbo.fiche_details_Fiche.date_controle, 
                   dbo.fiche_details_Fiche.CT_Num, dbo.fiche_details_Fiche.FO_designation, dbo.fiche_details_Fiche.P_Intitule, dbo.fiche_details_Fiche.date_fab, dbo.fiche_details_Fiche.date_peremp, dbo.fiche_details_Fiche.Type_Stockage, 
                   dbo.fiche_details_Fiche.etat, dbo.fiche_details_Fiche.num_Lot, dbo.fiche_details_Fiche.dt_Fiche_ref, dbo.fiche_details_Fiche.ANS, dbo.fiche_details_Fiche.MOIS, dbo.dt_fiche_scores.normes, dbo.dt_fiche_scores.Libelle, 
                   dbo.dt_fiche_scores.score, dbo.dt_fiche_scores.Notation, dbo.dt_fiche_scores.observation, dbo.dt_fiche_scores.id_libelle, dbo.fiche_reference.ref_marche, dbo.fiche_reference.date_livraison, dbo.F_COMPTET.CT_Intitule AS fournisseur, 
-                  dbo.fiche_details_Fiche.position
+                  dbo.fiche_details_Fiche.position, dbo.fiche_details_Fiche.Observation AS ObsDecision
 FROM     dbo.fiche_details_Fiche INNER JOIN
                   dbo.dt_fiche_scores ON dbo.fiche_details_Fiche.dt_Fiche_ref = dbo.dt_fiche_scores.dt_fiche_ref INNER JOIN
                   dbo.fiche_reference ON dbo.fiche_details_Fiche.id_Fiche = dbo.fiche_reference.id_Fiche INNER JOIN
@@ -2173,12 +2173,14 @@ GO
 
 CREATE VIEW dbo.mvt_stock
 AS
-SELECT TOP (100) PERCENT dfs.id_stock_empl, dt.id_fiche_stock, se.num_Rack, dfs.date AS date_mvt, dfs.num_Doc, dfs.CT_Num, cpt.CT_Intitule, dfs.entree, dfs.sortie, dfs.observation
+SELECT dfs.id_stock_empl, dt.id_fiche_stock, se.num_Rack, dfs.date AS date_mvt, dfs.num_Doc, dfs.CT_Num, cpt.CT_Intitule, dfs.entree, dfs.sortie, dfs.observation, dt.AR_Design, dt.AR_Ref, dt.num_Lot, dbo.details_Fiche.id_Fiche
 FROM     dbo.dt_fiche_stock AS dt INNER JOIN
                   dbo.details_Fiche_Stock AS dfs ON dfs.id_stock_empl = dt.id_stock_Empl INNER JOIN
-                  dbo.fiche_stock AS f ON f.id_fiche_stock = dt.id_fiche_stock LEFT OUTER JOIN
+                  dbo.fiche_stock AS f ON f.id_fiche_stock = dt.id_fiche_stock INNER JOIN
+                  dbo.details_Fiche ON f.dt_Fiche_ref = dbo.details_Fiche.dt_Fiche_ref INNER JOIN
+                  dbo.fiche ON dbo.details_Fiche.id_Fiche = dbo.fiche.id_Fiche LEFT OUTER JOIN
                   dbo.F_COMPTET AS cpt ON cpt.CT_Num = dfs.CT_Num LEFT OUTER JOIN
                   dbo.stock_Empl AS se ON se.id_stock_Empl = dt.id_stock_Empl
-GROUP BY dfs.id_stock_empl, dt.id_fiche_stock, dfs.entree, dfs.sortie, dt.id_stock_Empl, dfs.date, dfs.date, dfs.num_Doc, dfs.CT_Num, cpt.CT_Intitule, se.num_Rack, dfs.observation;
+GROUP BY dfs.id_stock_empl, dt.id_fiche_stock, dfs.entree, dfs.sortie, dt.id_stock_Empl, dfs.date, dfs.date, dfs.num_Doc, dfs.CT_Num, cpt.CT_Intitule, se.num_Rack, dfs.observation, dt.AR_Design, dt.AR_Ref, dt.num_Lot, dbo.details_Fiche.id_Fiche;
 GO
 

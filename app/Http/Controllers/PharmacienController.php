@@ -44,10 +44,9 @@ class PharmacienController extends Controller
     {
         $details_Fiche = Fiche_Details_Fiche::getDetailFicheById($id_dt_Fiche);
         $condition = Controle_Condition::getConditionnement();
-        $details_score = Details_Fiche_Score::getDtScoreById($id_dt_Fiche);
         $total_score = Details_Fiche_Score::getTotalScore($id_dt_Fiche);
         return view('Pharmacien.detailsFiche', [
-            'details' => $details_Fiche, 'conditionnements' => $condition, 'details_score' => $details_score, 'total_score' => $total_score
+            'details' => $details_Fiche, 'conditionnements' => $condition, 'total_score' => $total_score
         ]);
     }
 
@@ -57,8 +56,8 @@ class PharmacienController extends Controller
         $score2 = $request->score2;
         $observation1 = $request->observation1;
         $observation2 = $request->observation2;
-        $cond_ref1 = $request->condition_ref1;
-        $cond_ref2 = $request->condition_ref2;
+        $cond_ref1 = $request->cond_ref1;
+        $cond_ref2 = $request->cond_ref2;
         $dt_fiche_ref = $request->dt_fiche_ref;
         if ($score1 != null) {
             Details_Fiche_Score::create([
@@ -79,7 +78,7 @@ class PharmacienController extends Controller
             ]);
         }
 
-        return redirect('/fiche-details-score/' . $dt_fiche_ref);
+        return redirect()->back();
     }
     public function storeScores(Request $request)
     {
@@ -87,14 +86,16 @@ class PharmacienController extends Controller
         $observation = $request->observation;
         $cond_ref = $request->condition_ref;
         $dt_fiche_ref = $request->dt_fiche_ref;
-        Details_Fiche_Score::create([
-            'dt_fiche_ref' => $dt_fiche_ref,
-            'condition_ref' => $cond_ref,
-            'score' => $score,
-            'observation' => $observation,
-            'id_user' => auth()->user()->id
-        ]);
-        return redirect('/fiche-details-score/' . $dt_fiche_ref);
+        if ($score != null) {
+            Details_Fiche_Score::create([
+                'dt_fiche_ref' => $dt_fiche_ref,
+                'condition_ref' => $cond_ref,
+                'score' => $score,
+                'observation' => $observation,
+                'id_user' => auth()->user()->id
+            ]);
+        }
+        return redirect()->back();
     }
 
     public function decisionFiche(Request $request)
@@ -187,7 +188,7 @@ class PharmacienController extends Controller
                 } else {
                     $dt[] = $data->pourc;
                 }
-            }else{
+            } else {
                 $dt[] = $data->data;
             }
         }
@@ -199,9 +200,17 @@ class PharmacienController extends Controller
         ]);
     }
 
-    public function detailsChartTri(Request $request){
+    public function detailsChartTri(Request $request)
+    {
         $data = $request->data;
         $val = Fiche_Details_Fiche::getDetailsTriArticle($data);
         return view('Pharmacien.ajaxliste-detailsStat', ['val' => $val]);
+    }
+    public function detailsScoreFiche(Request $request)
+    {
+        $dt_fiche_ref = $request->dt_fiche_ref;
+        $details_score = Details_Fiche_Score::getDtScoreById($dt_fiche_ref);
+        $total_score = Details_Fiche_Score::getTotalScore($dt_fiche_ref);
+        return view('Pharmacien.detailsScoreFiches', ['details_score' => $details_score, 'total_score' => $total_score]);
     }
 }

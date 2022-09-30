@@ -72,9 +72,10 @@ Route::get('/Appro/Chart',[ApproController::class,'tauxActiviteFrns'])->name('Ap
 // Pharmacien Responsable
 Route::get('/Pharmacien/fiches-nouveau',[PharmacienController::class,'listeNewFiche'])->name('Pharma/fiche.new')->middleware(['Pharmacien']);
 Route::get('/Pharmacien/AjaxListeFiche.new',[PharmacienController::class,'AjaxListeFiche'])->name('Pharma/AjaxListeFiche.new')->middleware(['Pharmacien']);
+Route::get('/Pharmacien/AjaxDetailsScore',[PharmacienController::class,'detailsScoreFiche'])->name('Pharma/AjaxDetailsScore')->middleware(['Pharmacien']);
 Route::get('/fiche-details-score/{id_dt_Fiche}',[PharmacienController::class,'detailsFiche'])->name('Pharma/fiche-details')->middleware(['Pharmacien']);
-Route::post('/fiche-ajout-score',[PharmacienController::class,'storeScore'])->name('score.Store')->middleware(['Pharmacien']);
-Route::post('/fiche-ajout-scores',[PharmacienController::class,'storeScores'])->name('score2.Store')->middleware(['Pharmacien']);
+Route::get('/fiche-ajout-score',[PharmacienController::class,'storeScore'])->name('score.Store')->middleware(['Pharmacien']);
+Route::get('/fiche-ajout-scores',[PharmacienController::class,'storeScores'])->name('score2.Store')->middleware(['Pharmacien']);
 Route::post('/fiche-decision',[PharmacienController::class,'decisionFiche'])->name('Pharma/fiche.decision')->middleware(['Pharmacien']);
 Route::get('/fiche-modifier/{id_Fiche}',[PharmacienController::class,'editFiche'])->name('Pharma/fiche-edit')->middleware(['Pharmacien']);
 Route::post('/fiche-modifier',[PharmacienController::class,'updateFiche'])->name('Pharma/fiche.update')->middleware(['Pharmacien']);

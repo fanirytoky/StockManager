@@ -56,8 +56,8 @@ class Fiche_Details_Fiche extends Model
         $list = DB::table('fiche_details_fiche')
             ->Where('AR_Design', 'like', '%' . $des . '%')
             ->Where('etat', '=', $etat)
-            ->groupBy('id_Fiche', 'dt_Fiche_ref', 'num_Lot', 'date_peremp',  'AR_Design', 'FO_designation', "P_Intitule", 'date_controle', 'Type_Stockage', 'position', 'etat')
-            ->select("id_Fiche", 'dt_Fiche_ref', 'num_Lot', 'date_peremp', "AR_Design", "FO_designation", "P_Intitule", "date_controle", 'Type_Stockage', "Etat", "position");
+            ->groupBy('id_Fiche', 'dt_Fiche_ref', 'num_Lot', 'date_peremp',  'AR_Design', 'FO_designation', "P_Intitule", 'date_controle', 'Type_Stockage', 'position', 'etat','Observation')
+            ->select("id_Fiche", 'dt_Fiche_ref', 'num_Lot', 'date_peremp', "AR_Design", "FO_designation", "P_Intitule", "date_controle", 'Type_Stockage', "Etat", "position",'Observation');
         $val = $list->paginate(3);
         return $val;
     }

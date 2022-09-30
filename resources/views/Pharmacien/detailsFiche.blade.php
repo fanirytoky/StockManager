@@ -66,31 +66,7 @@
                     <div class="col-md-4">
                         <div class="full invoice_blog padding_infor_info padding-bottom_0">
                             <h4>Details Scores</h4>
-                            <p>
-                                @foreach($details_score as $dt_score)
-                                @if($dt_score->id_libelle != 4)
-                                <strong>{{$dt_score->normes}} : </strong><a>{{$dt_score->score}}<b>/{{$dt_score->Notation}}</b></a><br>
-                                @endif
-
-                                @if($dt_score->id_libelle == 4)
-                                <strong>AMM Madagascar existante : </strong><a>{{$dt_score->score}}<b>/{{$dt_score->Notation}}</b></a><br>
-                                @endif
-                                @if($dt_score->observation != null)
-                                <strong>Observations : </strong><a>{{$dt_score->observation}}</a><br>
-                                @endif
-                                @endforeach
-                                @foreach($total_score as $total)
-                                <strong>Total score : </strong><a>{{$total->total}}</a><br>
-                            <p class="ratings">
-                                @for($i=0;$i<($total->total);$i++)
-                                    <span class="fa fa-star"></span>
-                                    @endfor
-                                    @for($i=0;$i<(5-$total->total);$i++)
-                                        <span class="fa fa-star-o"></span>
-                                        @endfor
-                            </p>
-                            @endforeach
-
+                            <p id="detailsScoreAjax">
                             </p>
                         </div>
                     </div>
@@ -120,79 +96,146 @@
                                         @endif
                                         @endforeach
                                         @if($details[0]->etat != -3)
-                                        <a class="nav-link" id="Libelle" data-toggle="pill" href="#decision" role="tab" aria-controls="v-pills-home" aria-selected="true" style="font-size: 15px;"><b style="color:green;font-size:16px;">Etape 6 :</b> Décision</a>
+                                        <a class="nav-link" onclick="reload()" id="Libelle" data-toggle="pill" href="#decision" role="tab" aria-controls="v-pills-home" aria-selected="true" style="font-size: 15px;"><b style="color:green;font-size:16px;">Etape 6 :</b> Décision</a>
                                         @endif
                                     </div>
                                     <div class="tab-content" id="v-pills-tabContent">
                                         <div class="tab-pane fade show active" id="first" role="tabpanel" aria-labelledby="first">
                                             <div class="form-group">
-                                                <form method="POST" action="{{ route('score.Store') }}">
-                                                    @csrf
-                                                    <div class="form-group">
-                                                        <div class="row">
-                                                            @foreach($conditionnements as $cd)
-                                                            @if($cd->id_libelle == 1)
-                                                            <div class="col-lg-12">
-                                                                <div class="row">
-                                                                    <div class="col-lg-8">
-                                                                        <label for="solidInput">{{$cd->normes}}</label>
-                                                                        <input type="number" min="0" step="0.5" max="{{$cd->Notation}}" class="form-control input-solid" id="score{{$cd->cond_controle_ref}}" name="score{{$cd->cond_controle_ref}}" placeholder="Score">
-                                                                        <input type="hidden" class="form-control input-solid" id="condition_ref{{$cd->cond_controle_ref}}" name="condition_ref{{$cd->cond_controle_ref}}" value="{{$cd->cond_controle_ref}}">
-                                                                        <input type="hidden" class="form-control input-solid" id="dt_fiche_ref" name="dt_fiche_ref" value="{{$details[0]->dt_Fiche_ref}}">
-                                                                    </div>
-                                                                    <div class="col-lg-4">
-                                                                        <label for="solidInput">Notations</label>
-                                                                        <input type="text" class="form-control input-solid" value="{{$cd->Notation}}" disabled>
-                                                                    </div>
+                                                <!-- <form method="POST" action="{{ route('score.Store') }}">
+                                                    @csrf -->
+                                                <div class="form-group">
+                                                    <div class="row">
+                                                        @foreach($conditionnements as $cd)
+                                                        @if($cd->id_libelle == 1)
+                                                        <div class="col-lg-12">
+                                                            <div class="row">
+                                                                <div class="col-lg-8">
+                                                                    <label for="solidInput">{{$cd->normes}}</label>
+                                                                    <input type="number" min="0" step="0.5" max="{{$cd->Notation}}" class="form-control input-solid" id="score{{$cd->cond_controle_ref}}" name="score{{$cd->cond_controle_ref}}" placeholder="Score">
+                                                                    <input type="hidden" class="form-control input-solid" id="condition_ref{{$cd->cond_controle_ref}}" name="condition_ref{{$cd->cond_controle_ref}}" value="{{$cd->cond_controle_ref}}">
+                                                                    <input type="hidden" class="form-control input-solid" id="dt_fiche_ref" name="dt_fiche_ref" value="{{$details[0]->dt_Fiche_ref}}">
                                                                 </div>
-                                                                <label for="solidInput">Observations</label>
-                                                                <textarea type="text" class="form-control input-solid" id="observation{{$cd->cond_controle_ref}}" name="observation{{$cd->cond_controle_ref}}" placeholder="Observations"></textarea>
+                                                                <div class="col-lg-4">
+                                                                    <label for="solidInput">Notations</label>
+                                                                    <input type="text" class="form-control input-solid" value="{{$cd->Notation}}" disabled>
+                                                                </div>
                                                             </div>
-                                                            @endif
-                                                            @endforeach
+                                                            <label for="solidInput">Observations</label>
+                                                            <textarea type="text" class="form-control input-solid" id="observation{{$cd->cond_controle_ref}}" name="observation{{$cd->cond_controle_ref}}" placeholder="Observations"></textarea>
                                                         </div>
-                                                        <div class="flex items-center justify-end mt-4 col-lg-12">
-                                                            <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
-                                                                Valider
-                                                            </button>
-                                                        </div>
+                                                        @endif
+                                                        @endforeach
                                                     </div>
-                                                </form>
+                                                    <div class="flex items-center justify-end mt-4 col-lg-12">
+                                                        <button onclick="storeScore()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
+                                                            Valider
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                                <!-- </form> -->
                                             </div>
                                         </div>
-
-                                        @foreach($conditionnements as $cd)
-                                        @if($cd->id_libelle != 1)
-                                        <div class="tab-pane fade" id="Libelle-{{$cd->id_libelle}}" role="tabpanel" aria-labelledby="Libelle-{{$cd->id_libelle}}">
-                                            <form method="POST" action="{{ route('score2.Store') }}">
-                                                @csrf
-                                                <div class="form-group">
-                                                    <div class="col-lg-12">
-                                                        <div class="row">
-                                                            <div class="col-lg-8">
-                                                                <label for="solidInput">{{$cd->normes}}</label>
-                                                                <input type="number" min="0" step="0.5" max="{{$cd->Notation}}" class="form-control input-solid" id="score" name="score" placeholder="Score">
-                                                                <input type="hidden" class="form-control input-solid" id="condition_ref" name="condition_ref" value="{{$cd->cond_controle_ref}}">
-                                                                <input type="hidden" class="form-control input-solid" id="dt_fiche_ref" name="dt_fiche_ref" value="{{$details[0]->dt_Fiche_ref}}">
-                                                            </div>
-                                                            <div class="col-lg-4">
-                                                                <label for="solidInput">Notations</label>
-                                                                <input type="text" class="form-control input-solid" value="{{$cd->Notation}}" disabled>
-                                                            </div>
+                                        <div class="tab-pane fade" id="Libelle-2" role="tabpanel" aria-labelledby="Libelle-2">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <div class="row">
+                                                        <div class="col-lg-8">
+                                                            <label for="solidInput">{{$conditionnements[2]->normes}}</label>
+                                                            <input type="number" min="0" step="0.5" max="{{$conditionnements[2]->Notation}}" class="form-control input-solid" id="scoree" name="scoree" placeholder="Score">
+                                                            <input type="hidden" class="form-control input-solid" id="condition_refe" name="condition_refe" value="{{$conditionnements[2]->cond_controle_ref}}">
+                                                            <input type="hidden" class="form-control input-solid" id="dt_fiche_ref" name="dt_fiche_ref" value="{{$details[0]->dt_Fiche_ref}}">
                                                         </div>
-                                                        <label for="solidInput">Observations</label>
-                                                        <textarea type="text" class="form-control input-solid" id="observation" name="observation" placeholder="Observations"></textarea>
+                                                        <div class="col-lg-4">
+                                                            <label for="solidInput">Notations</label>
+                                                            <input type="text" class="form-control input-solid" value="{{$conditionnements[2]->Notation}}" disabled>
+                                                        </div>
                                                     </div>
+                                                    <label for="solidInput">Observations</label>
+                                                    <textarea type="text" class="form-control input-solid" id="observations" name="observations" placeholder="Observations"></textarea>
                                                 </div>
-                                                <div class="flex items-center justify-end mt-4 col-lg-12">
-                                                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
-                                                        Valider
-                                                    </button>
-                                                </div>
-                                            </form>
+                                            </div>
+                                            <div class="flex items-center justify-end mt-4 col-lg-12">
+                                                <button onclick="storeScores2()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
+                                                    Valider
+                                                </button>
+                                            </div>
                                         </div>
-                                        @endif
-                                        @endforeach
+                                        <div class="tab-pane fade" id="Libelle-3" role="tabpanel" aria-labelledby="Libelle-3">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <div class="row">
+                                                        <div class="col-lg-8">
+                                                            <label for="solidInput">{{$conditionnements[3]->normes}}</label>
+                                                            <input type="number" min="0" step="0.5" max="{{$conditionnements[3]->Notation}}" class="form-control input-solid" id="score3" name="score3" placeholder="Score">
+                                                            <input type="hidden" class="form-control input-solid" id="condition_ref3" name="condition_ref3" value="{{$conditionnements[3]->cond_controle_ref}}">
+                                                            <input type="hidden" class="form-control input-solid" id="dt_fiche_ref" name="dt_fiche_ref" value="{{$details[0]->dt_Fiche_ref}}">
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <label for="solidInput">Notations</label>
+                                                            <input type="text" class="form-control input-solid" value="{{$conditionnements[3]->Notation}}" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <label for="solidInput">Observations</label>
+                                                    <textarea type="text" class="form-control input-solid" id="observation3" name="observation3" placeholder="Observations"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-end mt-4 col-lg-12">
+                                                <button onclick="storeScores3()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
+                                                    Valider
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="Libelle-4" role="tabpanel" aria-labelledby="Libelle-4">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <div class="row">
+                                                        <div class="col-lg-8">
+                                                            <label for="solidInput">{{$conditionnements[4]->normes}}</label>
+                                                            <input type="number" min="0" step="0.5" max="{{$conditionnements[4]->Notation}}" class="form-control input-solid" id="score4" name="score4" placeholder="Score">
+                                                            <input type="hidden" class="form-control input-solid" id="condition_ref4" name="condition_ref4" value="{{$conditionnements[4]->cond_controle_ref}}">
+                                                            <input type="hidden" class="form-control input-solid" id="dt_fiche_ref" name="dt_fiche_ref" value="{{$details[0]->dt_Fiche_ref}}">
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <label for="solidInput">Notations</label>
+                                                            <input type="text" class="form-control input-solid" value="{{$conditionnements[4]->Notation}}" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <label for="solidInput">Observations</label>
+                                                    <textarea type="text" class="form-control input-solid" id="observation4" name="observation4" placeholder="Observations"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-end mt-4 col-lg-12">
+                                                <button onclick="storeScores4()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
+                                                    Valider
+                                                </button>
+                                            </div>
+                                        </div>
+                                        <div class="tab-pane fade" id="Libelle-5" role="tabpanel" aria-labelledby="Libelle-5">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <div class="row">
+                                                        <div class="col-lg-8">
+                                                            <label for="solidInput">{{$conditionnements[5]->normes}}</label>
+                                                            <input type="number" min="0" step="0.5" max="{{$conditionnements[5]->Notation}}" class="form-control input-solid" id="score5" name="score5" placeholder="Score">
+                                                            <input type="hidden" class="form-control input-solid" id="condition_ref5" name="condition_ref5" value="{{$conditionnements[5]->cond_controle_ref}}">
+                                                            <input type="hidden" class="form-control input-solid" id="dt_fiche_ref" name="dt_fiche_ref" value="{{$details[0]->dt_Fiche_ref}}">
+                                                        </div>
+                                                        <div class="col-lg-4">
+                                                            <label for="solidInput">Notations</label>
+                                                            <input type="text" class="form-control input-solid" value="{{$conditionnements[5]->Notation}}" disabled>
+                                                        </div>
+                                                    </div>
+                                                    <label for="solidInput">Observations</label>
+                                                    <textarea type="text" class="form-control input-solid" id="observation5" name="observation5" placeholder="Observations"></textarea>
+                                                </div>
+                                            </div>
+                                            <div class="flex items-center justify-end mt-4 col-lg-12">
+                                                <button onclick="storeScores5()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
+                                                    Valider
+                                                </button>
+                                            </div>
+                                        </div>
 
                                         <div class="tab-pane fade" id="decision" role="tabpanel" aria-labelledby="first">
                                             <div class="row">
@@ -405,4 +448,113 @@
         </div>
     </div>
 </div>
+<!-- jQuery library -->
+<script src="{{url('js/jquery2.min.js')}}"></script>
+
+<!-- Latest minified bootstrap js -->
+<script src="{{url('js/bootstrap2.min.js')}}"></script>
+<script>
+    function detailsScore(page) {
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = (e) => {
+            e.preventDefault()
+            if (xhr.readyState === 4) {
+                // console.log(xhr.responseText)
+                document.getElementById("detailsScoreAjax").innerHTML = xhr.responseText
+                // console.log(xhr.responseText)
+            }
+        }
+        var dtFiche = document.getElementById('dt_fiche_ref').value
+        var url = '/Pharmacien/AjaxDetailsScore?dt_fiche_ref=' + dtFiche;
+        xhr.open('GET', url, true)
+        xhr.send();
+    }
+    detailsScore()
+
+    function storeScore() {
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = (e) => {
+            e.preventDefault()
+            if (xhr.readyState === 4) {
+                detailsScore()
+            }
+        }
+        var score1 = document.getElementById('score1').value;
+        var score2 = document.getElementById('score2').value;
+        var observation1 = document.getElementById('observation1').value;
+        var observation2 = document.getElementById('observation2').value;
+        var cond_ref1 = document.getElementById('condition_ref1').value;
+        var cond_ref2 = document.getElementById('condition_ref2').value;
+        var dt_fiche_ref = document.getElementById('dt_fiche_ref').value;
+        var url = '/fiche-ajout-score?score1=' + score1 + '&&score2=' + score2 + '&&observation1=' + observation1 + '&&observation2=' + observation2 + '&&cond_ref1=' + cond_ref1 + '&&cond_ref2=' + cond_ref2 + '&&dt_fiche_ref=' + dt_fiche_ref;
+        xhr.open('GET', url, true)
+        xhr.send();
+    }
+    function storeScores2() {
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = (e) => {
+            e.preventDefault()
+            if (xhr.readyState === 4) {
+                detailsScore()
+            }
+        }
+        var score = document.getElementById('scoree').value;
+        var observation = document.getElementById('observations').value;
+        var cond_ref = document.getElementById('condition_refe').value;
+        var dt_fiche_ref = document.getElementById('dt_fiche_ref').value;
+        var url = '/fiche-ajout-scores?score=' + score + '&&observation=' + observation + '&&condition_ref=' + cond_ref + '&&dt_fiche_ref=' + dt_fiche_ref;
+        xhr.open('GET', url, true)
+        xhr.send();
+    }
+    function storeScores3() {
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = (e) => {
+            e.preventDefault()
+            if (xhr.readyState === 4) {
+                detailsScore()
+            }
+        }
+        var score = document.getElementById('score3').value;
+        var observation = document.getElementById('observation3').value;
+        var cond_ref = document.getElementById('condition_ref3').value;
+        var dt_fiche_ref = document.getElementById('dt_fiche_ref').value;
+        var url = '/fiche-ajout-scores?score=' + score + '&&observation=' + observation + '&&condition_ref=' + cond_ref + '&&dt_fiche_ref=' + dt_fiche_ref;
+        xhr.open('GET', url, true)
+        xhr.send();
+    }
+    function storeScores4() {
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = (e) => {
+            e.preventDefault()
+            if (xhr.readyState === 4) {
+                detailsScore()
+                window.location.reload();
+            }
+        }
+        var score = document.getElementById('score4').value;
+        var observation = document.getElementById('observation4').value;
+        var cond_ref = document.getElementById('condition_ref4').value;
+        var dt_fiche_ref = document.getElementById('dt_fiche_ref').value;
+        var url = '/fiche-ajout-scores?score=' + score + '&&observation=' + observation + '&&condition_ref=' + cond_ref + '&&dt_fiche_ref=' + dt_fiche_ref;
+        xhr.open('GET', url, true)
+        xhr.send();
+    }
+    function storeScores5() {
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = (e) => {
+            e.preventDefault()
+            if (xhr.readyState === 4) {
+                detailsScore()
+                window.location.reload();
+            }
+        }
+        var score = document.getElementById('score5').value;
+        var observation = document.getElementById('observation5').value;
+        var cond_ref = document.getElementById('condition_ref5').value;
+        var dt_fiche_ref = document.getElementById('dt_fiche_ref').value;
+        var url = '/fiche-ajout-scores?score=' + score + '&&observation=' + observation + '&&condition_ref=' + cond_ref + '&&dt_fiche_ref=' + dt_fiche_ref;
+        xhr.open('GET', url, true)
+        xhr.send();
+    }
+</script>
 @endsection
