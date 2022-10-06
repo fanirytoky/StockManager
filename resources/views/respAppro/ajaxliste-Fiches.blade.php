@@ -22,7 +22,7 @@
                 <td>{{$fiche->total}}</td>
                 <td>{{$fiche->date_controle}}</td>
                 <td>{{$fiche->position}}</td>
-                <td><div class="button_block"><a class="fw_icon" href="{{ route('referencier.fiche', ['id_Fiche' => $fiche->id_Fiche]) }}"><button type="button" class="btn cur-p btn-outline-info">Ajouter</button></a></div></td>
+                <td><div class="button_block"><a class="fw_icon" href="{{ route('referencier.fiche', ['id_Fiche' => $fiche->id_Fiche]) }}"><button type="button" class="btn cur-p btn-outline-info fa fa-book"> <b>Détails</b></button></a></div></td>
             </tr>
             @endforeach
         </tbody>
@@ -30,7 +30,7 @@
 </div>
 <div class="col-md-12 pagination">
     <div class="col-md-12">
-        {{ $val->links() }}
+        {{ $val->onEachSide(1)->links() }}
     </div>
 </div>
 

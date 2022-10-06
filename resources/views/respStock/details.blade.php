@@ -9,6 +9,7 @@
     </nav>
     <div class="tab-content" id="nav-tabContent_2">
         <div class="tab-pane fade show active" id="nav-home_dt" role="tabpanel" aria-labelledby="nav-home-tab">
+            <p><b>N° Fiche:</b> {{$details[0]->id_Fiche}}</p>
             <p><b>Date de contrôle:</b> {{$details[0]->date_controle}}</p>
             <p><b>Fournisseur Reference:</b> {{$details[0]->CT_Num}}</p>
             <p><b>Fournisseur:</b> {{$details[0]->CT_Intitule}}</p>
@@ -26,6 +27,7 @@
             <p><b>Quantite:</b> {{$dt->quantite}}</p>
             <p><b>date de fabrication:</b> {{$dt->date_fab}}</p>
             <p><b>date de peremption:</b> {{$dt->date_peremp}}</p>
+            <p style="color: red;"><b>Etat:</b> {{$dt->position}}</p>
         </div>
         @endforeach
     </div>

@@ -88,17 +88,19 @@
                         <div class="col-lg-12">
                             <div class="tab_style3">
                                 <div class="tabbar padding_infor_info">
-                                    <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="vertical">
-                                        <a class="nav-link active" id="Libelle" data-toggle="pill" href="#first" role="tab" aria-controls="v-pills-home" aria-selected="true" style="font-size: 15px;"><b style="color:green;font-size:16px;">Etape 1 :</b> Conditionnements Primaire-Secondaire</a>
-                                        @foreach($conditionnements as $cd)
-                                        @if($cd->id_libelle != 1)
-                                        <a class="nav-link" id="Libelle" data-toggle="pill" href="#Libelle-{{$cd->id_libelle}}" role="tab" aria-controls="v-pills-home" aria-selected="true" style="font-size: 15px;"><b style="color:green;font-size:16px;">Etape {{$cd->id_libelle}} :</b> {{$cd->Libelle}}</a>
-                                        @endif
-                                        @endforeach
-                                        @if($details[0]->etat != -3)
-                                        <a class="nav-link" onclick="reload()" id="Libelle" data-toggle="pill" href="#decision" role="tab" aria-controls="v-pills-home" aria-selected="true" style="font-size: 15px;"><b style="color:green;font-size:16px;">Etape 6 :</b> Décision</a>
-                                        @endif
-                                    </div>
+                                    <nav>
+                                        <div class="nav flex-column nav-pills" id="v-pills-tab" role="tablist" aria-orientation="horizontal">
+                                            <a class="nav-item nav-link active" id="Libelle" data-toggle="pill" href="#first" role="tab" aria-controls="v-pills-home" aria-selected="true" style="font-size: 15px;"><b style="color:green;font-size:16px;">Etape 1 :</b> Conditionnements Primaire-Secondaire</a>
+                                            @foreach($conditionnements as $cd)
+                                            @if($cd->id_libelle != 1)
+                                            <a class="nav-item nav-link" id="Libelle" data-toggle="pill" href="#Libelle-{{$cd->id_libelle}}" role="tab" aria-controls="v-pills-home" aria-selected="true" style="font-size: 15px;"><b style="color:green;font-size:16px;">Etape {{$cd->id_libelle}} :</b> {{$cd->Libelle}}</a>
+                                            @endif
+                                            @endforeach
+                                            @if($details[0]->etat != -3)
+                                            <a class="nav-item nav-link" onclick="reloadScore()" id="Libelle" data-toggle="pill" href="#decision" role="tab" aria-controls="v-pills-home" aria-selected="true" style="font-size: 15px;"><b style="color:green;font-size:16px;">Etape 6 :</b> Décision</a>
+                                            @endif
+                                        </div>
+                                    </nav>
                                     <div class="tab-content" id="v-pills-tabContent">
                                         <div class="tab-pane fade show active" id="first" role="tabpanel" aria-labelledby="first">
                                             <div class="form-group">
@@ -237,114 +239,7 @@
                                             </div>
                                         </div>
 
-                                        <div class="tab-pane fade" id="decision" role="tabpanel" aria-labelledby="first">
-                                            <div class="row">
-                                                <div class="col-lg-12">
-                                                    @foreach($total_score as $total)
-                                                    <h5>Total score : {{$total->total}}</h5><br>
-                                                    @endforeach
-                                                </div>
-
-                                                <div class="col-lg-12">
-                                                    @if($total_score != null)
-                                                    @foreach($total_score as $total)
-                                                    @if($total->total > 3)
-                                                    <div class="alert alert-success" role="alert">{{$total->etat_score}}</div>
-                                                    @endif
-                                                    @if($total->total <= 3) <div class="alert alert-danger" role="alert">{{$total->etat_score}}
-                                                </div>
-                                                @endif
-                                                @endforeach
-                                                @endif
-                                                @foreach($total_score as $total)
-                                                @if($total->total == null)
-                                                <div class="alert alert-danger" role="alert">Veuillez remplir les scores</div>
-                                                @endif
-                                                @endforeach
-                                            </div>
-                                        </div>
-                                        @foreach($total_score as $total)
-                                        @if($total->total != null)
-                                        <div class="row">
-                                            @foreach($details as $dt)
-                                            @if($dt->etat == 2)
-                                            <div class="col-lg-4">
-                                                <a data-toggle="modal" data-target="#accepteModal">
-                                                    <div class="full socile_icons google_p margin_bottom_30">
-                                                        <div class="social_icon bg-success">
-                                                            <i class="fa fa-check"></i>
-                                                        </div>
-                                                        <div class="social_cont">
-                                                            <div class="cont_table_price_blog">
-                                                                <p class="blue1_color"><span class="price_no"></span>Acceptée</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <a data-toggle="modal" data-target="#quarantaineModal">
-                                                    <div class="full socile_icons google_p margin_bottom_30">
-                                                        <div class="social_icon bg-warning">
-                                                            <i class="fa fa-close"></i>
-                                                        </div>
-                                                        <div class="social_cont">
-                                                            <div class="cont_table_price_blog">
-                                                                <p class="blue1_color"><span class="price_no"></span>Quarantaine</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <a data-toggle="modal" data-target="#rebutModal">
-                                                    <div class="full socile_icons google_p margin_bottom_30">
-                                                        <div class="social_icon bg-danger">
-                                                            <i class="fa fa-trash"></i>
-                                                        </div>
-                                                        <div class="social_cont">
-                                                            <div class="cont_table_price_blog">
-                                                                <p class="blue1_color"><span class="price_no"></span>REBUT</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            @endif
-                                            @if($dt->etat != 2)
-                                            <div class="col-lg-4">
-                                                <a data-toggle="modal" data-target="#accepteModal">
-                                                    <div class="full socile_icons google_p margin_bottom_30">
-                                                        <div class="social_icon bg-success">
-                                                            <i class="fa fa-check"></i>
-                                                        </div>
-                                                        <div class="social_cont">
-                                                            <div class="cont_table_price_blog">
-                                                                <p class="blue1_color"><span class="price_no"></span>Acceptée</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            <div class="col-lg-4">
-                                                <a data-toggle="modal" data-target="#rebutModal">
-                                                    <div class="full socile_icons google_p margin_bottom_30">
-                                                        <div class="social_icon bg-danger">
-                                                            <i class="fa fa-trash"></i>
-                                                        </div>
-                                                        <div class="social_cont">
-                                                            <div class="cont_table_price_blog">
-                                                                <p class="blue1_color"><span class="price_no"></span>REBUT</p>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-                                            @endif
-                                            @endforeach
-                                        </div>
-                                        @endif
-                                        @endforeach
+                                        <div id="AjaxDecision"></div>
                                     </div>
                                 </div>
                             </div>
@@ -362,7 +257,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel" style="color: green;">Validation</h5>
+                <h5 class="modal-title" id="exampleModalLabel" style="color: green;">Confirmation de la validation</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -392,7 +287,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel" style="color: #ffc107;">Mise en quarantaine</h5>
+                <h5 class="modal-title" id="exampleModalLabel" style="color: #ffc107;">Confirmation de la mise en quarantaine</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -422,7 +317,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel" style="color: red;">Mise en Rebut</h5>
+                <h5 class="modal-title" id="exampleModalLabel" style="color: red;">Confirmation de la mise au Rebut</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -459,8 +354,8 @@
         xhr.onreadystatechange = (e) => {
             e.preventDefault()
             if (xhr.readyState === 4) {
-                // console.log(xhr.responseText)
                 document.getElementById("detailsScoreAjax").innerHTML = xhr.responseText
+                reloadScore()
                 // console.log(xhr.responseText)
             }
         }
@@ -477,6 +372,7 @@
             e.preventDefault()
             if (xhr.readyState === 4) {
                 detailsScore()
+                reloadScore()
             }
         }
         var score1 = document.getElementById('score1').value;
@@ -490,12 +386,14 @@
         xhr.open('GET', url, true)
         xhr.send();
     }
+
     function storeScores2() {
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = (e) => {
             e.preventDefault()
             if (xhr.readyState === 4) {
                 detailsScore()
+                reloadScore()
             }
         }
         var score = document.getElementById('scoree').value;
@@ -506,12 +404,14 @@
         xhr.open('GET', url, true)
         xhr.send();
     }
+
     function storeScores3() {
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = (e) => {
             e.preventDefault()
             if (xhr.readyState === 4) {
                 detailsScore()
+                reloadScore()
             }
         }
         var score = document.getElementById('score3').value;
@@ -522,13 +422,15 @@
         xhr.open('GET', url, true)
         xhr.send();
     }
+
     function storeScores4() {
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = (e) => {
             e.preventDefault()
             if (xhr.readyState === 4) {
                 detailsScore()
-                window.location.reload();
+                // window.location.reload();
+                reloadScore()
             }
         }
         var score = document.getElementById('score4').value;
@@ -539,13 +441,15 @@
         xhr.open('GET', url, true)
         xhr.send();
     }
+
     function storeScores5() {
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = (e) => {
             e.preventDefault()
             if (xhr.readyState === 4) {
                 detailsScore()
-                window.location.reload();
+                // window.location.reload();
+                reloadScore()
             }
         }
         var score = document.getElementById('score5').value;
@@ -553,6 +457,20 @@
         var cond_ref = document.getElementById('condition_ref5').value;
         var dt_fiche_ref = document.getElementById('dt_fiche_ref').value;
         var url = '/fiche-ajout-scores?score=' + score + '&&observation=' + observation + '&&condition_ref=' + cond_ref + '&&dt_fiche_ref=' + dt_fiche_ref;
+        xhr.open('GET', url, true)
+        xhr.send();
+    }
+
+    function reloadScore(){
+        var xhr = new XMLHttpRequest()
+        xhr.onreadystatechange = (e) => {
+            e.preventDefault()
+            if (xhr.readyState === 4) {
+                document.getElementById("AjaxDecision").outerHTML = xhr.responseText
+            }
+        }
+        var dtFiche = document.getElementById('dt_fiche_ref').value
+        var url = '/Pharmacien/AjaxDetailsScore/Decision?dt_fiche_ref=' + dtFiche;
         xhr.open('GET', url, true)
         xhr.send();
     }

@@ -4,7 +4,7 @@
     <div class="white_shd full margin_bottom_30">
         <div class="full graph_head" id="entete">
             <div class="heading1 margin_0">
-                <h2 style="color: white;">Liste des nouvelles fiches validées</h2>
+                <h2 style="color: white;">Liste des Fiches FCPCC</h2>
             </div>
         </div>
         <div class="table_section padding_infor_info">

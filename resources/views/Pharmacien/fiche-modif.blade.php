@@ -33,7 +33,8 @@
                             <div class="form-group">
                                 <label for="solidInput">N° Fiche</label>
                                 @foreach($details as $fiche)
-                                <input type="number" id="idF" name="idF" value="{{$fiche->id_Fiche}}" class="form-control"/>
+                                <input type="number" value="{{$fiche->id_Fiche}}" class="form-control" disabled/>
+                                <input type="hidden" id="idF" name="idF" value="{{$fiche->id_Fiche}}" class="form-control"/>
                                 @endforeach
                             </div>
                             <label for="email">Designation</label>

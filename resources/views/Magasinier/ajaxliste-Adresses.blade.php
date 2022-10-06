@@ -24,7 +24,7 @@
         </div>
         <div class="col-xs">
             <div class="pagination">
-                {{ $val->links() }}
+                {{ $val->onEachSide(1)->links() }}
             </div>
         </div>
     </div>

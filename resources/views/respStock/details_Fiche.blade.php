@@ -18,7 +18,7 @@
                     <div class="white_shd full">
                         <div class="full graph_head">
                             <div class="heading1 margin_0">
-                                <h2>Détails Fiche N° {{$details[0]->id_Fiche}} (non formaté)</h2>
+                                <h2>Détails Fiche N° {{$details[0]->id_Fiche}}</h2>
                             </div>
                         </div>
                         <div class="full price_table">
@@ -64,7 +64,6 @@
                                             </div>
                                             @endforeach
 
-                                            <br>
                                         </div>
                                     </div>
                                 </div>
@@ -76,7 +75,7 @@
                                     <div class=" full button_sction padding_infor_info button_style1 padding-bottom_0">
                                         <div class="center"><a data-role="button" class="btn cur-p btn-outline-info fa fa-file-pdf-o" data-inline="true" href="{{ route('Stock/fiche-PDF', ['dt_Fiche' => $details[0]->dt_Fiche_ref]) }}"> <b>Export PDF</b></a>
                                             @if($details[0]->etat == 3)
-                                            <p>&nbsp;</p><a data-role="button" class="btn cur-p btn-outline-success fa fa-save" data-inline="true" href="{{route('Stock/fiche.decision',['dt_Fiche_ref' => $details[0]->dt_Fiche_ref])}}"> <b>Mise en rayon</b></a>
+                                            <p>&nbsp;</p><a data-role="button" class="btn cur-p btn-outline-success fa fa-cubes" data-inline="true" href="{{route('Stock/fiche.decision',['dt_Fiche_ref' => $details[0]->dt_Fiche_ref])}}"> <b>Mise en rayon</b></a>
                                             @endif
                                         </div>
                                     </div>

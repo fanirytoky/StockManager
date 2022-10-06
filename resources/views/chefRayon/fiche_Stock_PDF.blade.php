@@ -7893,7 +7893,7 @@
             margin: 1px;
             text-indent: -999px;
             cursor: pointer;
-            background-color: #000\9;
+            background-color: #0009;
             background-color: rgba(0, 0, 0, 0);
             border: 1px solid #fff;
             border-radius: 10px
@@ -8349,41 +8349,41 @@
                 <table class="table" border="1">
                     <thead>
                         <tr style="color: black;">
-                                <th>DATE</th>
-                                <th>N° DOC</th>
-                                <th>FOURNISSEUR OU CLIENT</th>
-                                <th>N° RACK</th>
-                                <th>ENTREE</th>
-                                <th>SORTIE</th>
-                                <th>STOCK</th>
-                                <th>OBSERVATION</th>
-                                <th></th>
+                            <th>DATE</th>
+                            <th>N° DOC</th>
+                            <th>FOURNISSEUR OU CLIENT</th>
+                            <th>N° RACK</th>
+                            <th>ENTREE</th>
+                            <th>SORTIE</th>
+                            <th>STOCK</th>
+                            <th>OBSERVATION</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
-                    @foreach($val as $val)
-                    <tr>
-                        <td>{{$val->num_Rack}}</td>
-                        <td>{{$val->date_mvt}}</td>
-                        @if($val->num_Doc == null && $val->CT_Intitule == null)
-                        <td>Emplacement</td>
-                        <td>Chef de Rayon</td>
-                        @else
-                        <td>{{$val->num_Doc}}</td>
-                        <td>{{$val->CT_Intitule}}</td>
-                        @endif
-                        <td>{{$val->entree}}</td>
-                        <td>{{$val->sortie}}</td>
-                        <td>{{$val->stock}}</td>
-                        <td>{{$val->observation}}</td>
-                        @if($val->date_inventaire != null)
-                        <td><b>{{$val->observations}}: {{$val->quantite}}</b></td>
-                        @else
-                        <td></td>
-                        @endif
-                    </tr>
-                    @endforeach
-                </tbody>
+                        @foreach($val as $val)
+                        <tr>
+                            <td>{{$val->date_mvt}}</td>
+                            <td>{{$val->num_Doc}}</td>
+                            @if($val->num_Doc == null && $val->CT_Intitule == null)
+                            <td>Chef de Rayon</td>
+                            <td>Emplacement</td>
+                            @else
+                            <td>{{$val->CT_Intitule}}</td>
+                            <td>{{$val->num_Rack}}</td>
+                            @endif
+                            <td>{{$val->entree}}</td>
+                            <td>{{$val->sortie}}</td>
+                            <td>{{$val->stock}}</td>
+                            <td>{{$val->observation}}</td>
+                            @if($val->date_inventaire != null)
+                            <td><b><p style="color: red;">{{$val->observations}}: {{$val->quantite}}</p></b></td>
+                            @else
+                            <td></td>
+                            @endif
+                        </tr>
+                        @endforeach
+                    </tbody>
                 </table>
             </div>
         </div>

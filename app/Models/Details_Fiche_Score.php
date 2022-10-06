@@ -31,7 +31,7 @@ class Details_Fiche_Score extends Model
             ->Where('dt_Fiche_ref', '=', $id_dt_Fiche)
             ->select(
                 DB::raw("sum(score) as total"),
-                DB::raw("CASE WHEN " . DB::raw('sum(score)') . ">3 THEN 'Conditionnement Complet' ELSE 'Conditionnement non conforme' END AS etat_score")
+                DB::raw("CASE WHEN " . DB::raw('sum(score)') . ">3 THEN 'Contrôles et conditionnements complets' ELSE 'Contrôles et conditionnements non conformes' END AS etat_score")
             )
             ->get();
 

@@ -1086,7 +1086,7 @@ a.fc-more:hover {
 }
 
 
-/* AgendaView all-day area
+/* AgendaView Journée area
 --------------------------------------------------------------------------------------------------*/
 
 .fc-agenda-view .fc-day-grid {
@@ -1097,7 +1097,7 @@ a.fc-more:hover {
 
 .fc-agenda-view .fc-day-grid .fc-row {
     min-height: 3em;
-    /* all-day section will never get shorter than this */
+    /* Journée section will never get shorter than this */
 }
 
 .fc-agenda-view .fc-day-grid .fc-row .fc-content-skeleton {
@@ -1106,7 +1106,7 @@ a.fc-more:hover {
 }
 
 
-/* TimeGrid axis running down the side (for both the all-day area and the slot area)
+/* TimeGrid axis running down the side (for both the Journée area and the slot area)
 --------------------------------------------------------------------------------------------------*/
 
 .fc .fc-axis {
@@ -1134,7 +1134,7 @@ a.fc-more:hover {
 --------------------------------------------------------------------------------------------------*/
 
 .fc-time-grid-container,
-/* so scroll container's z-index is below all-day */
+/* so scroll container's z-index is below Journée */
 .fc-time-grid {
     /* so slats/bg/content/etc positions get scoped within here */
     position: relative;

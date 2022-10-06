@@ -53,7 +53,7 @@ class User extends Authenticatable
             ->orWhere('name', 'like', '%' . $des . '%')
             ->orWhere('email', 'like', '%' . $des . '%')
             ->select('users.*', 'posts.titre_post');
-        $val = $post->paginate(4);
+        $val = $post->paginate(6);
         return $val;
     }
 

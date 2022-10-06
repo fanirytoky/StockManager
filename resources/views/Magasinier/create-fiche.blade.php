@@ -30,7 +30,7 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="email">Designation</label>
+                            <b><label style="color: black;" for="email">Designation</label></b>
                             @if($designation != null)
                             @foreach($designation as $d)
                             <input type="" value="{{$d->AR_Design}}" autocomplete="off" id="popup" name="design" class="form-control" data-toggle="modal" data-target="#modalForm" />
@@ -42,7 +42,7 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label for="email">Fournisseur</label>
+                            <b><label style="color: black;" for="email">Fournisseur</label></b>
                             @if($fournisseur != null)
                             @foreach($fournisseur as $frns)
                             <input type="" value="{{$frns->CT_Intitule}}" autocomplete="off" id="popupFrns" class="form-control" data-toggle="modal" data-target="#modalFormFrns" />
@@ -54,10 +54,10 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label for="squareSelect">Forme proposition</label>
+                            <b><label style="color: black;" for="squareSelect">Forme proposition</label></b>
                             @if($proposition != null)
                             @foreach($proposition as $prop)
-                            <input type="text" value="{{$prop->FO_designation}}" class="form-control input-pill" disabled>
+                            <input type="text" value="{{$prop->FO_designation}}" class="form-control input-pill green_color" disabled>
                             @endforeach
                             @endif
                             @if($proposition == null)
@@ -65,7 +65,7 @@
                             @endif
                         </div>
                         <div class="form-group">
-                            <label for="squareSelect">Forme</label>
+                            <b><label style="color: black;" for="squareSelect">Forme</label></b>
                             <select class="form-control input-square" id="forme" name="forme">
                                 @foreach($forme as $forme)
                                 <option value="{{$forme->FO_ref}}">{{$forme->FO_designation}}</option>
@@ -73,13 +73,13 @@
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="pillInput">Dosage</label>
+                            <b><label style="color: black;" for="pillInput">Dosage</label></b>
                             <input type="text" class="form-control input-pill" name="dosage" id="dosage" placeholder="Dosage">
                         </div>
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-8">
-                                    <label for="pillSelect">Presentation</label>
+                                    <b><label style="color: black;" for="pillSelect">Presentation</label></b>
                                     <select class="form-control input-pill" id="presentation" name="presentation">
                                         @foreach($presentation as $p)
                                         <option value="{{$p->P_ref}}">{{$p->P_Intitule}}</option>
@@ -87,18 +87,18 @@
                                     </select>
                                 </div>
                                 <div class="col-md-4">
-                                    <label for="pillSelect">Quantite unitaire</label>
+                                    <b><label style="color: black;" for="pillSelect">Quantite unitaire</label></b>
                                     <input type="number" min="0" class="form-control input-pill" name="P_quantite" id="P_quantite" value="0">
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="solidInput">N° Lot</label>
+                            <b><label style="color: black;" for="solidInput">N° Lot</label></b>
                             <input type="text" class="form-control input-solid" id="lot" name="lot" placeholder="N° Lot">
                         </div>
                         <div class="form-group">
-                            <label for="solidInput">Date de Peremption</label>
-                            <input type="date" class="form-control input-solid" id="date_peremp" name="date_peremp">
+                            <b><label style="color: black;" for="solidInput">Date de fabrication</label></b>
+                            <input type="date" class="form-control input-solid" id="date_fab" name="date_fab">
                         </div>
                     </div>
                 </div>
@@ -107,19 +107,19 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-group">
-                            <label for="solidInput">Fabricant</label>
+                            <b><label style="color: black;" for="solidInput">Fabricant</label></b>
                             <input type="text" class="form-control input-solid" id="fabricant" name="fabricant" placeholder="Fabricant">
                         </div>
                         <div class="form-group">
-                            <label for="solidInput">Date de fabrication</label>
-                            <input type="date" class="form-control input-solid" id="date_fab" name="date_fab">
+                            <b><label style="color: black;" for="solidInput">Date de Peremption</label></b>
+                            <input type="date" class="form-control input-solid" id="date_peremp" name="date_peremp">
                         </div>
                         <div class="form-group">
-                            <label for="solidInput">Quantite</label>
+                            <b><label style="color: black;" for="solidInput">Quantite</label></b>
                             <input type="Number" min="0" class="form-control input-solid" id="quantite" name="quantite" value="0">
                         </div>
                         <div class="form-group">
-                            <label for="pillSelect">Type de stockage</label>
+                            <b><label style="color: black;" for="pillSelect">Type de stockage</label></b>
                             <select class="form-control input-pill" id="t_stockage" name="t_stockage">
                                 @foreach($stockage as $stockage)
                                 <option value="{{$stockage->T_Stockage_ref}}">{{$stockage->Type_Stockage}}</option>
@@ -129,11 +129,11 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-9">
-                                    <label for="solidInput">Volume</label>
+                                    <b><label style="color: black;" for="solidInput">Volume</label></b>
                                     <input type="number" class="form-control input-solid" id="volume" name="volume" value="0">
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="solidInput">Unite</label>
+                                    <b><label style="color: black;" for="solidInput">Unite</label></b>
                                     <input type="text" class="form-control input-solid" value="m3" disabled>
                                 </div>
                             </div>
@@ -141,17 +141,17 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col-md-9">
-                                    <label for="solidInput">Poids</label>
+                                    <b><label style="color: black;" for="solidInput">Poids</label></b>
                                     <input type="number" class="form-control input-solid" id="poids" name="poids" value="0">
                                 </div>
                                 <div class="col-md-3">
-                                    <label for="solidInput">Unite</label>
+                                    <b><label style="color: black;" for="solidInput">Unite</label></b>
                                     <input type="text" class="form-control input-solid" value="Kg" disabled>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="solidInput">Observations</label>
+                            <b><label style="color: black;" for="solidInput">Observations</label></b>
                             <textarea type="text" rows="1" class="form-control input-solid" id="observation" name="observation"></textarea>
                         </div>
                         <div class="form-group">
@@ -186,7 +186,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">
                     <span aria-hidden="true">×</span>
-                    <span class="sr-only">Close</span>
+                    <span class="sr-only">Fermer</span>
                 </button>
                 <!-- <h4 class="modal-title" id="myModalLabel">Contact Form</h4> -->
             </div>
@@ -195,6 +195,11 @@
             <div class="modal-body">
                 <div class="col-lg-12">
                     <div class="card">
+                        <div class="full graph_head">
+                            <div class="heading1 margin_0">
+                                <h2>Liste des intrants de santé</h2>
+                            </div>
+                        </div>
                         <div class="inbox-head">
                             <div class="input-append">
                                 <input type="text" name="searchBar" id="searchBar" class="sr-input" placeholder="Recherche" oninput="listeArticles()">
@@ -211,7 +216,7 @@
 
             <!-- Modal Footer -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
                 <!-- <button type="button" class="btn btn-primary submitBtn" onclick="submitContactForm()">SUBMIT</button> -->
             </div>
         </div>
@@ -226,7 +231,7 @@
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal">
                     <span aria-hidden="true">×</span>
-                    <span class="sr-only">Close</span>
+                    <span class="sr-only">Fermer</span>
                 </button>
                 <!-- <h4 class="modal-title" id="myModalLabel">Contact Form</h4> -->
             </div>
@@ -235,6 +240,11 @@
             <div class="modal-body">
                 <div class="col-lg-12">
                     <div class="card">
+                        <div class="full graph_head">
+                            <div class="heading1 margin_0">
+                                <h2>Liste des fournisseurs</h2>
+                            </div>
+                        </div>
                         <div class="inbox-head">
                             <div class="input-append">
                                 <input type="text" name="searchBarFrns" id="searchBarFrns" class="sr-input" placeholder="Recherche" oninput="listeFrns()">

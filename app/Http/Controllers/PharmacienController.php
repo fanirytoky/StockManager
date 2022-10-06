@@ -119,7 +119,7 @@ class PharmacienController extends Controller
         elseif ($etat == 2) {
             Details_Fiche::validerDtFiche($dt_Fiche_ref, -3);
             Details_Fiche::DecisionFicheRemarque($observation, $dt_Fiche_ref);
-            return redirect('/Pharmacien/fiches-nouveau')->withSuccess('Fiche mise en REBUT');
+            return redirect('/Pharmacien/fiches-nouveau')->withSuccess('Fiche mise au Rebut');
         }
     }
 
@@ -212,5 +212,12 @@ class PharmacienController extends Controller
         $details_score = Details_Fiche_Score::getDtScoreById($dt_fiche_ref);
         $total_score = Details_Fiche_Score::getTotalScore($dt_fiche_ref);
         return view('Pharmacien.detailsScoreFiches', ['details_score' => $details_score, 'total_score' => $total_score]);
+    }
+
+    public function detailsScoreFicheDecision(Request $request){
+        $dt_fiche_ref = $request->dt_fiche_ref;
+        $details_Fiche = Fiche_Details_Fiche::getDetailFicheById($dt_fiche_ref);
+        $total_score = Details_Fiche_Score::getTotalScore($dt_fiche_ref);
+        return view('Pharmacien.totalScoreFiches', ['details' => $details_Fiche,'total_score' => $total_score]);
     }
 }

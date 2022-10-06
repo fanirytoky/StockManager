@@ -16,7 +16,7 @@
         <tbody id="ajaxlisteFicheAvalider">
             @foreach($val as $fiche)
             <tr>
-                <td>{{$fiche->id_Fiche}}</td>
+                <td>{{$fiche->dt_Fiche_ref}}</td>
                 <td>{{$fiche->AR_Ref}}</td>
                 <td>{{$fiche->AR_Design}}</td>
                 <td>{{$fiche->CT_Intitule}}</td>
@@ -27,7 +27,7 @@
                     <div class="button_block"><a class="fw_icon" href="{{ route('Stock/fiche-PDF', ['dt_Fiche' => $fiche->dt_Fiche_ref]) }}"><button type="button" class="btn cur-p btn-outline-info fa fa-file-pdf-o"> Exporter</button></a></div>
                 </td>
                 <td>
-                    <div class="button_block"><a class="fw_icon" href="{{ route('Stock/fiche-details', ['id_dt_Fiche' => $fiche->dt_Fiche_ref]) }}"><button type="button" class="btn cur-p btn-outline-warning fa fa-eye"> Voir</button></a></div>
+                    <div class="button_block"><a class="fw_icon" href="{{ route('Stock/fiche-details', ['id_dt_Fiche' => $fiche->dt_Fiche_ref]) }}"><button type="button" class="btn cur-p btn-outline-success fa fa-eye"> Voir</button></a></div>
                 </td>
             </tr>
             @endforeach
@@ -36,6 +36,6 @@
 </div>
 <div class="col-md-12 pagination">
     <div class="col-md-12">
-        {{ $val->links() }}
+        {{ $val->onEachSide(1)->links() }}
     </div>
 </div>

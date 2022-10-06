@@ -22,12 +22,15 @@ class Fournisseur extends Model
         return $fournisseur;
     }
 
-    public function getListeFrns($filtre,$type)
+    public function getListeFrns($filtre, $type)
     {
         $fournisseur = DB::table('F_COMPTET')
-            ->Where('CT_Intitule', 'like', '%' . $filtre . '%')
-            ->Where('CT_Type', '=', $type)
-            ->select('F_COMPTET.*');
+            ->select('F_COMPTET.*')
+            ->where(static function ($query) use ($filtre) {
+                $query->where('CT_Intitule', 'like', "%{$filtre}%")
+                    ->orWhere('CT_Num', 'like', "%{$filtre}%");
+            })
+            ->Where('CT_Type', '=', $type);
         $val = $fournisseur->paginate(10);
         return $val;
     }

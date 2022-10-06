@@ -32,6 +32,6 @@
 </div>
 <div class="col-md-12 pagination">
     <div class="col-md-12">
-        {{ $val->links() }}
+        {{ $val->onEachSide(1)->links() }}
     </div>
 </div>

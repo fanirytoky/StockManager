@@ -49,7 +49,7 @@
                     <div class="tab_style2">
                         <div class="tabbar padding_infor_info" >
                             <div class="card-header" id="entete">
-                                <div class="card-title"><h5 style="color: white;">Ajout informations commerciale</h5></div>
+                                <div class="card-title"><h5 style="color: white;">Ajout informations du marché</h5></div>
                             </div>
                             <div class="card-body" style="background-color: #f8f8f8;">
                                 <form method="POST" action="{{ route('reference.Store') }}">

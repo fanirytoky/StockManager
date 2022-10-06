@@ -56,8 +56,8 @@ class Fiche_Details_Fiche extends Model
         $list = DB::table('fiche_details_fiche')
             ->Where('AR_Design', 'like', '%' . $des . '%')
             ->Where('etat', '=', $etat)
-            ->groupBy('id_Fiche', 'dt_Fiche_ref', 'num_Lot', 'date_peremp',  'AR_Design', 'FO_designation', "P_Intitule", 'date_controle', 'Type_Stockage', 'position', 'etat','Observation')
-            ->select("id_Fiche", 'dt_Fiche_ref', 'num_Lot', 'date_peremp', "AR_Design", "FO_designation", "P_Intitule", "date_controle", 'Type_Stockage', "Etat", "position",'Observation');
+            ->groupBy('id_Fiche', 'dt_Fiche_ref', 'num_Lot', 'date_peremp',  'AR_Design', 'FO_designation', "P_Intitule", 'date_controle', 'Type_Stockage', 'position', 'etat', 'Observation')
+            ->select("id_Fiche", 'dt_Fiche_ref', 'num_Lot', 'date_peremp', "AR_Design", "FO_designation", "P_Intitule", "date_controle", 'Type_Stockage', "Etat", "position", 'Observation');
         $val = $list->paginate(3);
         return $val;
     }
@@ -75,13 +75,14 @@ class Fiche_Details_Fiche extends Model
     public function getListeFicheValidee($des)
     {
         $list = DB::table('fiche_details_fiche')
+            ->where(static function ($query) {
+                $query->where('etat', '=', 3)
+                    ->orWhere('etat', '=', 4);
+            })
             ->Where('AR_Design', 'like', '%' . $des . '%')
-            ->Where('etat', '=', 3)
-            ->orWhere('etat', '=', 4)
-            ->orWhere('etat', '=', 5)
             ->groupBy('id_Fiche', 'AR_Ref', 'AR_Design', 'CT_Intitule', 'date_controle', 'position', 'etat', 'dt_Fiche_ref')
             ->select("id_Fiche", "AR_Ref", "AR_Design", "CT_Intitule", DB::raw("sum(quantite) as total"), "date_controle", "Etat", "position", "dt_Fiche_ref");
-        $val = $list->paginate(10);
+        $val = $list->paginate(5);
         return $val;
     }
 
@@ -97,9 +98,11 @@ class Fiche_Details_Fiche extends Model
     public function getFicheEnAttente($des)
     {
         $list = DB::table('fiche_details_fiche')
+            ->where(static function ($query) {
+                $query->where('etat', '=', -3)
+                    ->orWhere('etat', '=', -2);
+            })
             ->Where('AR_Design', 'like', '%' . $des . '%')
-            ->Where('etat', '=', -3)
-            ->orWhere('etat', '=', -2)
             ->groupBy('id_Fiche', 'AR_Ref', 'AR_Design', 'CT_Intitule', 'date_controle', 'position', 'etat', 'dt_Fiche_ref')
             ->select("id_Fiche", "AR_Ref", "AR_Design", "CT_Intitule", DB::raw("sum(quantite) as total"), "date_controle", "Etat", "position", "dt_Fiche_ref");
         $val = $list->paginate(10);

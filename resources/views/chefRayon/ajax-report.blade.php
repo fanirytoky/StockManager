@@ -50,7 +50,7 @@
         </table>
         <div class="col-xs">
             <div class="pagination">
-                {{ $mvt_stock->links() }}
+                {{ $mvt_stock->onEachSide(1)->links() }}
             </div>
         </div>
     </div>
