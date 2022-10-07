@@ -158,7 +158,7 @@
                         </div>
                         <div class="full graph_head">
                             <div class="heading1 margin_0">
-                                <h2><i class="fa fa-sort-alpha-asc"></i>   Report de stock</h2>
+                                <h2><i class="fa fa-sort-alpha-asc"></i>   Liste des mouvements de stock</h2>
                             </div>
                         </div>
                         <div class="col-lg-12" id="ajax-report">

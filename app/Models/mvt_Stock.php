@@ -71,6 +71,28 @@ class mvt_Stock extends Model
     return $mvt_stock;
   }
 
+  public function getLastDateMvtStock($idFicheStock)
+  {
+    $mvt_stock = DB::select("SELECT max(date_mvt)
+        FROM (
+          SELECT date_mvt, 
+                 id_fiche_stock,
+                 num_Rack,
+                 num_Doc,
+                 CT_Num,
+                 CT_Intitule,
+                 entree,
+                 sortie,
+                 observation,
+                 id_stock_empl,
+                 SUM(entree-sortie) OVER(ORDER BY date_mvt,id_stock_empl asc) AS stock
+          FROM mvt_stock
+          WHERE id_fiche_stock = " . $idFicheStock . "
+        ) t 
+        LEFT JOIN inventaire_stock i on i.date_inventaire<=date_mvt and i.date_inventaire>=date_mvt and i.id_fiche_stock=" . $idFicheStock);
+    return $mvt_stock;
+  }
+
   public function statMvtStock($filtre, $grp, $par, $dateMax, $dateMin)
   {
     // globale

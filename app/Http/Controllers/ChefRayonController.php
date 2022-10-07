@@ -249,12 +249,20 @@ class ChefRayonController extends Controller
             if ($validator->fails()) {
                 return  redirect()->back()->withErrors($validator)->withInput();
             }
-            inventaire_stock::create([
-                'id_fiche_stock' => $idFS,
-                'quantite' => $quantite,
-                'date_inventaire' => $date,
-                'observations' => $observations,
-            ]);
+
+            $lastDate = mvt_Stock::getLastDateMvtStock($idFS);
+            if ($date < $lastDate) {
+                return  redirect()->back()->withErrors('inventaire invalide');
+            } else {
+
+
+                inventaire_stock::create([
+                    'id_fiche_stock' => $idFS,
+                    'quantite' => $quantite,
+                    'date_inventaire' => $date,
+                    'observations' => $observations,
+                ]);
+            }
 
             return redirect('/fiche/stock/details/' . $idFS)->withSuccess('Mouvement stock enregistrer');
         } else {
@@ -351,7 +359,7 @@ class ChefRayonController extends Controller
         return $pdf->download('fiche_de_stock_n°' . $id_fiche_stock . '.pdf');
     }
 
-    public function ajusterStockInventaire($inventaire, $stock, $id_stock_empl)
+    public function ajusterStockInventaire($inventaire, $stock, $id_stock_empl, $id_inventaire)
     {
         $entree = 0;
         $sortie = 0;
@@ -372,6 +380,9 @@ class ChefRayonController extends Controller
             'date' => now(),
             'id_user' => auth()->user()->id,
         ]);
+
+        inventaire_stock::updateEtatInventaire($id_inventaire, 1);
+
         return Redirect::back()->withErrors(['msg' => 'Ajustement stock enregistrer']);
     }
 

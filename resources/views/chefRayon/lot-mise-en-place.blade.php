@@ -5,7 +5,7 @@
     <div class="white_shd full margin_bottom_30">
         <div class="full graph_head" id="entete">
             <div class="heading1 margin_0">
-                <h2 style="color: white;"><i class="fa fa-file-text-o"></i> Ajout emplacements des nouvelles intrants de sante</h2>
+                <h2 style="color: white;"><i class="fa fa-file-text-o"></i> Ajout emplacements</h2>
             </div>
         </div>
 

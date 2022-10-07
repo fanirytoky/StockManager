@@ -141,7 +141,7 @@
                     efficiency.push(labels[i].efficiency);
                     coloR.push(dynamicColors());
                 }
-                console.log(chartType);
+                // console.log(chartType);
                 // var ctx = $('#myChart');
                 var ctx = document.getElementById("myChart");
                 var ctxP = ctx.getContext('2d');
@@ -261,7 +261,7 @@
             e.preventDefault()
             if (xhr.readyState === 4) {
                 document.getElementById("detailsStat").innerHTML = xhr.responseText
-                console.log(xhr.responseText)
+                // console.log(xhr.responseText)
             }
         }
         if (page <= 1) var url = '/Article-expiration/Chart?data=' + data;
@@ -293,5 +293,6 @@
             myChart(1);
         });
     });
+    myChart()
 </script>
 @endsection
