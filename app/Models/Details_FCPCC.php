@@ -250,7 +250,7 @@ class Details_FCPCC extends Model
                     ->where('date_livraison', '<=', $fin)
                     ->groupBy('CT_Intitule', 'AR_Design')
                     ->select(
-                        DB::raw("CONCAT(SUBSTRING(AR_Design,1,10),'-'+SUBSTRING([CT_Intitule],1,8)) as labels"),
+                        DB::raw("CONCAT(SUBSTRING(AR_Design,1,20),'-'+SUBSTRING([CT_Intitule],1,15)) as labels"),
                         DB::raw("sum([score]) as total_score"),
                         DB::raw("(CEILING((sum([score])*100)/(SELECT sum(score) FROM [reception_salama].[dbo].[details_FCPCC] where AR_Design like '%" . $filtre . "%' and date_livraison >= '" . $debut . "' and date_livraison <= '" . $fin . "' ))) as pourc")
                     )
@@ -262,7 +262,7 @@ class Details_FCPCC extends Model
                     ->where('date_livraison', '>=', $debut)
                     ->groupBy('CT_Intitule', 'AR_Design')
                     ->select(
-                        DB::raw("CONCAT(SUBSTRING(AR_Design,1,10),'-'+SUBSTRING([CT_Intitule],1,8)) as labels"),
+                        DB::raw("CONCAT(SUBSTRING(AR_Design,1,20),'-'+SUBSTRING([CT_Intitule],1,15)) as labels"),
                         DB::raw("sum([score]) as total_score"),
                         DB::raw("(CEILING((sum([score])*100)/(SELECT sum(score) FROM [reception_salama].[dbo].[details_FCPCC] where AR_Design like '%" . $filtre . "%' and date_livraison >= '" . $debut . "'))) as pourc")
                     )
@@ -274,7 +274,7 @@ class Details_FCPCC extends Model
                     ->where('date_livraison', '<=', $fin)
                     ->groupBy('CT_Intitule', 'AR_Design')
                     ->select(
-                        DB::raw("CONCAT(SUBSTRING(AR_Design,1,10),'-'+SUBSTRING([CT_Intitule],1,8)) as labels"),
+                        DB::raw("CONCAT(SUBSTRING(AR_Design,1,20),'-'+SUBSTRING([CT_Intitule],1,15)) as labels"),
                         DB::raw("sum([score]) as total_score"),
                         DB::raw("(CEILING((sum([score])*100)/(SELECT sum(score) FROM [reception_salama].[dbo].[details_FCPCC] where AR_Design like '%" . $filtre . "%' and date_livraison <= '" . $fin . "' ))) as pourc")
                     )
@@ -283,9 +283,10 @@ class Details_FCPCC extends Model
             if ($debut == null && $fin == null) {
                 $val = DB::table('details_FCPCC')
                     ->orWhere($typeObject, 'like', '%' . $filtre . '%')
-                    ->groupBy('CT_Intitule', 'AR_Design')
+                    ->groupBy('CT_Intitule', 'AR_Design','num_Lot','etat')
                     ->select(
-                        DB::raw("CONCAT(SUBSTRING(AR_Design,1,10),'-'+SUBSTRING([CT_Intitule],1,8)) as labels"),
+                        'etat',
+                        DB::raw("CONCAT(AR_Design,'-'+[CT_Intitule]) as labels"),
                         DB::raw("sum([score]) as total_score"),
                         DB::raw("(CEILING((sum([score])*100)/(SELECT sum(score) FROM [reception_salama].[dbo].[details_FCPCC] where AR_Design like '%" . $filtre . "%'))) as pourc")
                     )

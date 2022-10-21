@@ -1,4 +1,4 @@
-<div class="tab-pane fade" id="decision" role="tabpanel" aria-labelledby="first">
+<div class="col-md-12">
     <div class="row">
         <div class="col-lg-12">
             @foreach($total_score as $total)

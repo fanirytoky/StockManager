@@ -196,7 +196,8 @@ class PharmacienController extends Controller
         return response()->json([
             'data' => $dt,
             'labels' => $labels,
-            'type' => $typeChart
+            'type' => $typeChart,
+            'typeObj' => $typeObject
         ]);
     }
 

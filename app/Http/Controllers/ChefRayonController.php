@@ -251,7 +251,7 @@ class ChefRayonController extends Controller
             }
 
             $lastDate = mvt_Stock::getLastDateMvtStock($idFS);
-            if ($date < $lastDate) {
+            if ($lastDate[0]->max > $date) {
                 return  redirect()->back()->withErrors('inventaire invalide');
             } else {
 
@@ -264,7 +264,7 @@ class ChefRayonController extends Controller
                 ]);
             }
 
-            return redirect('/fiche/stock/details/' . $idFS)->withSuccess('Mouvement stock enregistrer');
+            return redirect('/fiche/stock/details/' . $idFS)->withSuccess('Mouvement stock enregistré');
         } else {
 
 

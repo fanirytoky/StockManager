@@ -8356,28 +8356,28 @@
                             <th>ENTREE</th>
                             <th>SORTIE</th>
                             <th>STOCK</th>
-                            <th>OBSERVATION</th>
-                            <th></th>
+                            <th>OBSERVATIONS</th>
+                            <th>INVENTAIRES</th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach($val as $val)
                         <tr>
                             <td>{{$val->date_mvt}}</td>
-                            <td>{{$val->num_Doc}}</td>
                             @if($val->num_Doc == null && $val->CT_Intitule == null)
-                            <td>Chef de Rayon</td>
                             <td>Emplacement</td>
+                            <td>Chef de Rayon</td>
                             @else
+                            <td>{{$val->num_Doc}}</td>
                             <td>{{$val->CT_Intitule}}</td>
-                            <td>{{$val->num_Rack}}</td>
                             @endif
+                            <td>{{$val->num_Rack}}</td>
                             <td>{{$val->entree}}</td>
                             <td>{{$val->sortie}}</td>
                             <td>{{$val->stock}}</td>
                             <td>{{$val->observation}}</td>
                             @if($val->date_inventaire != null)
-                            <td><b><p style="color: red;">{{$val->observations}}: {{$val->quantite}}</p></b></td>
+                            <td><b><p style="color: red;">{{$val->observations}} QTE: {{$val->quantite}}</p></b></td>
                             @else
                             <td></td>
                             @endif

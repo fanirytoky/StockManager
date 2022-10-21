@@ -2,8 +2,19 @@
 @section('vue')
 <div class="card">
     <div class="card-header" id="entete">
-        <div class="card-title"><h5 style="color: white;">Créer un utilisateur</h5></div>
+        <div class="card-title">
+            <h5 style="color: white;">Créer un utilisateur</h5>
+        </div>
     </div>
+    @if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+            <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
     <div class="card-body">
         <div class="form-group">
             <form method="POST" action="{{ route('user.Store') }}">

@@ -3,15 +3,17 @@
 
 <head>
     <style>
-        /* table {
-            border-collapse: collapse;
-            border-spacing: 0;
-        } */
-
         th,
         td {
             padding: 10px 20px;
             border: 1px solid #000;
+        }
+
+        #myChart {
+            display: inline-block;
+            position: relative;
+            /* width: 100%; */
+            height: 100%;
         }
     </style>
 </head>
@@ -27,9 +29,9 @@
                     &nbsp;&nbsp;<div class="input-append">
                         <label style="color: black;">&nbsp;Trier par</label><br>
                         <select class="sr-input green_color" id="typeObject" name="typeObject" onchange="myChart()">
+                            <option value="2">DUREE DE VIE</option>
                             <option value="0">ARTICLE</option>
                             <option value="1">FOURNISSEUR</option>
-                            <option value="2">DUREE DE VIE</option>
                         </select>
                     </div>
                     &nbsp;&nbsp;<div class="input-append">
@@ -123,23 +125,29 @@
 
                 // console.log( JSON.parse(response.type));
                 var chartType = JSON.parse(response.type)
+                var typeObj = JSON.parse(response.typeObj)
                 var typeChart = 0
 
+                for (var i in labels) {
+                    ict_unit.push("ICT Unit " + labels[i].ict_unit);
+                    efficiency.push(labels[i].efficiency);
+                    coloR.push(dynamicColors());
+                }
                 if (chartType == null || chartType == 0) {
-                    chartType = "bar";
+                    if (typeObj != 2) {
+                        chartType = "horizontalBar";
+                    } else {
+                        chartType = "bar";
+                    }
                 } else {
-                    if (chartType == 1) {
+                    if (chartType == 1 && typeObj == 2) {
                         chartType = "line";
+                        coloR = "rgb(120, 243, 204)";
                     }
                     if (chartType == 2) {
                         typeChart = 1;
                         chartType = "doughnut";
                     }
-                }
-                for (var i in labels) {
-                    ict_unit.push("ICT Unit " + labels[i].ict_unit);
-                    efficiency.push(labels[i].efficiency);
-                    coloR.push(dynamicColors());
                 }
                 // console.log(chartType);
                 // var ctx = $('#myChart');
@@ -151,18 +159,38 @@
                         data: {
                             labels: labels,
                             datasets: [{
-                                label: 'Quantité',
+                                label: 'Total scores',
                                 data: data,
                                 backgroundColor: coloR,
 
                             }]
                         },
                         options: {
+                            plugins: {
+                                subtitle: {
+                                    display: true,
+                                    text: 'Title goes here ...',
+                                    color: '#ff0000',
+                                    font: {
+                                        size: 20
+                                    }
+                                }
+                            },
                             legend: {
                                 display: false
                             },
                             y: {
                                 beginAtZero: true
+                            },
+                            scales: {
+                                xAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }],
+                                yAxes: [{
+                                    stacked: true
+                                }]
                             }
                         }
                     };
@@ -172,21 +200,31 @@
                         data: {
                             labels: labels,
                             datasets: [{
-                                label: 'Scores qualité par fournisseurs',
                                 data: data,
                                 backgroundColor: coloR,
 
                             }]
                         },
                         options: {
+                            plugins: {
+                                subtitle: {
+                                    display: true,
+                                    text: 'Title goes here ...',
+                                    color: '#ff0000',
+                                    font: {
+                                        size: 20
+                                    }
+                                }
+                            },
                             y: {
                                 beginAtZero: true
-                            }
+                            },
+                            responsive: true
                         }
                     };
                 }
                 var chart = new Chart(ctxP, config);
-                
+
 
                 ctx.onclick = function(e) {
 

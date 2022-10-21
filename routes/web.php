@@ -37,6 +37,8 @@ Route::get('/AjaxListeUser',[AdminController::class,'ajaxListeUser'])->name('aja
 Route::get('/user/{id}',[AdminController::class,'updateUser'])->name('user.update')->middleware(['Admin']);
 Route::post('/user.set',[AdminController::class,'modifierUser'])->name('modifUser')->middleware(['Admin']);
 Route::get('/users/{id}',[AdminController::class,'deleteUser'])->name('user.delete')->middleware(['Admin']);
+Route::get('/maj',[AdminController::class,'maj'])->name('maj')->middleware(['Admin']);
+Route::get('/mise-à-jour/données/{table}',[AdminController::class,'majExecute'])->name('majExecute')->middleware(['Admin']);
 // 
 
 // Magasinier

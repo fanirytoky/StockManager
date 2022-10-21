@@ -93,11 +93,15 @@ class MagasinierController extends Controller
                 'AR_Ref' => ['required'],
                 'CT_Num' => ['required'],
                 'lot' => ['required'],
+                'quantite' => ['required'],
+                'date_peremp' => ['required'],
             ],
             [
                 'AR_Ref.required' => 'Veuillez  remplir la designation',
                 'CT_Num.required' => 'Veuillez  remplir le fournisseur',
                 'lot.required' => 'Veuillez  remplir le lot',
+                'quantite.required' => 'Veuillez  remplir la quantite',
+                'date_peremp.required' => 'Veuillez  remplir la date de peremption',
             ]
         );
 

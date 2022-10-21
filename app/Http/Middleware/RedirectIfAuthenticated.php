@@ -47,7 +47,7 @@ class RedirectIfAuthenticated
             return '/reception/calendrier';
         }
         if(auth()->user()->post_id == 6){
-            return '/Mouvement-Stock/Chart/Vue';
+            return '/ChefRayon/fiches-stock';
         }
     
         return '/';

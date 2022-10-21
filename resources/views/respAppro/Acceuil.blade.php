@@ -20,9 +20,9 @@
                     &nbsp;&nbsp;<div class="input-append">
                         <label style="color: black;">&nbsp;Type</label><br>
                         <select class="sr-input green_color" id="type" name="type" onchange="myChart()">
+                            <option value="2">Pie</option>
                             <option value="0">Bar</option>
                             <option value="1">Line</option>
-                            <option value="2">Doughnut</option>
                         </select>
                     </div>
                 </div>
@@ -53,6 +53,10 @@
         var ict_unit = [];
         var efficiency = [];
         var coloR = [];
+        var labels = null;
+        var taux = null;
+        var ctx = $('#myChart');
+
 
         var dynamicColors = function() {
             var r = Math.floor(Math.random() * 255);
@@ -73,16 +77,16 @@
             },
             success: function(response) {
 
-                var labels = response.frns.map(function(e) {
+                labels = response.frns.map(function(e) {
                     return e
                 })
-                var taux = response.taux.map(function(e) {
+                taux = response.taux.map(function(e) {
                     return e
                 })
-                console.log('taux', taux);
+                // console.log('taux', taux);
 
                 // console.log('typeeeeeeee', JSON.parse(response.type));
-                var chartType = JSON.parse(response.type)
+                chartType = JSON.parse(response.type)
                 var typeChart = 0
 
                 if (chartType == null || chartType == 0) {
@@ -92,7 +96,7 @@
                     chartType = "line";
                 }
                 if (chartType == 2) {
-                    chartType = "doughnut";
+                    chartType = "pie";
                     typeChart = 1;
                 }
                 for (var i in labels) {
@@ -101,7 +105,6 @@
                     coloR.push(dynamicColors());
                 }
                 console.log(chartType);
-                var ctx = $('#myChart');
                 if (typeChart == 0) {
                     var config = {
                         type: chartType,
@@ -145,9 +148,9 @@
                             }
                         }
                     };
-
                 }
                 var chart = new Chart(ctx, config);
+                chart.update();
             },
             error: function(xhr) {
                 console.log(xhr.responseJSON);
@@ -168,11 +171,6 @@
             event.preventDefault();
             myChart();
         });
-
-        // $('#filtre').on('oninput', function() {
-        //     $value = $(this).val();
-        //     myChart(1);
-        // });
         $('#debut').on('onchange', function() {
             $value = $(this).val();
             myChart(1);

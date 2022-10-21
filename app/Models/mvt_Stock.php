@@ -73,7 +73,7 @@ class mvt_Stock extends Model
 
   public function getLastDateMvtStock($idFicheStock)
   {
-    $mvt_stock = DB::select("SELECT max(date_mvt)
+    $mvt_stock = DB::select("SELECT max(date_mvt) as max
         FROM (
           SELECT date_mvt, 
                  id_fiche_stock,

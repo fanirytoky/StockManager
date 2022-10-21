@@ -238,8 +238,9 @@
                                                 </button>
                                             </div>
                                         </div>
-
+                                        <div class="tab-pane fade" id="decision" role="tabpanel" aria-labelledby="decision">
                                         <div id="AjaxDecision"></div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -429,7 +430,6 @@
             e.preventDefault()
             if (xhr.readyState === 4) {
                 detailsScore()
-                // window.location.reload();
                 reloadScore()
             }
         }
@@ -448,7 +448,6 @@
             e.preventDefault()
             if (xhr.readyState === 4) {
                 detailsScore()
-                // window.location.reload();
                 reloadScore()
             }
         }
@@ -466,7 +465,9 @@
         xhr.onreadystatechange = (e) => {
             e.preventDefault()
             if (xhr.readyState === 4) {
-                document.getElementById("AjaxDecision").outerHTML = xhr.responseText
+                // $("AjaxDecision").html(xhr.responseText);
+                // console.log(xhr.responseText);
+                document.getElementById("AjaxDecision").innerHTML = xhr.responseText
             }
         }
         var dtFiche = document.getElementById('dt_fiche_ref').value
