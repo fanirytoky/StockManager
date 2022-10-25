@@ -93,21 +93,18 @@ class AdminController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255'],
             'post_id' => ['required'],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
         $user = User::find($request->idUser);
         if (strcmp($user->email, $request->email) == 0) {
             $user->update([
                 'name' => $request->name,
-                'password' => Hash::make($request->password),
                 'post_id' => $request->post_id,
             ]);
         } else {
             $user->update([
                 'name' => $request->name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password),
                 'post_id' => $request->post_id,
             ]);
         }

@@ -130,14 +130,29 @@
                                                         @endforeach
                                                     </div>
                                                     <div class="flex items-center justify-end mt-4 col-lg-12">
-                                                        <button onclick="storeScore()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
-                                                            Valider
-                                                        </button>
+                                                        <div class="nav nav-tabs" id="nav-tab" role="tablist" aria-orientation="horizontal">
+                                                            <a class="nav-item nav-link" id="Libelle" data-toggle="pill" href="#success-1" role="tab" aria-controls="v-pills-home" aria-selected="false"><button onclick="storeScore()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
+                                                                    Valider
+                                                                </button></a>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <!-- </form> -->
                                             </div>
                                         </div>
+
+                                        <div class="tab-pane fade" id="success-1" role="tabpanel" aria-labelledby="success-1">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <div class="alert alert-success">
+                                                        <ul>
+                                                            <li>Etape 1 effectué</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="tab-pane fade" id="Libelle-2" role="tabpanel" aria-labelledby="Libelle-2">
                                             <div class="form-group">
                                                 <div class="col-lg-12">
@@ -158,11 +173,26 @@
                                                 </div>
                                             </div>
                                             <div class="flex items-center justify-end mt-4 col-lg-12">
-                                                <button onclick="storeScores2()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
-                                                    Valider
-                                                </button>
+                                                <div class="nav nav-tabs" id="nav-tab" role="tablist" aria-orientation="horizontal">
+                                                    <a class="nav-item nav-link" id="Libelle" data-toggle="pill" href="#success-2" role="tab" aria-controls="v-pills-home" aria-selected="false"><button onclick="storeScores2()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
+                                                            Valider
+                                                        </button></a>
+                                                </div>
                                             </div>
                                         </div>
+
+                                        <div class="tab-pane fade" id="success-2" role="tabpanel" aria-labelledby="success-2">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <div class="alert alert-success">
+                                                        <ul>
+                                                            <li>Etape 2 effectué</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="tab-pane fade" id="Libelle-3" role="tabpanel" aria-labelledby="Libelle-3">
                                             <div class="form-group">
                                                 <div class="col-lg-12">
@@ -183,11 +213,26 @@
                                                 </div>
                                             </div>
                                             <div class="flex items-center justify-end mt-4 col-lg-12">
-                                                <button onclick="storeScores3()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
-                                                    Valider
-                                                </button>
+                                                <div class="nav nav-tabs" id="nav-tab" role="tablist" aria-orientation="horizontal">
+                                                    <a class="nav-item nav-link" id="Libelle" data-toggle="pill" href="#success-3" role="tab" aria-controls="v-pills-home" aria-selected="false"><button onclick="storeScores3()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
+                                                            Valider
+                                                        </button></a>
+                                                </div>
                                             </div>
                                         </div>
+
+                                        <div class="tab-pane fade" id="success-3" role="tabpanel" aria-labelledby="success-3">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <div class="alert alert-success">
+                                                        <ul>
+                                                            <li>Etape 3 effectué</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="tab-pane fade" id="Libelle-4" role="tabpanel" aria-labelledby="Libelle-4">
                                             <div class="form-group">
                                                 <div class="col-lg-12">
@@ -208,11 +253,26 @@
                                                 </div>
                                             </div>
                                             <div class="flex items-center justify-end mt-4 col-lg-12">
-                                                <button onclick="storeScores4()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
-                                                    Valider
-                                                </button>
+                                                <div class="nav nav-tabs" id="nav-tab" role="tablist" aria-orientation="horizontal">
+                                                    <a class="nav-item nav-link" id="Libelle" data-toggle="pill" href="#success-4" role="tab" aria-controls="v-pills-home" aria-selected="false"><button onclick="storeScores4()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
+                                                            Valider
+                                                        </button></a>
+                                                </div>
                                             </div>
                                         </div>
+
+                                        <div class="tab-pane fade" id="success-4" role="tabpanel" aria-labelledby="success-4">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <div class="alert alert-success">
+                                                        <ul>
+                                                            <li>Etape 4 effectué</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="tab-pane fade" id="Libelle-5" role="tabpanel" aria-labelledby="Libelle-5">
                                             <div class="form-group">
                                                 <div class="col-lg-12">
@@ -233,13 +293,28 @@
                                                 </div>
                                             </div>
                                             <div class="flex items-center justify-end mt-4 col-lg-12">
-                                                <button onclick="storeScores5()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
-                                                    Valider
-                                                </button>
+                                                <div class="nav nav-tabs" id="nav-tab" role="tablist" aria-orientation="horizontal">
+                                                    <a class="nav-item nav-link" id="Libelle" data-toggle="pill" href="#success-5" role="tab" aria-controls="v-pills-home" aria-selected="false"><button onclick="storeScores5()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
+                                                            Valider
+                                                        </button></a>
+                                                </div>
                                             </div>
                                         </div>
+
+                                        <div class="tab-pane fade" id="success-5" role="tabpanel" aria-labelledby="success-5">
+                                            <div class="form-group">
+                                                <div class="col-lg-12">
+                                                    <div class="alert alert-success">
+                                                        <ul>
+                                                            <li>Etape 5 effectué</li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
                                         <div class="tab-pane fade" id="decision" role="tabpanel" aria-labelledby="decision">
-                                        <div id="AjaxDecision"></div>
+                                            <div id="AjaxDecision"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -460,7 +535,7 @@
         xhr.send();
     }
 
-    function reloadScore(){
+    function reloadScore() {
         var xhr = new XMLHttpRequest()
         xhr.onreadystatechange = (e) => {
             e.preventDefault()

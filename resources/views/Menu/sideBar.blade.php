@@ -38,7 +38,7 @@
                 <a href="#magasinier" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-tasks red_color"></i> <span>Gestion FCPCC</span></a>
                 <ul class="collapse list-unstyled" id="magasinier">
                     <li><a href="{{route('fiche.create')}}">> <span>Nouvelle fiche</span></a></li>
-                    <li><a href="{{route('fiche.list')}}">> <span>Liste FCPCC</span></a></li>
+                    <li><a href="{{route('fiche.list')}}">> <span>Liste fiches non envoyés</span></a></li>
                 </ul>
             </li>
             <li><a href="{{route('article.adresse')}}"><i class="fa fa-table blue2_color"></i> <span>Liste ardresses sur rack</span></a></li>
@@ -68,6 +68,7 @@
             <!-- Responsable Stock -->
             @if(auth()->user() != null && auth()->user()->post_id == 5)
             <li><a href="{{route('calendar')}}"><i class="fa fa-calendar red_color"></i> <span>Calendrier de reception</span></a></li>
+            <li><a href="{{route('Stock.chart.vue')}}"><i class="fa fa-bar-chart-o red_color"></i> <span>Dashboard</span></a></li>
             <li>
                 <a href="#FCPCC" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-database blue2_color"></i> <span>Gestion FCPCC</span></a>
                 <ul class="collapse list-unstyled" id="FCPCC">
@@ -80,7 +81,6 @@
 
             <!-- Chef de Rayon -->
             @if(auth()->user() != null && auth()->user()->post_id == 6)
-            <!-- <li><a href="{{route('ChefRayon.chart.vue')}}"><i class="fa fa-bar-chart-o red_color"></i> <span>Dashboard</span></a></li> -->
             <li>
                 <a href="#FCPCC" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-cubes yellow_color"></i> <span>Gestion stock</span></a>
                 <ul class="collapse list-unstyled" id="FCPCC">

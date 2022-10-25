@@ -6,38 +6,49 @@
             <div class="inbox-head">
                 <div class="input-group">
                     <div class="input-append">
-                        <label style="color: black;">Désignation </label><br>
-                        <input type="text" name="filtre" id="filtre" class="sr-input green_color" placeholder="Recherche" oninput="myChart()">
-                        <select class="sr-input green_color" id="filter" name="filter">
+                        <label style="color: black;">&nbsp;Mois de</label><br>
+                        <select class="sr-input green_color" id="mois1" name="mois1" onchange="myChart()">
+                            <option value="1">JANVIER</option>
+                            <option value="2">FEVRIER</option>
+                            <option value="3">MARS</option>
+                            <option value="4">AVRIL</option>
+                            <option value="5">MAI</option>
+                            <option value="6">JUIN</option>
+                            <option value="7">JUILLET</option>
+                            <option value="8">AOÛT</option>
+                            <option value="9">SEPTEMBRE</option>
+                            <option value="10">OCTOBRE</option>
+                            <option value="11">NOVEMBRE</option>
+                            <option value="12">DECEMBRE</option>
                         </select>
                     </div>
 
                     &nbsp;&nbsp;<div class="input-append">
-                        <label style="color: black;">&nbsp;Regroupée par</label><br>
-                        <select class="sr-input green_color" id="grp" name="grp" onchange="myChart()">
-                            <option value="0">GLOBALE</option>
-                            <option value="1">FICHE</option>
-                            <option value="2">ARTICLE</option>
-                        </select>
-                    </div>
-
-                    &nbsp;&nbsp;<div class="input-append">
-                        <label style="color: black;">&nbsp;Par</label><br>
-                        <select class="sr-input green_color" id="par" name="par" onchange="myChart()">
-                            <option value="0">-</option>
-                            <option value="1">LOT</option>
-                            <option value="2">N° RACK</option>
+                        <label style="color: black;">&nbsp;Au</label><br>
+                        <select class="sr-input green_color" id="mois2" name="mois2" onchange="myChart()">
+                        <option value="12">DECEMBRE</option>
+                        <option value="1">JANVIER</option>
+                            <option value="2">FEVRIER</option>
+                            <option value="3">MARS</option>
+                            <option value="4">AVRIL</option>
+                            <option value="5">MAI</option>
+                            <option value="6">JUIN</option>
+                            <option value="7">JUILLET</option>
+                            <option value="8">AOÛT</option>
+                            <option value="9">SEPTEMBRE</option>
+                            <option value="10">OCTOBRE</option>
+                            <option value="11">NOVEMBRE</option>
                         </select>
                     </div>
                 </div>
                 <div class="input-group">
                     <div class="input-append">
-                        <label style="color: black;">Date debut </label><br>
-                        <input type="date" name="debut" id="debut" class="sr-input green_color" onchange="myChart()">
+                        <label style="color: black;">Année debut </label><br>
+                        <input type="number" min="2000" step="1" value="{{Carbon\Carbon::now()->format('Y')}}" name="debut" id="debut" class="sr-input green_color" onchange="myChart()">
                     </div>
                     &nbsp;&nbsp;<div class="input-append">
-                        <label style="color: black;">Date fin </label><br>
-                        <input type="date" name="fin" id="fin" class="sr-input green_color" onchange="myChart()">
+                        <label style="color: black;">Année fin </label><br>
+                        <input type="number" min="2000" step="1" value="{{Carbon\Carbon::now()->format('Y')}}" name="fin" id="fin" class="sr-input green_color" onchange="myChart()">
                     </div>
                 </div>
                 <div class="full graph_head">
@@ -62,13 +73,11 @@
     function myChart() {
         var debut = document.getElementById('debut').value
         var fin = document.getElementById('fin').value
-        var filtre = document.getElementById('filtre').value
-        var grp = document.getElementById('grp').value
-        var par = document.getElementById('par').value
+        var mois1 = document.getElementById('mois1').value
+        var mois2 = document.getElementById('mois2').value
         var ict_unit = [];
         var efficiency = [];
         var coloR = [];
-        var select;
 
         var dynamicColors = function() {
             var r = Math.floor(Math.random() * 255);
@@ -76,48 +85,14 @@
             var b = Math.floor(Math.random() * 255);
             return "rgb(" + r + "," + g + "," + b + ")";
         };
-
-        if (grp == 1) {
-            $.ajax({
-                type: "GET",
-                url: "{{ route('ChefRayon.chart.filtre') }}",
-                data: {
-                    filtre: filtre
-                },
-                success: function(response) {
-                    var designation = response.designation.map(function(e) {
-                        return e
-                    })
-                    var id_Fiche = response.id_Fiche.map(function(e) {
-                        return e
-                    })
-                    console.log(designation);
-                    select = document.getElementById("filter");
-                    for (i = 0; i <= designation.length - 1; i++) {
-                        var d = designation[i];
-                        option = document.createElement('option');
-                        option.value = id_Fiche[i];
-                        option.text = designation[i];
-                        select.remove(i);
-                        select.add(option, null);
-                    }
-
-                },
-                error: function(xhr) {
-                    console.log(xhr.responseJSON);
-                }
-            });
-        }
         $.ajax({
             type: "GET",
-            url: "{{ route('ChefRayon.chart') }}",
+            url: "{{ route('Stock.chart') }}",
             data: {
                 debut: debut,
                 fin: fin,
-                type: 'bar',
-                grp: grp,
-                par: par,
-                filtre: filtre
+                mois1: mois1,
+                mois2: mois2
             },
             success: function(response) {
 
@@ -138,12 +113,12 @@
                 }
                 var ctx = $('#myChart');
                 var config = {
-                    type: 'bar',
+                    type: 'line',
                     data: {
                         labels: labels,
                         datasets: [{
                             data: data,
-                            backgroundColor: coloR,
+                            backgroundColor: 'rgb(157, 232, 188)',
 
                         }]
                     },
@@ -163,18 +138,10 @@
 
     var recBarDebut = document.getElementById('debut')
     var recBarFin = document.getElementById('fin')
-    var recBarGrp = document.getElementById('grp')
-    var recBarPar = document.getElementById('par')
     recBarDebut.addEventListener("onchange", myChart)
     recBarFin.addEventListener("onchange", myChart)
-    recBarGrp.addEventListener("onchange", myChart)
-    recBarPar.addEventListener("onchange", myChart)
     myChart()
     $(document).ready(function() {
-        $('#filtre').on('oninput', function() {
-            $value = $(this).val();
-            myChart(1);
-        });
         $('#debut').on('onchange', function() {
             $value = $(this).val();
             myChart(1);

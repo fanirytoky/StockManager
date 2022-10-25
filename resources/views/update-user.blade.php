@@ -37,19 +37,6 @@
                             @endforeach
                         </select>
                     </div>
-
-                    <!-- Password -->
-                    <div class="mt-4">
-                        <x-label for="password" :value="__('Mot de passe')" />
-                        <x-input id="password" class="form-control" type="password" name="password" required autocomplete="new-password" />
-                    </div>
-
-                    <!-- Confirm Password -->
-                    <div class="mt-4">
-                        <x-label for="password_confirmation" :value="__('Confirmer mot de passe')" />
-
-                        <x-input id="password_confirmation" class="form-control" type="password" name="password_confirmation" required />
-                    </div>
                 </div>
 
 

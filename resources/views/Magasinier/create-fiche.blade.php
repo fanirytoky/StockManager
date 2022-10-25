@@ -3,15 +3,15 @@
 <html>
 <form id="selectform" method="POST" action="{{ route('fiche.Store') }}">
     @csrf
-    <div class="card">
-        <div class="white_shd full margin_bottom_30">
-            <div class="full graph_head" id="entete">
-                <div class="heading1 margin_0">
-                    <h2 style="color: white;"><i class="fa fa-file-text-o"></i> NOUVELLE FICHE DE CONTROLE PHYSIQUE ET CONTROLE CONDITIONNEMENT</h2>
-                </div>
+    <div class="white_shd full margin_bottom_30">
+        <div class="full graph_head" id="entete">
+            <div class="heading1 margin_0">
+                <h2 style="color: white;"><i class="fa fa-file-text-o"></i> NOUVELLE FICHE DE CONTROLE PHYSIQUE ET CONTROLE CONDITIONNEMENT</h2>
             </div>
         </div>
-        @if ($errors->any())
+    </div>
+    @if ($errors->any())
+    <div class="card">
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -19,147 +19,149 @@
                 @endforeach
             </ul>
         </div>
-        @endif
-        @if(session('success'))
+    </div>
+    @endif
+    @if(session('success'))
+    <div class="card">
         <div class="alert alert-success">
             <p>{{session('success')}}</p>
         </div>
-        @endif
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <b><label style="color: black;" for="email">Designation</label></b>
-                            @if($designation != null)
-                            @foreach($designation as $d)
-                            <input type="" value="{{$d->AR_Design}}" autocomplete="off" id="popup" name="design" class="form-control" data-toggle="modal" data-target="#modalForm" />
-                            <input type="hidden" value="{{$d->AR_Ref}}" autocomplete="off" id="AR_Ref" name="AR_Ref" class="form-control" />
+    </div>
+    @endif
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <b><label style="color: black;" for="email">Designation</label></b>
+                        @if($designation != null)
+                        @foreach($designation as $d)
+                        <input type="" value="{{$d->AR_Design}}" autocomplete="off" id="popup" name="design" class="form-control" data-toggle="modal" data-target="#modalForm" />
+                        <input type="hidden" value="{{$d->AR_Ref}}" autocomplete="off" id="AR_Ref" name="AR_Ref" class="form-control" />
+                        @endforeach
+                        @endif
+                        @if($designation == null)
+                        <input type="" placeholder="Désignation" autocomplete="off" value="" id="popup" class="form-control" data-toggle="modal" data-target="#modalForm" />
+                        @endif
+                    </div>
+                    <div class="form-group">
+                        <b><label style="color: black;" for="email">Fournisseur</label></b>
+                        @if($fournisseur != null)
+                        @foreach($fournisseur as $frns)
+                        <input type="" value="{{$frns->CT_Intitule}}" autocomplete="off" id="popupFrns" class="form-control" data-toggle="modal" data-target="#modalFormFrns" />
+                        <input type="hidden" value="{{$frns->CT_Num}}" autocomplete="off" id="CT_Num" name="CT_Num" class="form-control" />
+                        @endforeach
+                        @endif
+                        @if($fournisseur == null)
+                        <input type="" placeholder="Fournisseur" autocomplete="off" value="" id="popupFrns" class="form-control" data-toggle="modal" data-target="#modalFormFrns" />
+                        @endif
+                    </div>
+                    <div class="form-group">
+                        <b><label style="color: black;" for="squareSelect">Forme proposition</label></b>
+                        @if($proposition != null)
+                        @foreach($proposition as $prop)
+                        <input type="text" value="{{$prop->FO_designation}}" class="form-control input-pill green_color" disabled>
+                        @endforeach
+                        @endif
+                        @if($proposition == null)
+                        <input type="text" value="" class="form-control input-pill" disabled>
+                        @endif
+                    </div>
+                    <div class="form-group">
+                        <b><label style="color: black;" for="squareSelect">Forme</label></b>
+                        <select class="form-control input-square" id="forme" name="forme">
+                            @foreach($forme as $forme)
+                            <option value="{{$forme->FO_ref}}">{{$forme->FO_designation}}</option>
                             @endforeach
-                            @endif
-                            @if($designation == null)
-                            <input type="" placeholder="Désignation" autocomplete="off" value="" id="popup" class="form-control" data-toggle="modal" data-target="#modalForm" />
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <b><label style="color: black;" for="email">Fournisseur</label></b>
-                            @if($fournisseur != null)
-                            @foreach($fournisseur as $frns)
-                            <input type="" value="{{$frns->CT_Intitule}}" autocomplete="off" id="popupFrns" class="form-control" data-toggle="modal" data-target="#modalFormFrns" />
-                            <input type="hidden" value="{{$frns->CT_Num}}" autocomplete="off" id="CT_Num" name="CT_Num" class="form-control" />
-                            @endforeach
-                            @endif
-                            @if($fournisseur == null)
-                            <input type="" placeholder="Fournisseur" autocomplete="off" value="" id="popupFrns" class="form-control" data-toggle="modal" data-target="#modalFormFrns" />
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <b><label style="color: black;" for="squareSelect">Forme proposition</label></b>
-                            @if($proposition != null)
-                            @foreach($proposition as $prop)
-                            <input type="text" value="{{$prop->FO_designation}}" class="form-control input-pill green_color" disabled>
-                            @endforeach
-                            @endif
-                            @if($proposition == null)
-                            <input type="text" value="" class="form-control input-pill" disabled>
-                            @endif
-                        </div>
-                        <div class="form-group">
-                            <b><label style="color: black;" for="squareSelect">Forme</label></b>
-                            <select class="form-control input-square" id="forme" name="forme">
-                                @foreach($forme as $forme)
-                                <option value="{{$forme->FO_ref}}">{{$forme->FO_designation}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <b><label style="color: black;" for="pillInput">Dosage</label></b>
-                            <input type="text" class="form-control input-pill" name="dosage" id="dosage" placeholder="Dosage">
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <b><label style="color: black;" for="pillSelect">Presentation</label></b>
-                                    <select class="form-control input-pill" id="presentation" name="presentation">
-                                        @foreach($presentation as $p)
-                                        <option value="{{$p->P_ref}}">{{$p->P_Intitule}}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <b><label style="color: black;" for="pillSelect">Quantite unitaire</label></b>
-                                    <input type="number" min="0" class="form-control input-pill" name="P_quantite" id="P_quantite" value="0">
-                                </div>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <b><label style="color: black;" for="pillInput">Dosage</label></b>
+                        <input type="text" class="form-control input-pill" name="dosage" id="dosage" placeholder="Dosage">
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <b><label style="color: black;" for="pillSelect">Presentation</label></b>
+                                <select class="form-control input-pill" id="presentation" name="presentation">
+                                    @foreach($presentation as $p)
+                                    <option value="{{$p->P_ref}}">{{$p->P_Intitule}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <div class="col-md-4">
+                                <b><label style="color: black;" for="pillSelect">Quantite unitaire</label></b>
+                                <input type="number" min="0" class="form-control input-pill" name="P_quantite" id="P_quantite" value="0">
                             </div>
                         </div>
-                        <div class="form-group">
-                            <b><label style="color: black;" for="solidInput">N° Lot</label></b>
-                            <input type="text" class="form-control input-solid" id="lot" name="lot" placeholder="N° Lot">
-                        </div>
-                        <div class="form-group">
-                            <b><label style="color: black;" for="solidInput">Date de fabrication</label></b>
-                            <input type="date" class="form-control input-solid" id="date_fab" name="date_fab">
-                        </div>
+                    </div>
+                    <div class="form-group">
+                        <b><label style="color: black;" for="solidInput">N° Lot</label></b>
+                        <input type="text" class="form-control input-solid" id="lot" name="lot" placeholder="N° Lot">
+                    </div>
+                    <div class="form-group">
+                        <b><label style="color: black;" for="solidInput">Date de fabrication</label></b>
+                        <input type="date" class="form-control input-solid" id="date_fab" name="date_fab">
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-body">
-                        <div class="form-group">
-                            <b><label style="color: black;" for="solidInput">Fabricant</label></b>
-                            <input type="text" class="form-control input-solid" id="fabricant" name="fabricant" placeholder="Fabricant">
-                        </div>
-                        <div class="form-group">
-                            <b><label style="color: black;" for="solidInput">Date de Peremption</label></b>
-                            <input type="date" class="form-control input-solid" id="date_peremp" name="date_peremp">
-                        </div>
-                        <div class="form-group">
-                            <b><label style="color: black;" for="solidInput">Quantite</label></b>
-                            <input type="Number" min="0" class="form-control input-solid" id="quantite" name="quantite" value="0">
-                        </div>
-                        <div class="form-group">
-                            <b><label style="color: black;" for="pillSelect">Type de stockage</label></b>
-                            <select class="form-control input-pill" id="t_stockage" name="t_stockage">
-                                @foreach($stockage as $stockage)
-                                <option value="{{$stockage->T_Stockage_ref}}">{{$stockage->Type_Stockage}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <b><label style="color: black;" for="solidInput">Volume</label></b>
-                                    <input type="number" class="form-control input-solid" id="volume" name="volume" value="0">
-                                </div>
-                                <div class="col-md-3">
-                                    <b><label style="color: black;" for="solidInput">Unite</label></b>
-                                    <input type="text" class="form-control input-solid" value="m3" disabled>
-                                </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-body">
+                    <div class="form-group">
+                        <b><label style="color: black;" for="solidInput">Fabricant</label></b>
+                        <input type="text" class="form-control input-solid" id="fabricant" name="fabricant" placeholder="Fabricant">
+                    </div>
+                    <div class="form-group">
+                        <b><label style="color: black;" for="solidInput">Date de Peremption</label></b>
+                        <input type="date" class="form-control input-solid" id="date_peremp" name="date_peremp">
+                    </div>
+                    <div class="form-group">
+                        <b><label style="color: black;" for="solidInput">Quantite</label></b>
+                        <input type="Number" min="0" class="form-control input-solid" id="quantite" name="quantite" value="0">
+                    </div>
+                    <div class="form-group">
+                        <b><label style="color: black;" for="pillSelect">Type de stockage</label></b>
+                        <select class="form-control input-pill" id="t_stockage" name="t_stockage">
+                            @foreach($stockage as $stockage)
+                            <option value="{{$stockage->T_Stockage_ref}}">{{$stockage->Type_Stockage}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <b><label style="color: black;" for="solidInput">Volume</label></b>
+                                <input type="number" class="form-control input-solid" id="volume" name="volume" value="0">
+                            </div>
+                            <div class="col-md-3">
+                                <b><label style="color: black;" for="solidInput">Unite</label></b>
+                                <input type="text" class="form-control input-solid" value="m3" disabled>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-md-9">
-                                    <b><label style="color: black;" for="solidInput">Poids</label></b>
-                                    <input type="number" class="form-control input-solid" id="poids" name="poids" value="0">
-                                </div>
-                                <div class="col-md-3">
-                                    <b><label style="color: black;" for="solidInput">Unite</label></b>
-                                    <input type="text" class="form-control input-solid" value="Kg" disabled>
-                                </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-9">
+                                <b><label style="color: black;" for="solidInput">Poids</label></b>
+                                <input type="number" class="form-control input-solid" id="poids" name="poids" value="0">
+                            </div>
+                            <div class="col-md-3">
+                                <b><label style="color: black;" for="solidInput">Unite</label></b>
+                                <input type="text" class="form-control input-solid" value="Kg" disabled>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <b><label style="color: black;" for="solidInput">Observations</label></b>
-                            <textarea type="text" rows="1" class="form-control input-solid" id="observation" name="observation"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <h5 style="color: #00bcd2;"><i class="fa fa-envelope-square"> Notification</i></h5>
-                            <div>
-                                <input type="checkbox" id="email" name="email" value="email" checked>
-                                <strong for="email">Envoyer un email</strong>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <b><label style="color: black;" for="solidInput">Observations</label></b>
+                        <textarea type="text" rows="1" class="form-control input-solid" id="observation" name="observation"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <h5 style="color: #00bcd2;"><i class="fa fa-envelope-square"> Notification</i></h5>
+                        <div>
+                            <input type="checkbox" id="email" name="email" value="email" checked>
+                            <strong for="email">Envoyer un email</strong>
                         </div>
                     </div>
                 </div>
@@ -170,7 +172,7 @@
         <button type="submit" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-success">
             Valider
         </button>
-        <button type="submit" onclick="reset()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-danger">
+        <button type="reset" onclick="reset()" class="inline-flex items-center px-4 py-2 bg-gray-800 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring ring-gray-300 disabled:opacity-25 transition ease-in-out duration-150 btn btn-danger">
             Reinitialiser
         </button>
     </div>

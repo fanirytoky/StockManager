@@ -386,49 +386,20 @@ class ChefRayonController extends Controller
         return Redirect::back()->withErrors(['msg' => 'Ajustement stock enregistrer']);
     }
 
-    public function mvtStockStatPage()
-    {
-        return view('chefRayon.stat-Mvt-Stock');
-    }
 
-    public function mvtStockStat(Request $request)
-    {
-        $debut = $request->debut;
-        $fin = $request->fin;
-        $grp = $request->grp;
-        $par = $request->par;
-        $filtre = $request->filtre;
-
-        $res = mvt_Stock::statMvtStock($filtre, $grp, $par, $debut, $fin);
-
-        $labels = [];
-        $dt = [];
-        foreach ($res as $data) {
-            if ($data->total > 0) {
-                $labels[] = $data->labels;
-                $dt[] = $data->total;
-            }
-        }
-
-        return response()->json([
-            'data' => $dt,
-            'labels' => $labels
-        ]);
-    }
-
-    public function ficheFiltre(Request $request)
-    {
-        $filtre = $request->filtre;
-        $res = mvt_Stock::ficheFiltre($filtre);
-        $dt = [];
-        $id = [];
-        foreach ($res as $data) {
-            $dt[] = $data->des;
-            $id[] = $data->id_Fiche;
-        }
-        return response()->json([
-            'designation' => $dt,
-            'id_Fiche' => $id
-        ]);
-    }
+    // public function ficheFiltre(Request $request)
+    // {
+    //     $filtre = $request->filtre;
+    //     $res = mvt_Stock::ficheFiltre($filtre);
+    //     $dt = [];
+    //     $id = [];
+    //     foreach ($res as $data) {
+    //         $dt[] = $data->des;
+    //         $id[] = $data->id_Fiche;
+    //     }
+    //     return response()->json([
+    //         'designation' => $dt,
+    //         'id_Fiche' => $id
+    //     ]);
+    // }
 }

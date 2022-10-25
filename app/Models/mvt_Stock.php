@@ -93,38 +93,27 @@ class mvt_Stock extends Model
     return $mvt_stock;
   }
 
-  public function statMvtStock($filtre, $grp, $par, $dateMax, $dateMin)
+  public function statMvtStock($dateMax, $dateMin, $mois1, $mois2)
   {
-    // globale
-    if ($grp == 0) {
-      if ($filtre != null) {
-        $val = DB::table('mvt_Stock')
-          ->orWhere('AR_Design', 'like', '%' . $filtre . '%')
-          ->groupBy("id_Fiche", "AR_Design", "AR_Ref")
-          ->select(DB::raw("CONCAT(CONCAT('Fiche',id_Fiche),'-'+SUBSTRING(AR_Design,1,8)) as labels"), DB::raw("SUM([entree]-[sortie]) as total"))
-          ->get();
-      } else {
-        $val = DB::table('mvt_Stock')
-          ->groupBy("id_Fiche", "AR_Design", "AR_Ref")
-          ->select(DB::raw("CONCAT(CONCAT('Fiche',id_Fiche),'-'+SUBSTRING(AR_Design,1,8)) as labels"), DB::raw("SUM([entree]-[sortie]) as total"))
-          ->get();
-      }
-    }
-    // fiche
-    if ($grp == 1) {
-      if ($filtre != null && $grp ==1) {
-        $val = DB::table('mvt_Stock')
-          ->Where('AR_Design', 'like', '%' . $filtre . '%')
-          ->select("entree", "sortie", "AR_Design", "num_Lot", "id_Fiche", "date_mvt")
-          ->groupBy("entree", "sortie", "AR_Design", "num_Lot", "id_Fiche", "date_mvt")
-          ->get();
-      } else {
-        $val = DB::table('mvt_Stock')
-          ->select("entree", "sortie", "AR_Design", "num_Lot", "id_Fiche", "date_mvt")
-          ->groupBy("entree", "sortie", "AR_Design", "num_Lot", "id_Fiche", "date_mvt")
-          ->get();
-      }
-    }
+      $val = DB::select("
+        SELECT count(*) as DATA
+      ,CASE WHEN MONTH(date_controle)=1 THEN 'Janvier'
+      WHEN MONTH(date_controle)=2 THEN 'Fevrier'
+      WHEN MONTH(date_controle)=3 THEN 'Mars'
+      WHEN MONTH(date_controle)=4 THEN 'Avril'
+      WHEN MONTH(date_controle)=5 THEN 'Mai'
+      WHEN MONTH(date_controle)=6 THEN 'Juin'
+      WHEN MONTH(date_controle)=7 THEN 'Juillet'
+      WHEN MONTH(date_controle)=8 THEN 'Août'
+      WHEN MONTH(date_controle)=9 THEN 'Septembre'
+      WHEN MONTH(date_controle)=10 THEN 'Octobre'
+      WHEN MONTH(date_controle)=11 THEN 'Novembre'
+      WHEN MONTH(date_controle)=12 THEN 'Décembre' 
+      END as MONTH
+      FROM [reception_salama].[dbo].[fiche]
+      WHERE MONTH(date_controle) BETWEEN ".$mois1." and ".$mois2."
+      AND YEAR(date_controle) BETWEEN ".$dateMax." and ".$dateMin."
+      GROUP BY MONTH(date_controle)");
     return $val;
   }
 
@@ -133,7 +122,7 @@ class mvt_Stock extends Model
     $val = DB::table('mvt_Stock')
       ->Where('AR_Design', 'like', '%' . $filtre . '%')
       ->groupBy("id_Fiche", "AR_Design", "AR_Ref")
-      ->select(DB::raw("CONCAT(CONCAT('Fiche',id_Fiche),'-'+SUBSTRING(AR_Design,1,15)) as des"),"id_Fiche")
+      ->select(DB::raw("CONCAT(CONCAT('Fiche',id_Fiche),'-'+SUBSTRING(AR_Design,1,15)) as des"), "id_Fiche")
       ->get();
     return $val;
   }

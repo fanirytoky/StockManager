@@ -102,7 +102,8 @@ Route::get('/Stock/fiches-attente',[StockController::class,'listeFicheAttente'])
 Route::get('/Stock/AjaxListeFiche.attente',[StockController::class,'AjaxListeFicheAttente'])->name('Stock/AjaxListeFiche.attente')->middleware(['Stock']);
 Route::get('/Stock/fiche-details/{id_dt_Fiche}',[StockController::class,'detailsFiche'])->name('Stock/fiche-details')->middleware(['Stock']);
 Route::get('/fiche-save/{dt_Fiche_ref}',[StockController::class,'enregistrerFiche'])->name('Stock/fiche.decision')->middleware(['Stock']);
-
+Route::get('/Mouvement-Stock/Chart/Vue',[StockController::class,'mvtStockStatPage'])->name('Stock.chart.vue')->middleware(['Stock']);
+Route::get('/Mouvement-Stock/Chart',[StockController::class,'mvtStockStat'])->name('Stock.chart')->middleware(['Stock']);
 //
 
 // Chef de Rayon
@@ -123,9 +124,7 @@ Route::post('/Mouvement-Stock-ajout',[ChefRayonController::class,'storeMvtStock'
 Route::get('/stock-report',[ChefRayonController::class,'ajaxReport'])->name('ajax-report')->middleware(['ChefRayon']);
 Route::post('/fiche-stock-pdf',[ChefRayonController::class,'genererPDF'])->name('fiche_stock.PDF')->middleware(['ChefRayon']);
 Route::get('/stock/ajuster/{inventaire}/{stock}/{id_stock_empl}/{id_inventaire}',[ChefRayonController::class,'ajusterStockInventaire'])->name('stock/ajuster')->middleware(['ChefRayon']);
-Route::get('/Mouvement-Stock/Chart/Vue',[ChefRayonController::class,'mvtStockStatPage'])->name('ChefRayon.chart.vue')->middleware(['ChefRayon']);
-Route::get('/Mouvement-Stock/Chart',[ChefRayonController::class,'mvtStockStat'])->name('ChefRayon.chart')->middleware(['ChefRayon']);
-Route::get('/fiche-filtre/Chart',[ChefRayonController::class,'ficheFiltre'])->name('ChefRayon.chart.filtre')->middleware(['ChefRayon']);
+// Route::get('/fiche-filtre/Chart',[ChefRayonController::class,'ficheFiltre'])->name('ChefRayon.chart.filtre')->middleware(['ChefRayon']);
 // 
 
 

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\mvt_Stock;
 use App\Models\Details_FCPCC;
 use App\Models\Details_Fiche;
 use App\Models\Details_Fiche_Score;
@@ -96,5 +97,34 @@ class StockController extends Controller
     {
         Details_Fiche::validerDtFiche($dt_Fiche_ref, 4);
         return redirect('/Stock/fiches-nouveau')->withSuccess('Fiche validée');
+    }
+
+    public function mvtStockStatPage()
+    {
+        return view('chefRayon.stat-Mvt-Stock');
+    }
+
+    public function mvtStockStat(Request $request)
+    {
+        $debut = $request->debut;
+        $fin = $request->fin;
+        $mois1 = $request->mois1;
+        $mois2 = $request->mois2;
+
+        $res = mvt_Stock::statMvtStock($debut, $fin, $mois1, $mois2);
+
+        $labels = [];
+        $dt = [];
+        foreach ($res as $data) {
+            if ($data->DATA > 0) {
+                $labels[] = $data->MONTH;
+                $dt[] = $data->DATA;
+            }
+        }
+
+        return response()->json([
+            'data' => $dt,
+            'labels' => $labels
+        ]);
     }
 }
