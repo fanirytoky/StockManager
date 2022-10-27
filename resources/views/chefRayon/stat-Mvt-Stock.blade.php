@@ -54,7 +54,7 @@
                 <div class="full graph_head">
                     <br>
                     <div class="heading1 margin_0">
-                        <h2><i class="fa fa-bar-chart-o"></i></h2>
+                        <h2><i class="fa fa-line-chart">   Analyse de l'évolution des réceptions</i></h2>
                     </div>
                 </div>
                 <div class="full graph_revenue">
