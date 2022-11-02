@@ -45,6 +45,7 @@ class AdminController extends Controller
             [
                 'name.required' => 'Veuillez remplir le nom',
                 'email.required' => "Veuiller remplir l'email",
+                'email.unique' => "L'email est déjà pris",
                 'password.required' => 'Veuillez remplir le mot de passe',
                 'password.confirmed' => 'Veuillez confirmer le bon Mot de passe',
             ]
@@ -63,7 +64,7 @@ class AdminController extends Controller
 
         event(new Registered($user));
 
-        return redirect('/users');
+        return redirect('/users')->withSuccess('Nouvel utilisateur enregistré');
     }
 
     public function ajaxListeUser(Request $request)
@@ -84,7 +85,7 @@ class AdminController extends Controller
     {
         $user = User::find($id);
         $user->delete();
-        return redirect('/users');
+        return redirect('/users')->withSuccess('Utilisateur supprimé');
     }
 
     public function modifierUser(Request $request)
@@ -108,7 +109,7 @@ class AdminController extends Controller
                 'post_id' => $request->post_id,
             ]);
         }
-        return redirect('/users');
+        return redirect('/users')->withSuccess('Utilisateur modifié');
     }
 
     public function maj()

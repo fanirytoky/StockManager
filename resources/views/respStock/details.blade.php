@@ -28,6 +28,21 @@
             <p><b>date de fabrication:</b> {{$dt->date_fab}}</p>
             <p><b>date de peremption:</b> {{$dt->date_peremp}}</p>
             <p style="color: red;"><b>Etat:</b> {{$dt->position}}</p>
+            <div class="full inner_elements">
+                <div class="row margin_bottom_30">
+                    <div class="col-md-12">
+                        <div class=" full button_sction padding_infor_info button_style1 padding-bottom_0">
+                            @if($dt->etat>=3)
+                            <div class="center"><a data-role="button" class="btn cur-p btn-outline-info fa fa-file-pdf-o" data-inline="true" href="{{ route('Stock/fiche-PDF', ['dt_Fiche' => $dt->dt_Fiche_ref]) }}"> <b>Export PDF</b></a>
+                                @if($dt->etat==3)
+                                <p>&nbsp;</p><a data-role="button" class="btn cur-p btn-outline-success fa fa-cubes" data-inline="true" href="{{route('Stock/fiche.decision',['dt_Fiche_ref' => $dt->dt_Fiche_ref])}}"> <b>Mise en rayon</b></a>
+                                @endif
+                            </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         @endforeach
     </div>

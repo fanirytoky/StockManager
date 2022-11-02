@@ -119,9 +119,11 @@
                         },
                         options: {
                             scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
+                                yAxes: [{
+                                    ticks: {
+                                        beginAtZero: true
+                                    }
+                                }]
                             },
                             legend: {
                                 display: false
@@ -141,11 +143,6 @@
                             }]
                         },
                         options: {
-                            scales: {
-                                y: {
-                                    beginAtZero: true
-                                }
-                            }
                         }
                     };
                 }
@@ -170,6 +167,7 @@
         $(document).on('click', ".type,.debut,.fin,.filtre", function(event) {
             event.preventDefault();
             myChart();
+
         });
         $('#debut').on('onchange', function() {
             $value = $(this).val();

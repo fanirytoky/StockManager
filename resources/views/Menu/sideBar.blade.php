@@ -35,7 +35,7 @@
             <!-- Magasinier -->
             @if(auth()->user() != null && auth()->user()->post_id == 2)
             <li>
-                <a href="#magasinier" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-tasks red_color"></i> <span>Gestion FCPCC</span></a>
+                <a href="#magasinier" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle"><i class="fa fa-tasks red_color"></i> <span>Gestion réception</span></a>
                 <ul class="collapse list-unstyled" id="magasinier">
                     <li><a href="{{route('fiche.create')}}">> <span>Nouvelle fiche</span></a></li>
                     <li><a href="{{route('fiche.list')}}">> <span>Liste fiches non envoyés</span></a></li>

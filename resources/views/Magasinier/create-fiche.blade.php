@@ -11,20 +11,24 @@
         </div>
     </div>
     @if ($errors->any())
-    <div class="card">
-        <div class="alert alert-danger">
-            <ul>
-                @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-                @endforeach
-            </ul>
+    <div class="full graph_head">
+        <div class="inbox">
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
         </div>
     </div>
     @endif
     @if(session('success'))
-    <div class="card">
-        <div class="alert alert-success">
-            <p>{{session('success')}}</p>
+    <div class="full graph_head">
+        <div class="inbox">
+            <div class="alert alert-success">
+                <p>{{session('success')}}</p>
+            </div>
         </div>
     </div>
     @endif
@@ -158,7 +162,7 @@
                         <textarea type="text" rows="1" class="form-control input-solid" id="observation" name="observation"></textarea>
                     </div>
                     <div class="form-group">
-                        <h5 style="color: #00bcd2;"><i class="fa fa-envelope-square"> Notification</i></h5>
+                        <h5><i class="fa fa-envelope-square"> Notification</i></h5>
                         <div>
                             <input type="checkbox" id="email" name="email" value="email" checked>
                             <strong for="email">Envoyer un email</strong>

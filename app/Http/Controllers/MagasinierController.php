@@ -171,12 +171,13 @@ class MagasinierController extends Controller
                     Mail::to($user)->send(new mailNotification($details));
                 }
             }
+            return redirect()->back()->withSuccess('Nouvelle fiche enregistrée');
         }
 
         Session::forget('designation');
         Session::forget('fournisseur');
 
-        return redirect()->back()->withSuccess('Nouvelle fiche enregistrer');
+        return redirect('/fiches')->withSuccess('Lot enregistré');
     }
 
     public function AjaxListeFiche(Request $request)

@@ -8,6 +8,13 @@
             </div>
         </div>
         <div class="table_section padding_infor_info">
+            @if(session('success'))
+            <div class="inbox">
+                <div class="alert alert-success">
+                    <p>{{session('success')}}</p>
+                </div>
+            </div>
+            @endif
             <div class="inbox-head">
                 <div class="input-append">
                     <input type="text" name="searchBar" id="searchBar" class="sr-input" placeholder="Recherche" oninput="listeUser()">
@@ -37,7 +44,7 @@
         var name = document.getElementById('searchBar').value
         if (page <= 1) var url = '/AjaxListeUser?filtre=' + name;
         else {
-            var url = '/AjaxListeUser?filtre='+name +'&&page=' + page;
+            var url = '/AjaxListeUser?filtre=' + name + '&&page=' + page;
         }
         xhr.open('GET', url, true)
         xhr.send();
@@ -45,7 +52,7 @@
     var recBar = document.getElementById('searchBar')
     recBar.addEventListener("onchange", listeUser)
     listeUser()
-    
+
     $(document).ready(function() {
         $(document).on('click', ".pagination a", function(event) {
             event.preventDefault();
@@ -59,7 +66,6 @@
             listeUser(1);
         });
     });
-
 </script>
 
 @endsection

@@ -58,7 +58,7 @@ class Fiche_Details_Fiche extends Model
             ->Where('etat', '=', $etat)
             ->groupBy('id_Fiche', 'dt_Fiche_ref', 'num_Lot', 'date_peremp',  'AR_Design', 'FO_designation', "P_Intitule", 'date_controle', 'Type_Stockage', 'position', 'etat', 'Observation')
             ->select("id_Fiche", 'dt_Fiche_ref', 'num_Lot', 'date_peremp', "AR_Design", "FO_designation", "P_Intitule", "date_controle", 'Type_Stockage', "Etat", "position", 'Observation');
-        $val = $list->paginate(3);
+        $val = $list->paginate(7);
         return $val;
     }
 

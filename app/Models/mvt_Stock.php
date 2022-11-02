@@ -71,6 +71,15 @@ class mvt_Stock extends Model
     return $mvt_stock;
   }
 
+  public function getDateAll($idFS,$dt){
+    $val = DB::select("select distinct date_mvt from mvt_Stock where id_fiche_stock=".$idFS." and date_mvt='" . $dt . "'");
+    return $val;
+  }
+  public function getFicheStockEmpl($idFS){
+    $val = DB::select("select id_stock_empl from stock_Empl where id_fiche_stock=".$idFS);
+    return $val;
+  }
+
   public function getLastDateMvtStock($idFicheStock)
   {
     $mvt_stock = DB::select("SELECT max(date_mvt) as max

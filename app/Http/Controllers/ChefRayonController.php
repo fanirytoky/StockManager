@@ -255,6 +255,20 @@ class ChefRayonController extends Controller
                 return  redirect()->back()->withErrors('inventaire invalide');
             } else {
 
+                $datemvt = mvt_Stock::getDateAll($idFS, $date);
+                if ($datemvt == null) {
+                    $id_stock_E = mvt_Stock::getFicheStockEmpl($idFS);
+                    details_Fiche_Stock::create([
+                        'id_stock_empl' => $id_stock_E[0]->id_stock_empl,
+                        'CT_Num' => "Physique",
+                        'num_Doc' => "Fiche",
+                        'entree' => 0,
+                        'sortie' => 0,
+                        'observation' => $observations,
+                        'date' => $date,
+                        'id_user' => auth()->user()->id,
+                    ]);
+                }
 
                 inventaire_stock::create([
                     'id_fiche_stock' => $idFS,
@@ -385,21 +399,4 @@ class ChefRayonController extends Controller
 
         return Redirect::back()->withErrors(['msg' => 'Ajustement stock enregistrer']);
     }
-
-
-    // public function ficheFiltre(Request $request)
-    // {
-    //     $filtre = $request->filtre;
-    //     $res = mvt_Stock::ficheFiltre($filtre);
-    //     $dt = [];
-    //     $id = [];
-    //     foreach ($res as $data) {
-    //         $dt[] = $data->des;
-    //         $id[] = $data->id_Fiche;
-    //     }
-    //     return response()->json([
-    //         'designation' => $dt,
-    //         'id_Fiche' => $id
-    //     ]);
-    // }
 }

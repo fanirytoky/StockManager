@@ -63,7 +63,7 @@
                 <div class="full graph_head">
                     <br>
                     <div class="heading1 margin_0">
-                        <h2><i class="fa fa-bar-chart-o"></i> Stastisque regroupée avec recherche avancée</h2>
+                        <h2><i class="fa fa-bar-chart-o"></i> Comparaison produits par durée de vie</h2>
                     </div>
                 </div>
                 <div class="full graph_revenue">

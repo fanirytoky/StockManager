@@ -54,7 +54,7 @@
                                             @endforeach
                                             @foreach($total_score as $total)
                                             <p><strong>Total score : </strong><a>{{$total->total}}</a><br></p>
-                                            
+
                                             <div class="col-md-4">
                                                 <span class="skill" style="width:85%;"> Pourcentage: <span class="info_valume"> {{$total->pourc}}%</span></span>
                                                 <div class="progress skill-bar ">
@@ -82,6 +82,7 @@
                                 </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
                 <div class="col-md-2"></div>
