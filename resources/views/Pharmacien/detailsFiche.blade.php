@@ -34,33 +34,12 @@
                                 <strong>Expire dans : </strong><a>{{$details[0]->ANS}} <b>ans et</b> {{$details[0]->MOIS}} <b>mois</b></a><br>
                             </p>
                             <div class="col-md-12">
-                                @if($details[0]->ANS <= 1 && $details[0]->MOIS <= 3 ) <span class="skill" style="width:85%;">Pourcentage vie restante <span class="info_valume">25%</span></span>
-                                        <div class="progress skill-bar ">
-                                            <div class="progress-bar progress-bar-animated progress-bar-striped bg-danger" role="progressbar" aria-valuenow="85" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
-                                            </div>
-                                        </div>
-                                        @endif
-                                        @if($details[0]->ANS >= 1 && $details[0]->ANS < 2 && $details[0]->MOIS >=6 || $details[0]->ANS >= 2 && $details[0]->ANS < 3 && $details[0]->MOIS >=0)
-                                                <span class="skill" style="width:85%;">Pourcentage vie restante : <span class="info_valume"> 50%</span></span>
-                                                <div class="progress skill-bar ">
-                                                    <div class="progress-bar prog ress-bar-animated progress-bar-striped bg-warning" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 50%;">
-                                                    </div>
-                                                </div>
-                                                @endif
-                                                @if($details[0]->ANS >= 3 && $details[0]->ANS < 4) <span class="skill" style="width:85%;">Pourcentage vie restante <span class="info_valume">75%</span></span>
-                                                    <div class="progress skill-bar ">
-                                                        <div class="progress-bar progress-bar-animated progress-bar-striped bg-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 75%;">
-                                                        </div>
-                                                    </div>
-                                                    @endif
-                                                    @if($details[0]->ANS >= 4)
-                                                    <span class="skill" style="width:85%;">Pourcentage vie restante <span class="info_valume">100%</span></span>
-                                                    <div class="progress skill-bar ">
-                                                        <div class="progress-bar progress-bar-animated progress-bar-striped bg-success" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                                        </div>
-                                                    </div>
-                                                    @endif
-                            </div>
+                                <span class="skill" style="width:85%;">Pourcentage vie restante : <span class="info_valume"> {{$details[0]->Pourc}}%</span></span>
+                                <div class="progress skill-bar ">
+                                    <div class="progress-bar prog ress-bar-animated progress-bar-striped bg-{{$details[0]->Coul}}" role="progressbar" aria-valuemin="0" aria-valuemax="{{$details[0]->Pourc}}" style="width:{{$details[0]->Pourc}}%">
+                                    </div>
+                                </div>
+                            </div>  
                         </div>
                     </div>
                     <div class="col-md-4">

@@ -64,10 +64,25 @@ class Fiche_Details_Fiche extends Model
 
     public function getDetailFicheById($id_dt_Fiche)
     {
-        $details_Fiche = DB::table('fiche_details_fiche')
-            ->where('dt_Fiche_ref', '=', $id_dt_Fiche)
-            ->select('fiche_details_fiche.*')
-            ->get();
+        $details_Fiche = DB::select("select *,
+        CASE
+            WHEN ANS < 1 AND MOIS <= 3 AND MOIS >= 0 THEN 25
+            WHEN ANS >= 1 AND MOIS <= 3 AND MOIS <= 6 THEN 25
+            WHEN ANS >= 1 AND ANS < 2 AND MOIS >= 6 THEN 50
+            WHEN ANS >= 2 AND ANS < 3 AND MOIS <= 6 THEN 50
+            WHEN ANS >= 2 AND ANS < 3 AND MOIS > 6 THEN 75
+            WHEN ANS >= 3 AND ANS < 4 AND MOIS < 6 THEN 75
+            WHEN ANS >= 3 AND MOIS >= 6 THEN 100 ELSE 0
+        END AS Pourc,
+        CASE
+            WHEN ANS < 1 AND MOIS <= 3 AND MOIS >= 0 THEN 'danger'
+            WHEN ANS >= 1 AND ANS < 2 AND MOIS >= 6 THEN 'warning'
+            WHEN ANS >= 2 AND ANS < 3 AND MOIS <= 6 THEN 'warning'
+            WHEN ANS >= 2 AND ANS < 3 AND MOIS > 6 THEN 'success'
+            WHEN ANS >= 3 AND ANS < 4 AND MOIS <6 THEN 'success'
+            WHEN ANS >= 3 AND MOIS >= 6 THEN 'success' ELSE ' '
+        END AS Coul
+        from fiche_details_fiche where dt_Fiche_ref=" .$id_dt_Fiche);
 
         return $details_Fiche;
     }
